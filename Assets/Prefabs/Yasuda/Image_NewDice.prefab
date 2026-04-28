@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6947582749071934219}
   - component: {fileID: 3657440354635851404}
   m_Layer: 5
-  m_Name: Image_Card
+  m_Name: Image_NewDice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 50}
-  m_SizeDelta: {x: 80, y: 120}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6801641773263613828
 CanvasRenderer:
@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2901961, g: 0.24705884, b: 0.16862746, a: 1}
+  m_Color: {r: 0.1, g: 0.7, b: 0.1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -86,10 +86,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3602163662372274757}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c21b3906e7e9074e8349fad5503552b, type: 3}
+  m_Script: {fileID: 11500000, guid: e3146271443d71c4485302570e776a0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextureClickUI
-  textureID: 1
+  textureID: 0
+  groupID: 0
 --- !u!1 &6038940920887146860
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,8 +125,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -10}
-  m_SizeDelta: {x: 70, y: 70}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1961528717662839531
 CanvasRenderer:

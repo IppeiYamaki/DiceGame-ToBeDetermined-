@@ -1,9 +1,9 @@
 using UnityEngine;
 
-/// í“¬‚ÌQ‰ÁÒiƒvƒŒƒCƒ„[‚â“G‚È‚Çj‚ğ•\‚·ƒCƒ“ƒ^[ƒtƒF[ƒX
-public interface ICombatEntity { } // gí“¬‚ÌQ‰ÁÒh‚Æ‚¢‚¤ƒ^ƒOi‹¤’ÊŒ^j
+/// æˆ¦é—˜ã«å‚åŠ ã™ã‚‹ã‚¨ãƒ³ãƒ†ã‚£ãƒ†ã‚£ã‚’è¡¨ã™ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚<br />
+public interface ICombatEntity { } // æˆ¦é—˜ã«å‚åŠ ã™ã‚‹ã‚¨ãƒ³ãƒ†ã‚£ãƒ†ã‚£ã‚’è¡¨ã™ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã€‚
 
-/// ƒ_ƒCƒX‚ÌŒø‰Ê‚ğ’è‹`‚·‚é’ŠÛƒNƒ‰ƒXBƒ_ƒCƒX‚ÌŒø‰Ê‚ÍAƒ†[ƒU[iUŒ‚Òj‚Æƒ^[ƒQƒbƒgi”íUŒ‚Òj‚É‘Î‚µ‚ÄAƒ_ƒCƒX‚Ì’l‚ÉŠî‚Ã‚¢‚Ä‰½‚ç‚©‚ÌƒAƒNƒVƒ‡ƒ“‚ğÀs‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
-public abstract class DiceAction : ScriptableObject {
+/// ãƒ€ã‚¤ã‚¹ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’è¡¨ã™æŠ½è±¡ã‚¯ãƒ©ã‚¹ã€‚
+public abstract class DiceAction : PersistentScriptableObject {
     public abstract void Execute(ICombatEntity user, ICombatEntity target, int diceValue);
 }

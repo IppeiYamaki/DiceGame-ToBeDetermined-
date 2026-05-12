@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d26521a8b348b6f438d329ddb2c87d62, type: 3}
-  m_Name: Attack
-  m_EditorClassIdentifier: Assembly-CSharp::AttackAction
-  m_persistentId: 4e6c40a111b94dfe8feec31d986f2fda
+  m_Script: {fileID: 11500000, guid: 2f0950879243ba944988fd7a4a63d8fa, type: 3}
+  m_Name: BlockAction
+  m_EditorClassIdentifier: Assembly-CSharp::BlockAction
+  m_persistentId: 9213e57d6f934f71ae5174de2fa5a33c

@@ -20,6 +20,6 @@ public class TextureClickUI_Beta : MonoBehaviour, IPointerClickHandler
      
         }
 
-        //test.ShowDetail(textureID);
+       
     }
 }

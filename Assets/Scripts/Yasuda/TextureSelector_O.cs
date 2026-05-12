@@ -40,7 +40,7 @@ public class TextureSelector_O : MonoBehaviour
         else
         {
             currentSelected = id;
-            dice.ShowDetail(currentSelected);
+            dice.ShowDetail(currentSelected,1);//1ÇÕä˘ë∂ÉTÉCÉRÉç
         }
        
         UpdateView();

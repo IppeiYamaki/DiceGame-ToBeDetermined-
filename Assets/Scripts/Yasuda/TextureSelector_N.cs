@@ -10,6 +10,7 @@ public class TextureSelector_N : MonoBehaviour
     public Image[] images;
 
     public DetailDice dice;//サイコロの面（詳細）表示
+  
 
     [Range(0f, 1f)]
 
@@ -43,7 +44,7 @@ public class TextureSelector_N : MonoBehaviour
         {
             //詳細を表示
             currentSelected = id;
-            dice.ShowDetail(currentSelected);
+            dice.ShowDetail(currentSelected, 0);//0は新しいサイコロ
         }
 
        

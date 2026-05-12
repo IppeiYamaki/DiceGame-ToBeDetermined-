@@ -603,7 +603,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TextureClickUI_Beta
   textureID: 2
   groupID: 0
-  lookFaces: {fileID: 1312025540}
 --- !u!1 &334612877
 GameObject:
   m_ObjectHideFlags: 0
@@ -942,7 +941,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TextureClickUI_Beta
   textureID: 1
   groupID: 0
-  lookFaces: {fileID: 1312025540}
 --- !u!1 &614739945
 GameObject:
   m_ObjectHideFlags: 0
@@ -1263,7 +1261,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TextureClickUI_Beta
   textureID: 1
   groupID: 1
-  lookFaces: {fileID: 1312025540}
 --- !u!1 &759613924 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3602163662372274757, guid: 30044a621c93bf643ab512b9037144be, type: 3}
@@ -1347,11 +1344,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7366364258970304081, guid: 6d0cb71b77599ad4eb410a3df205b2f9, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -298
+      value: -300
       objectReference: {fileID: 0}
     - target: {fileID: 7366364258970304081, guid: 6d0cb71b77599ad4eb410a3df205b2f9, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 193
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7366364258970304081, guid: 6d0cb71b77599ad4eb410a3df205b2f9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1753,6 +1750,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 484579c2852eee44f80eb34255632e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextureSelector
+  lookFaces: {fileID: 1312025540}
   images:
   - {fileID: 2132441095}
   - {fileID: 745216087}
@@ -1900,7 +1898,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TextureClickUI_Beta
   textureID: 2
   groupID: 1
-  lookFaces: {fileID: 1312025540}
 --- !u!1 &1245692555 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3602163662372274757, guid: 30044a621c93bf643ab512b9037144be, type: 3}
@@ -2036,11 +2033,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7366364258970304081, guid: 6de0ab60eeb40394d8ec4142010b6339, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -295
+      value: -300
       objectReference: {fileID: 0}
     - target: {fileID: 7366364258970304081, guid: 6de0ab60eeb40394d8ec4142010b6339, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 129
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7366364258970304081, guid: 6de0ab60eeb40394d8ec4142010b6339, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2204,7 +2201,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TextureClickUI_Beta
   textureID: 4
   groupID: 1
-  lookFaces: {fileID: 1312025540}
 --- !u!1 &1495230521
 GameObject:
   m_ObjectHideFlags: 0
@@ -2253,6 +2249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df402e0fbf656744dbda73c347aa2255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextureSelector
+  lookFaces: {fileID: 1312025540}
   images:
   - {fileID: 2094106719}
   - {fileID: 448438555}
@@ -2753,7 +2750,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TextureClickUI_Beta
   textureID: 3
   groupID: 1
-  lookFaces: {fileID: 1312025540}
 --- !u!1 &1749115549
 GameObject:
   m_ObjectHideFlags: 0
@@ -3154,7 +3150,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TextureClickUI_Beta
   textureID: 0
   groupID: 0
-  lookFaces: {fileID: 1312025540}
 --- !u!1001 &2110887593
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3290,7 +3285,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TextureClickUI_Beta
   textureID: 5
   groupID: 1
-  lookFaces: {fileID: 1312025540}
 --- !u!1001 &2132441093
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3426,7 +3420,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TextureClickUI_Beta
   textureID: 0
   groupID: 1
-  lookFaces: {fileID: 1312025540}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

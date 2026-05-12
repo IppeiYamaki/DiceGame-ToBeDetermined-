@@ -5,8 +5,10 @@ using UnityEngine.UI;
 public class TextureSelector_O : MonoBehaviour
 {
     public static TextureSelector_O Instance;
-    public LookFaces lookFaces;
+   
     public Image[] images;
+
+    public DetailDice dice;
 
     [Range(0f, 1f)]
 
@@ -33,15 +35,14 @@ public class TextureSelector_O : MonoBehaviour
         if (currentSelected == id)
         {
             currentSelected = -1;
-            lookFaces.HideDetail();
+            dice.HideDetail();
         }
         else
         {
             currentSelected = id;
-            lookFaces.ShowDetail(1);//面表示テスト
+            dice.ShowDetail(currentSelected);
         }
-        //面表示テスト
-        //LookFaces.Instance.ShowDetail(1);
+       
         UpdateView();
 
        

@@ -58,16 +58,13 @@ public class BattleFlow : MonoBehaviour
 
 
             if(EnemyHP < 0) EnemyHP = 0;
-            if(EnemyHP <= 0) 
+
+
+            if (IsEnemyDead())
             {
                 TransitionToWin();
                 break;
             }
-
-
-            //  if (IsEnemyDead()) { TransitionToWin(); break; }
-
-
 
 
 
@@ -93,29 +90,13 @@ public class BattleFlow : MonoBehaviour
 
 
 
-            if (PlayerHP <= 0) 
-            {
-                TransitionToGameOver();
-                break;
 
-            }
-
-
-          //  if(IsPlayerDead()) { TransitionToGameOver(); break; }
-
-
-
-            // ⑥ 最終判定
             if (IsPlayerDead())
             {
                 TransitionToGameOver();
-                isBattleActive = false;
+                break;
             }
-            else if (IsEnemyDead())
-            {
-                TransitionToWin();
-                isBattleActive = false;
-            }
+            
         }
     }
 
@@ -126,8 +107,8 @@ public class BattleFlow : MonoBehaviour
         //await Task.Delay(1500);
     }
 
-    private bool IsEnemyDead() => false;
-    private bool IsPlayerDead() => false;
+    private bool IsEnemyDead() => EnemyHP <= 0;
+    private bool IsPlayerDead() => PlayerHP <= 0;
     private void TransitionToWin() => Debug.Log("勝利画面へ");
     private void TransitionToGameOver() => Debug.Log("ゲームオーバー画面へ");
 }

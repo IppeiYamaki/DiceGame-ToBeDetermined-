@@ -6,8 +6,8 @@ public class LookFaces : MonoBehaviour
 {
     //public static LookFaces Instance;
     public GameObject[] detailObjects;
-
     private int currentID = -1;
+
 
     void Start()
     {

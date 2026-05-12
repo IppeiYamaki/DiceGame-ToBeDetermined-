@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class TextureSelector_N : MonoBehaviour
 {
     public static TextureSelector_N Instance;
+    public LookFaces lookFaces;
     public Image[] images;
 
     [Range(0f, 1f)]
@@ -32,15 +33,15 @@ public class TextureSelector_N : MonoBehaviour
         if (currentSelected == id)
         {
             currentSelected = -1;
+            lookFaces.HideDetail();//面表示テスト
         }
         else
         {
             currentSelected = id;
+            lookFaces.ShowDetail(0);//面表示テスト
         }
 
-        //面表示テスト
-        //LookFaces.Instance.ShowDetail(0);
-
+       
         UpdateView();
 
        

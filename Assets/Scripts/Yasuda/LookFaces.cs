@@ -17,39 +17,49 @@ public class LookFaces : MonoBehaviour
         }
     }
 
-    public void ShowDetail(int id)
+    public void ShowDetail(int id)//id‚É‰ž‚¶‚Ä•\Ž¦‚·‚é
     {
         Debug.Log("ShowDetail ŒÄ‚Ño‚µ : " + id);
-        if (id>detailObjects.Length)
+        if (id > detailObjects.Length || id < 0)
         {
-            Debug.LogError("id‚ª“o˜^”‚æ‚è‘å‚«‚¢‚Å‚·");
+            Debug.LogError("id‚ª–³Œø‚Å‚·");
             return;
         }
 
         if(currentID == id)
         {
-            detailObjects[id].SetActive(false);
-            currentID = -1;
+            for (int i = 0; i < detailObjects.Length; i++)
+            {
+                detailObjects[i].SetActive(false);
+                currentID = -1;
+               
+            }
+            Debug.Log("”ñ•\Ž¦‰»");
         }
         else 
         {
             for (int i = 0; i < detailObjects.Length; i++)
             {
-
-
                 if (i == id)
                 {
                     detailObjects[i].SetActive(true);
                     currentID = i;
+                    Debug.Log(i + "•\Ž¦");
                 }
                 else
                 {
                     detailObjects[i].SetActive(false);
                 }
             }
-        }
-
-           
+        }   
     }
 
+    public void HideDetail()
+    {
+        for (int i = 0; i < detailObjects.Length; i++)
+        {
+            detailObjects[i].SetActive(false);
+            currentID = -1;
+        }
+    }
 }

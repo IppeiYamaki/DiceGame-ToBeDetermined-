@@ -38,6 +38,9 @@ public class TextureSelector_N : MonoBehaviour
             currentSelected = id;
         }
 
+        //面表示テスト
+        //LookFaces.Instance.ShowDetail(0);
+
         UpdateView();
 
        
@@ -72,10 +75,8 @@ public class TextureSelector_N : MonoBehaviour
 
                 }
             }
-
-
-           
-
         }
+
+
     }
 }

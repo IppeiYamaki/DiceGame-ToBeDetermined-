@@ -37,7 +37,8 @@ public class TextureSelector_O : MonoBehaviour
         {
             currentSelected = id;
         }
-
+        //面表示テスト
+        //LookFaces.Instance.ShowDetail(1);
         UpdateView();
 
        

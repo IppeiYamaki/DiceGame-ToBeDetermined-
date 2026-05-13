@@ -1,19 +1,17 @@
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems; 
-
+﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UI_DiceClickHandler : MonoBehaviour, IPointerClickHandler
 {
 
-    public DiceLogic connectedDiceLogic;
+    public DiceItem connectedDiceLogic;
 
-   
     public void OnPointerClick(PointerEventData eventData)
     {
-   
-        if (connectedDiceLogic == null) return;
-
-        connectedDiceLogic.ToggleRiseFall();
+        if (connectedDiceLogic != null)
+        {
+          
+            connectedDiceLogic.ToggleRiseFall();
+        }
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class RotateSloat : MonoBehaviour
 {
     DiceManager diceManager;
-    public float rotateSpeed = 1f;
+    public float rotateSpeed = -3f;
     private void Start()
     {
         GameObject diceManagerObject = GameObject.Find("DiceManager");
@@ -16,12 +16,15 @@ public class RotateSloat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Rotate();
+        if (diceManager.diceState == DiceManager.DiceState.Rotating)
+        {
+            Rotate();
+        }
     }
+    // ダイスを回転させるメソッド
     void Rotate()
     {
         float y = transform.eulerAngles.x;
-        //float threshold = 5f;
         if (diceManager.isRotating)
         {
             Rigidbody rb = this.GetComponent<Rigidbody>();

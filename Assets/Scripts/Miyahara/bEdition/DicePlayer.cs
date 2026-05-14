@@ -20,7 +20,7 @@ public class DicePlayer : MonoBehaviour
     void LoadRecordingFromJson()
     {
         // ‚½‚Æ‚¦‚Î Android / PC ‹¤’Ê‚ÌƒpƒX‚Å
-        string path = Path.Combine(Application.persistentDataPath, "DiceRecordings", recordingPath);
+        string path = Path.Combine(Application.persistentDataPath, "DiceRecordings/Dice1.json", recordingPath);
 
         DiceRecording rec = DiceRecordingSaver.LoadFromJSONFile(path);
         if (rec != null)
@@ -52,10 +52,12 @@ public class DicePlayer : MonoBehaviour
     {
         if (Keyboard.current.qKey.wasPressedThisFrame)
         {
-            LoadRecordingFromJson();
+            rb.isKinematic = false;
+
         }
         if (Keyboard.current.pKey.wasPressedThisFrame)
         {
+            LoadRecordingFromJson();
             Play();
         }
         if (!isPlaying) return;

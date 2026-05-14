@@ -31,11 +31,14 @@ public class RandomDice : MonoBehaviour
     {
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
+
             isDropping = false;
             diceRecorder.StartRecording();
         }
         if (Keyboard.current.rKey.wasPressedThisFrame)
+        {
             isShaking = true;
+        }
         DropDice();
         ShakeDice();
 
@@ -69,9 +72,9 @@ public class RandomDice : MonoBehaviour
                 //int rotatex = 1;
                 //int rotatey = 2;
                 //int rotatez = 2;
-                int rotatex = Random.Range(1, 3);
-                int rotatey = Random.Range(1, 3);
-                int rotatez = Random.Range(1, 3);
+                float rotatex = Random.Range(-3f, 3f);
+                float rotatey = Random.Range(1f, 3f);
+                float rotatez = Random.Range(-3f, 3f);
 
                 torque = new Vector3(rotatex, rotatey, rotatez);
                 rb.AddTorque(torque * rotateSpeed, ForceMode.Force);
@@ -82,42 +85,42 @@ public class RandomDice : MonoBehaviour
     }
 
 
-    public void Dice1Event(Collider col)
+    public void Dice1Event()
     {
         Debug.Log("1");
         randomText.text = 1.ToString();
         diceRecorder.StopRecording();
     }
 
-    public void Dice2Event(Collider col)
+    public void Dice2Event()
     {
         Debug.Log("2");
         randomText.text = 2.ToString();
         diceRecorder.StopRecording();
     }
 
-    public void Dice3Event(Collider col)
+    public void Dice3Event()
     {
         Debug.Log("3");
         randomText.text = 3.ToString();
         diceRecorder.StopRecording();
     }
 
-    public void Dice4Event(Collider col)
+    public void Dice4Event()
     {
         Debug.Log("4");
         randomText.text = 4.ToString();
         diceRecorder.StopRecording();
     }
 
-    public void Dice5Event(Collider col)
+    public void Dice5Event()
     {
         Debug.Log("5");
         randomText.text = 5.ToString();
         diceRecorder.StopRecording();
     }
 
-    public void Dice6Event(Collider col)
+    public void Dice6Event()
     {
         Debug.Log("6");
         randomText.text = 6.ToString();

@@ -825,7 +825,7 @@ Transform:
   m_GameObject: {fileID: 267709674}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -0.5, z: 0}
+  m_LocalPosition: {x: -0, y: -0.46, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -870,7 +870,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1712773648}
         m_TargetAssemblyTypeName: RandomDice, Assembly-CSharp
         m_MethodName: Dice6Event
-        m_Mode: 0
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1019,7 +1019,7 @@ Transform:
   m_GameObject: {fileID: 386545730}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0.5}
+  m_LocalPosition: {x: -0, y: 0, z: 0.46}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1064,7 +1064,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1712773648}
         m_TargetAssemblyTypeName: RandomDice, Assembly-CSharp
         m_MethodName: Dice3Event
-        m_Mode: 0
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1169,7 +1169,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &503991714
 Transform:
   m_ObjectHideFlags: 0
@@ -1226,7 +1226,7 @@ Transform:
   m_GameObject: {fileID: 587833615}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: -0.5}
+  m_LocalPosition: {x: -0, y: 0, z: -0.46}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1271,7 +1271,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1712773648}
         m_TargetAssemblyTypeName: RandomDice, Assembly-CSharp
         m_MethodName: Dice4Event
-        m_Mode: 0
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2321,7 +2321,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1026337956}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a9ee84cf79c59e4daaf44ab1b92ec3d, type: 3}
   m_Name: 
@@ -2670,7 +2670,7 @@ Transform:
   m_GameObject: {fileID: 1060181493}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0, z: 0}
+  m_LocalPosition: {x: 0.46, y: 0, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -2715,7 +2715,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1712773648}
         m_TargetAssemblyTypeName: RandomDice, Assembly-CSharp
         m_MethodName: Dice2Event
-        m_Mode: 0
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3195,7 +3195,7 @@ Transform:
   m_GameObject: {fileID: 1224010994}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 0, z: 0}
+  m_LocalPosition: {x: -0.46, y: 0, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -3240,7 +3240,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1712773648}
         m_TargetAssemblyTypeName: RandomDice, Assembly-CSharp
         m_MethodName: Dice5Event
-        m_Mode: 0
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3806,7 +3806,7 @@ Transform:
   m_GameObject: {fileID: 1355672989}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.5, z: 0}
+  m_LocalPosition: {x: -0, y: 0.46, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -3851,7 +3851,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1712773648}
         m_TargetAssemblyTypeName: RandomDice, Assembly-CSharp
         m_MethodName: Dice1Event
-        m_Mode: 0
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3891,9 +3891,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DiceManager
   randomText: {fileID: 1231464479}
   slotPos: {fileID: 1206397138}
-  rotateSpeed: -3
   isRotating: 0
-  isDice: 0
   diceState: 0
 --- !u!4 &1414220156
 Transform:
@@ -3975,7 +3973,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1427641840}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a9ee84cf79c59e4daaf44ab1b92ec3d, type: 3}
   m_Name: 
@@ -4102,7 +4100,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1464906012
 Transform:
   m_ObjectHideFlags: 0
@@ -4759,7 +4757,6 @@ GameObject:
   - component: {fileID: 1712773648}
   - component: {fileID: 1712773653}
   - component: {fileID: 1712773652}
-  - component: {fileID: 1712773651}
   m_Layer: 0
   m_Name: Diec1
   m_TagString: Untagged
@@ -4910,20 +4907,6 @@ MonoBehaviour:
   diceRecorder: {fileID: 1712773653}
   rotateSpeed: 100
   randomText: {fileID: 1339276833}
---- !u!114 &1712773651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1712773642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47e1e22a57c33eb438db5ff6edfac899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DiceRecordingBank
-  recordings:
-  - {fileID: 11400000, guid: 827d637ecff694246b1c23ba52899919, type: 2}
 --- !u!114 &1712773652
 MonoBehaviour:
   m_ObjectHideFlags: 0

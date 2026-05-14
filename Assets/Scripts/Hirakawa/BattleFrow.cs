@@ -13,6 +13,9 @@ public class BattleFlow : MonoBehaviour
     // [③] スロット演出
     // [④] バトル計算ロジック
 
+    int PlayerHP = 100; // 仮のHP値。実際はプレイヤーデータから取得
+    int EnemyHP = 50; // 仮のHP値。実際は敵データから取得
+
     async void Start()
     {
         await BattleLoop();
@@ -40,16 +43,30 @@ public class BattleFlow : MonoBehaviour
             // [③] のスロットアニメーション演出を呼び出し、終わるまで待つ
             // await SlotAnimation.Instance.PlayRollAnimation();
             Debug.Log("ダイスロール中...");
-           // await Task.Delay(1000);
+            // await Task.Delay(1000);
 
             // ③ プレイヤー結果表示・処理
             _currentStep = BattleStep.Result;
             // [④] の計算ロジックから最終ダメージを取得
             // int damage = BattleCalculator.Calculate(selectedDice);
             int damage = 20;//一旦固定値としてDamegeを使用。実際は[④]のロジックから取得
+
+
             await ShowActionEffects($"プレイヤーの攻撃！ {damage}のダメージ！");
 
-            if (IsEnemyDead()) { TransitionToWin(); break; }
+            EnemyHP -= damage;
+
+
+            if(EnemyHP < 0) EnemyHP = 0;
+
+
+            if (IsEnemyDead())
+            {
+                TransitionToWin();
+                break;
+            }
+
+
 
             // ④ 敵のターン
             _currentStep = BattleStep.EnemyTurn;
@@ -58,32 +75,40 @@ public class BattleFlow : MonoBehaviour
 
             // ⑤ 敵行動結果の表示
             _currentStep = BattleStep.EnemyAction;
-            // [④] 敵の計算ロジック
-          //  await ShowActionEffects("敵の攻撃！ 10のダメージ！");
 
-            // ⑥ 最終判定
+
+            int EnemyDamage = 15; //仮のダメージ値。実際は敵データから取得
+
+            // [④] 敵の計算ロジック
+
+            await ShowActionEffects($"敵の攻撃！ {EnemyDamage}のダメージ！");
+
+
+            PlayerHP -= EnemyDamage;
+            if (PlayerHP < 0) PlayerHP = 0;
+            Debug.Log($"プレイヤーの残りHP: {PlayerHP}");
+
+
+
+
             if (IsPlayerDead())
             {
                 TransitionToGameOver();
-                isBattleActive = false;
+                break;
             }
-            else if (IsEnemyDead())
-            {
-                TransitionToWin();
-                isBattleActive = false;
-            }
+            
         }
     }
 
     private async Task ShowActionEffects(string message)
     {
         Debug.Log(message);
-        // ここで演出時間分待機。一応付けておきますけど必要ない場合削除
+        // ここで演出時間分待機。一応いろんなところに付けておきますけど必要ない場合削除
         //await Task.Delay(1500);
     }
 
-    private bool IsEnemyDead() => false;
-    private bool IsPlayerDead() => false;
+    private bool IsEnemyDead() => EnemyHP <= 0;
+    private bool IsPlayerDead() => PlayerHP <= 0;
     private void TransitionToWin() => Debug.Log("勝利画面へ");
     private void TransitionToGameOver() => Debug.Log("ゲームオーバー画面へ");
 }

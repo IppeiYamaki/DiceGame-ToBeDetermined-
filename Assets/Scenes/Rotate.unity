@@ -1169,7 +1169,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &503991714
 Transform:
   m_ObjectHideFlags: 0
@@ -3892,6 +3892,10 @@ MonoBehaviour:
   randomText: {fileID: 1231464479}
   slotPos: {fileID: 1206397138}
   isRotating: 0
+  selectionPanel: {fileID: 0}
+  lotteryPanel: {fileID: 0}
+  allDices: []
+  lotteryUIImages: []
   diceState: 0
 --- !u!4 &1414220156
 Transform:
@@ -4100,7 +4104,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1464906012
 Transform:
   m_ObjectHideFlags: 0

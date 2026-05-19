@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class RotateSloat : MonoBehaviour
 {
-    DiceManager diceManager;
+    public DiceManager diceManager;
     public float rotateSpeed = -3f;
     private void Start()
     {

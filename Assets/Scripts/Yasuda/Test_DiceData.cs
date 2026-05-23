@@ -15,7 +15,7 @@ public class Test_DiceData : MonoBehaviour
             for (int j = 0; j < 6; j++)
             {
                 n_diceData[i, j] = Random.Range(0, 6);
-                Debug.Log(n_diceData[i, j] + "AA" + i + j);
+                //Debug.Log(n_diceData[i, j] + "AA" + i + j);
             }
            
         }
@@ -24,7 +24,7 @@ public class Test_DiceData : MonoBehaviour
             for (int j = 0; j < 6; j++)
             {
                 o_diceData[i, j] = Random.Range(0, 6);
-                Debug.Log(o_diceData[i, j] + "AA" + i + j);
+                //Debug.Log(o_diceData[i, j] + "AA" + i + j);
             }
 
         }

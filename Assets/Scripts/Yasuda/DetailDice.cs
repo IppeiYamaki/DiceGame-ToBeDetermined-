@@ -42,12 +42,7 @@ public class DetailDice : MonoBehaviour
             }
         }
 
-            //for (int i = 0; i < 6; i++)
-            //{
-            //    int num = test.GetNumber(group, id, i);//この部分でサイコロの面データ（数字）を受け取る
-            //    detailImage[i].sprite = detailSprites[num];//数字にそったスプライトにする
-            //    detailImage[i].gameObject.SetActive(true);
-            //}
+            
         
     }
     public void HideDetail(int g)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ItemDatabase", menuName = "Items/Item Database")]
-public class ItemDateBase : MonoBehaviour
+public class ItemDataBase : MonoBehaviour
 {
     public List<ItemData> items = new List<ItemData>();
 

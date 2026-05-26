@@ -1888,6 +1888,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   Dicedata: {fileID: 2112709248}
+  manager: {fileID: 2112709250}
   D: {fileID: 743055005}
 --- !u!1 &938925490
 GameObject:
@@ -2778,6 +2779,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c44335494564c7649ad114ecdc6d9216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KoukansinaiBotton
+  manager: {fileID: 2112709250}
 --- !u!1001 &1544463720
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4193,6 +4195,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2112709249}
   - component: {fileID: 2112709248}
+  - component: {fileID: 2112709250}
   m_Layer: 0
   m_Name: Test_DiceData
   m_TagString: Untagged
@@ -4227,6 +4230,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2112709250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2112709247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81a411d027fbbd0409de9eec1c465451, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneManager
+  nextScene: {fileID: 102900000, guid: 99c9720ab356a0642a771bea13969a05, type: 3}
+  sceneName: SampleScene
 --- !u!1001 &2132441093
 PrefabInstance:
   m_ObjectHideFlags: 0

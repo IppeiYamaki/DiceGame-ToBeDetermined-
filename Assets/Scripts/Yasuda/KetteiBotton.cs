@@ -9,6 +9,8 @@ public class KetteiBotton : MonoBehaviour, IPointerClickHandler
 
     [SerializeField]
     Test_DiceData Dicedata;
+    [SerializeField]
+    SceneChangeManager manager;
 
 
 #if UNITY_EDITOR
@@ -49,6 +51,7 @@ public class KetteiBotton : MonoBehaviour, IPointerClickHandler
 #endif
 
             //ここでマップに移行
+            manager.ChangeScene();
         }
             
     }

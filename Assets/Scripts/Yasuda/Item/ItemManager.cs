@@ -1,10 +1,10 @@
 using UnityEngine;
-using static ItemDateBase;
+using static ItemDataBase;
 
 public class ItemManager : MonoBehaviour
 {
     [SerializeField]
-    private ItemDateBase itemDatabase;
+    private ItemDataBase itemDatabase;
 
     private void Start()
     {

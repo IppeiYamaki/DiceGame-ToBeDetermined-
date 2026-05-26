@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa1b2a54d0bb0b1489d7a726ed62d2b1, type: 3}
+  m_Name: DiceDefinition_00 2
+  m_EditorClassIdentifier: Assembly-CSharp::DiceDefinition
+  m_persistentId: da5415196aa94e3ca47ad29427aa3ede
+  m_diceName: 
+  m_faces:
+  - {fileID: 11400000, guid: 97b80ec2a4329054e86d9cbf260c0ee5, type: 2}
+  - {fileID: 11400000, guid: 97b80ec2a4329054e86d9cbf260c0ee5, type: 2}
+  - {fileID: 11400000, guid: 528ff22afe2d24441acba10f4466c902, type: 2}
+  - {fileID: 11400000, guid: 528ff22afe2d24441acba10f4466c902, type: 2}
+  - {fileID: 11400000, guid: a45735e3bfd8f4d4eb748f077a2627ae, type: 2}
+  - {fileID: 11400000, guid: a45735e3bfd8f4d4eb748f077a2627ae, type: 2}

@@ -24,6 +24,7 @@ public class DiceManager : MonoBehaviour
         Idle,
         Rotating,
         NextEvent
+
     }
     public DiceState diceState;
 

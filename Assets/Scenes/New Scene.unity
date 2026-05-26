@@ -796,7 +796,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 8400000, guid: 56b4077563ebe7a4990a4b85b83067bf, type: 2}
+  m_Texture: {fileID: 0}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -957,21 +957,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aefaf1fc816b7034b818c51594d298dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DiceManager
-  randomText: {fileID: 755305643}
-  slotPos: {fileID: 964554396}
-  isRotating: 0
   selectionPanel: {fileID: 1003768571}
-  lotteryPanel: {fileID: 32979217}
-  allDices:
-  - {fileID: 1432597439}
-  - {fileID: 1868952980}
-  - {fileID: 285269733}
-  - {fileID: 848984527}
-  lotteryUIImages:
-  - {fileID: 2140082520}
-  - {fileID: 1844022161}
-  - {fileID: 2051545662}
-  - {fileID: 156170505}
+  slotDataList: []
+  isRotating: 0
   diceState: 0
 --- !u!1 &614750773
 GameObject:
@@ -2270,6 +2258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b80491dca7c0fe04cb4a9739a7806a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RotateSloat
+  diceManager: {fileID: 0}
   rotateSpeed: -3
 --- !u!54 &964554398
 Rigidbody:

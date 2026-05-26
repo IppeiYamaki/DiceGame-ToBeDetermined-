@@ -8,16 +8,26 @@ public class ItemManager : MonoBehaviour
 
     private void Start()
     {
-        ItemData item = itemDatabase.GetItemByID(0);
+        int test = 0;
+        while (test<10)
+        {
+            ItemData item = itemDatabase.GetItemByID(test);
 
-        if (item != null)
-        {
-            Debug.Log(item.itemName);
-            Debug.Log(item.description);
+            if (item != null)
+            {
+                Debug.Log(item.itemName);
+                Debug.Log(item.description);
+            }
+            else
+            {
+                Debug.Log("“o˜^‚³‚ê‚½ƒAƒCƒeƒ€”F" + test);
+                //Debug.Log("“o˜^‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+                break;
+            }
+            test++;
         }
-        else
-        {
-            Debug.LogError("A");
-        }
+      
+
+        
     }
 }

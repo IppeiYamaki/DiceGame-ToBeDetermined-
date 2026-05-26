@@ -1,10 +1,10 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewItem", menuName = "Game/Item")]
+[CreateAssetMenu(fileName = "NewItem", menuName = "Items/Item")]
 public class ItemData : ScriptableObject
 {
     [SerializeField]
-    private int itemID;
+    private int itemID;//
 
     public int ItemID => itemID;
 
@@ -13,7 +13,7 @@ public class ItemData : ScriptableObject
     [TextArea]
     public string description;
 
-    public Sprite icon;
+    public Texture icon;
 
     
 

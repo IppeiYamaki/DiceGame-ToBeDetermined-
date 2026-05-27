@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74e9b9486d21fd045af804973fc2a8f3, type: 3}
+  m_Name: Role_00_Pinzoro
+  m_EditorClassIdentifier: Assembly-CSharp::DiceRoleDefinition
+  m_persistentId: 48d32f4c1b0d4c4682c96e7eeba95cba
+  m_roleName: "\u30D4\u30F3\u30BE\u30ED"
+  m_description: "1\u306E\u30BE\u30ED\u76EE\uFF081\uFF0C1\uFF0C1\uFF09"
+  m_multiplier: 10
+  m_conditionType: 0
+  m_allowedNumbers: 010000000100000001000000
+  m_requiredSameCount: 3

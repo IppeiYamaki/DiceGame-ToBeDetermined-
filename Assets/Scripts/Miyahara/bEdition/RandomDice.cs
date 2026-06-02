@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -11,11 +12,13 @@ public class RandomDice : MonoBehaviour
     [SerializeField] private Vector3 torque = new Vector3(1, 1, 1);  // 回転軸
     [SerializeField] private Vector3 spawn = new Vector3(-4, 5, 0);   // 出現位置
     [SerializeField] private DiceRecorder diceRecorder;  // 録画用コンポーネント
+    public List<string> recordingId = new List<string>();
 
     private Rigidbody rb;
     [SerializeField] private int notStoppedDice = 0;
     public DiceRole role;
     private bool notLooped = false;
+    [SerializeField]private bool isRecording = false;
     public bool isStopped = false;
     public int stopCount = 0;
 
@@ -28,12 +31,14 @@ public class RandomDice : MonoBehaviour
     {
         Idle,
         Dropping,
+        RecordPlaying,
         Stopped,
         NextEvent
     }
     public DiceState state;
     void Start()
     {
+        isRecording = false;
         notLooped = true;
         this.transform.position = spawn;
         rb = GetComponent<Rigidbody>();
@@ -43,13 +48,16 @@ public class RandomDice : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch(state)
+        switch (state)
         {
             case DiceState.Idle:
                 IdolDice();
                 break;
             case DiceState.Dropping:
                 DropDice();
+                break;
+            case DiceState.RecordPlaying:
+                RecordPlaying();
                 break;
             case DiceState.Stopped:
                 StopDice();
@@ -77,15 +85,20 @@ public class RandomDice : MonoBehaviour
                     break;
             }
 
-            if(diceRecorder != null)
+            if (diceRecorder != null && isRecording == true)
                 diceRecorder.StartRecording();
         }
 
+        if (Keyboard.current.rKey.wasPressedThisFrame)
+        {
+            isRecording = !isRecording;
+        }
     }
     void IdolDice()
     {
         if (notLooped)
         {
+            rb.isKinematic = false;
             this.transform.position = spawn;
             this.transform.rotation = Quaternion.Euler(0, 0, 0);
             rb.constraints = RigidbodyConstraints.None;
@@ -123,6 +136,10 @@ public class RandomDice : MonoBehaviour
             notStoppedDice = 0;
         }
     }
+    void RecordPlaying()
+    {
+        notLooped = true;
+    }
 
     void StopDice()
     {
@@ -148,10 +165,9 @@ public class RandomDice : MonoBehaviour
             diceValue = 1;
             isStopped = true;
             state = DiceState.Stopped;
+            if (diceRecorder != null && isRecording == true)
+                diceRecorder.StopRecording();
         }
-
-        if (diceRecorder != null)
-            diceRecorder.StopRecording();
     }
 
     public void Dice2Event()
@@ -164,10 +180,9 @@ public class RandomDice : MonoBehaviour
             diceValue = 2;
             isStopped = true;
             state = DiceState.Stopped;
+            if (diceRecorder != null && isRecording == true)
+                diceRecorder.StopRecording();
         }
-
-        if (diceRecorder != null)
-            diceRecorder.StopRecording();
     }
 
     public void Dice3Event()
@@ -180,10 +195,9 @@ public class RandomDice : MonoBehaviour
             diceValue = 3;
             isStopped = true;
             state = DiceState.Stopped;
+            if (diceRecorder != null && isRecording == true)
+                diceRecorder.StopRecording();
         }
-
-        if (diceRecorder != null)
-            diceRecorder.StopRecording();
     }
 
     public void Dice4Event()
@@ -196,10 +210,9 @@ public class RandomDice : MonoBehaviour
             diceValue = 4;
             isStopped = true;
             state = DiceState.Stopped;
+            if (diceRecorder != null && isRecording == true)
+                diceRecorder.StopRecording();
         }
-
-        if (diceRecorder != null)
-            diceRecorder.StopRecording();
     }
 
     public void Dice5Event()
@@ -212,10 +225,9 @@ public class RandomDice : MonoBehaviour
             diceValue = 5;
             isStopped = true;
             state = DiceState.Stopped;
+            if (diceRecorder != null && isRecording == true)
+                diceRecorder.StopRecording();
         }
-
-        if (diceRecorder != null)
-            diceRecorder.StopRecording();
     }
 
     public void Dice6Event()
@@ -228,11 +240,8 @@ public class RandomDice : MonoBehaviour
             diceValue = 6;
             isStopped = true;
             state = DiceState.Stopped;
+            if (diceRecorder != null && isRecording == true)
+                diceRecorder.StopRecording();
         }
-
-        if (diceRecorder != null)
-            diceRecorder.StopRecording();
     }
-
-
 }

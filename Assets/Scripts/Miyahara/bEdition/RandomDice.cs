@@ -116,7 +116,7 @@ public class RandomDice : MonoBehaviour
 
         notLooped = true;
         notStoppedDice += 1;
-        if (notStoppedDice > 800)
+        if (notStoppedDice > 1800)
         {
             rb.AddForce(Vector3.up * 50, ForceMode.Force);
             rb.AddTorque(torque * rotateSpeed, ForceMode.Force);

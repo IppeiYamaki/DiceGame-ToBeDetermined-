@@ -226,10 +226,10 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.5, z: -5}
-  m_LocalScale: {x: 0.5, y: 1, z: 10.038329}
+  m_LocalScale: {x: 0.5, y: 1, z: 10.038326}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 503991714}
+  m_Father: {fileID: 1108255503}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &47156663
 GameObject:
@@ -363,7 +363,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 8, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 503991714}
+  m_Father: {fileID: 1108255503}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &157350310
 GameObject:
@@ -702,6 +702,8 @@ GameObject:
   - component: {fileID: 216856965}
   - component: {fileID: 216856964}
   - component: {fileID: 216856963}
+  - component: {fileID: 216856968}
+  - component: {fileID: 216856969}
   m_Layer: 0
   m_Name: Diec2
   m_TagString: Untagged
@@ -744,9 +746,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RandomDice
   torque: {x: 1, y: 1, z: 1}
   spawn: {x: 2, y: 5, z: 0}
-  diceRecorder: {fileID: 0}
+  diceRecorder: {fileID: 216856968}
   notStoppedDice: 0
   role: {fileID: 1903560349}
+  isRecording: 0
   isStopped: 0
   stopCount: 0
   diceValue: 0
@@ -858,6 +861,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 216856961}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &216856968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 216856961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2631fb61c7e62c4f8e2458adec47f07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DiceRecorder
+  recording: {fileID: 11400000, guid: a96180b2a9e06d140a01accaf9afe044, type: 2}
+  recordingId: Dice2
+  recordInterval: 0.02
+--- !u!114 &216856969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 216856961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f963e779afe88b4887ddac13f177cec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DicePlayer
+  recording: {fileID: 11400000, guid: a96180b2a9e06d140a01accaf9afe044, type: 2}
+  randomDice: {fileID: 216856963}
+  recordingId: Dice2
+  playbackSpeed: 1
 --- !u!1 &267709674
 GameObject:
   m_ObjectHideFlags: 0
@@ -971,7 +1005,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 503991714}
+  m_Father: {fileID: 1108255503}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &306716966
 MeshCollider:
@@ -1244,24 +1278,13 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1903560348}
-  - {fileID: 306716965}
-  - {fileID: 1583548429}
-  - {fileID: 1163921338}
-  - {fileID: 18295643}
-  - {fileID: 680622243}
-  - {fileID: 1427641841}
-  - {fileID: 1026337957}
   - {fileID: 1712773643}
   - {fileID: 216856962}
   - {fileID: 2131680768}
   - {fileID: 1701120674}
   - {fileID: 788175755}
   - {fileID: 171478949}
-  - {fileID: 618413642}
-  - {fileID: 1021735677}
-  - {fileID: 711798759}
-  - {fileID: 59783737}
-  - {fileID: 1000537146}
+  - {fileID: 1108255503}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &587833615
@@ -1422,7 +1445,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 503991714}
+  m_Father: {fileID: 1108255503}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &653592907
 GameObject:
@@ -1681,10 +1704,10 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.5, z: 5}
-  m_LocalScale: {x: 0.5, y: 5, z: 10.038329}
+  m_LocalScale: {x: 0.5, y: 5, z: 10.038326}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 503991714}
+  m_Father: {fileID: 1108255503}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &711798757
 GameObject:
@@ -1737,7 +1760,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 8, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 503991714}
+  m_Father: {fileID: 1108255503}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &727868286
 GameObject:
@@ -2017,6 +2040,7 @@ MonoBehaviour:
   diceRecorder: {fileID: 0}
   notStoppedDice: 0
   role: {fileID: 0}
+  isRecording: 0
   isStopped: 0
   stopCount: 0
   diceValue: 0
@@ -2422,7 +2446,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 8, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 503991714}
+  m_Father: {fileID: 1108255503}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1021735675
 GameObject:
@@ -2475,7 +2499,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 8, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 503991714}
+  m_Father: {fileID: 1108255503}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1026337956 stripped
 GameObject:
@@ -2525,6 +2549,7 @@ MonoBehaviour:
   diceRecorder: {fileID: 0}
   notStoppedDice: 0
   role: {fileID: 0}
+  isRecording: 0
   isStopped: 0
   stopCount: 0
   diceValue: 0
@@ -3061,13 +3086,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1090669621}
   m_CullTransparentMesh: 1
+--- !u!1 &1108255502
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1108255503}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1108255503
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1108255502}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 618413642}
+  - {fileID: 1021735677}
+  - {fileID: 711798759}
+  - {fileID: 59783737}
+  - {fileID: 1000537146}
+  - {fileID: 306716965}
+  - {fileID: 1583548429}
+  - {fileID: 1163921338}
+  - {fileID: 18295643}
+  - {fileID: 680622243}
+  - {fileID: 1427641841}
+  - {fileID: 1026337957}
+  m_Father: {fileID: 503991714}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1146913016
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 503991714}
+    m_TransformParent: {fileID: 1108255503}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: d0456eaf75434a54eadc8ad1b3042578, type: 3}
       propertyPath: m_LocalScale.x
@@ -3185,12 +3253,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1163921337}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 5, y: 0.5, z: 0}
   m_LocalScale: {x: 0.5, y: 5, z: 10.038326}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 503991714}
+  m_Father: {fileID: 1108255503}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1163921339
 BoxCollider:
@@ -4260,6 +4328,7 @@ MonoBehaviour:
   diceRecorder: {fileID: 0}
   notStoppedDice: 0
   role: {fileID: 0}
+  isRecording: 0
   isStopped: 0
   stopCount: 0
   diceValue: 0
@@ -4568,12 +4637,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1583548428}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -5, y: 0.5, z: 0}
   m_LocalScale: {x: 0.5, y: 5, z: 10.038326}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 503991714}
+  m_Father: {fileID: 1108255503}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1583548430
 BoxCollider:
@@ -4883,6 +4952,7 @@ MonoBehaviour:
   diceRecorder: {fileID: 0}
   notStoppedDice: 0
   role: {fileID: 0}
+  isRecording: 0
   isStopped: 0
   stopCount: 0
   diceValue: 0
@@ -5157,9 +5227,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RandomDice
   torque: {x: 1, y: 1, z: 1}
   spawn: {x: 0, y: 5, z: 0}
-  diceRecorder: {fileID: 0}
+  diceRecorder: {fileID: 1712773653}
   notStoppedDice: 0
   role: {fileID: 1903560349}
+  isRecording: 0
   isStopped: 0
   stopCount: 0
   diceValue: 0
@@ -5173,13 +5244,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1712773642}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9f963e779afe88b4887ddac13f177cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DicePlayer
   recording: {fileID: 11400000, guid: 827d637ecff694246b1c23ba52899919, type: 2}
-  recordingPath: 
+  randomDice: {fileID: 1712773648}
+  recordingId: Dice1
   playbackSpeed: 1
 --- !u!114 &1712773653
 MonoBehaviour:
@@ -5188,12 +5260,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1712773642}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2631fb61c7e62c4f8e2458adec47f07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DiceRecorder
   recording: {fileID: 11400000, guid: 827d637ecff694246b1c23ba52899919, type: 2}
+  recordingId: Dice1
   recordInterval: 0.02
 --- !u!1 &1753137913
 GameObject:
@@ -5282,7 +5355,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 503991714}
+    m_TransformParent: {fileID: 1108255503}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: caebff16bc9bbe3498452c119514dae5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5934,6 +6007,8 @@ GameObject:
   - component: {fileID: 2131680771}
   - component: {fileID: 2131680770}
   - component: {fileID: 2131680769}
+  - component: {fileID: 2131680774}
+  - component: {fileID: 2131680775}
   m_Layer: 0
   m_Name: Diec3
   m_TagString: Untagged
@@ -5976,9 +6051,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RandomDice
   torque: {x: 1, y: 1, z: 1}
   spawn: {x: -2, y: 5, z: 0}
-  diceRecorder: {fileID: 0}
+  diceRecorder: {fileID: 2131680774}
   notStoppedDice: 0
   role: {fileID: 1903560349}
+  isRecording: 0
   isStopped: 0
   stopCount: 0
   diceValue: 0
@@ -6090,6 +6166,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2131680767}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2131680774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2131680767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2631fb61c7e62c4f8e2458adec47f07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DiceRecorder
+  recording: {fileID: 11400000, guid: cc881ffd04f7bad4c94363264bae5b58, type: 2}
+  recordingId: Dice3
+  recordInterval: 0.02
+--- !u!114 &2131680775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2131680767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f963e779afe88b4887ddac13f177cec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DicePlayer
+  recording: {fileID: 11400000, guid: cc881ffd04f7bad4c94363264bae5b58, type: 2}
+  randomDice: {fileID: 2131680769}
+  recordingId: Dice3
+  playbackSpeed: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

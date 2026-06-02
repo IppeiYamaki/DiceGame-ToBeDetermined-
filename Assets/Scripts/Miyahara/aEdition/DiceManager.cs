@@ -6,19 +6,19 @@ using UnityEngine.InputSystem;
 public class DiceManager : MonoBehaviour
 {
     public GameObject selectionPanel;
-    [SerializeField]private List<SlotData> slotDataList; // SlotData‚ÌƒŠƒXƒg
-    public TMP_Text GetRondomText (int index) => slotDataList[index].randomText; // SlotData‚©‚çrandomText‚ğæ“¾‚·‚éƒƒ\ƒbƒh
-    public GameObject GetSlotPos(int index) => slotDataList[index].slotPos; // SlotData‚©‚çslotPos‚ğæ“¾‚·‚éƒƒ\ƒbƒh
-    public bool GetIsSelectedDice(int index) => slotDataList[index].isSelectedDice; // SlotData‚©‚çisSelectedDice‚ğæ“¾‚·‚éƒƒ\ƒbƒh
-    public GameObject GetAllDices(int index) => slotDataList[index].allDise; // SlotData‚©‚çallDices‚ğæ“¾‚·‚éƒƒ\ƒbƒh
+    [SerializeField]private List<SlotData> slotDataList; // SlotDataã®ãƒªã‚¹ãƒˆ
+    public TMP_Text GetRondomText (int index) => slotDataList[index].randomText; // SlotDataã‹ã‚‰randomTextã‚’å–å¾—ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
+    public GameObject GetSlotPos(int index) => slotDataList[index].slotPos; // SlotDataã‹ã‚‰slotPosã‚’å–å¾—ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
+    public bool GetIsSelectedDice(int index) => slotDataList[index].isSelectedDice; // SlotDataã‹ã‚‰isSelectedDiceã‚’å–å¾—ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
+    public GameObject GetAllDices(int index) => slotDataList[index].allDise; // SlotDataã‹ã‚‰allDicesã‚’å–å¾—ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
 
-    private int tapCount = 0;       // ƒ^ƒbƒv‰ñ”‚ğƒJƒEƒ“ƒg‚·‚é•Ï”
+    private int tapCount = 0;       // ã‚¿ãƒƒãƒ—å›æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆã™ã‚‹å¤‰æ•°
 
-    public bool isRotating = false; // ‰ñ“]’†‚©‚Ç‚¤‚©‚ğ¦‚·ƒtƒ‰ƒO
+    public bool isRotating = false; // å›è»¢ä¸­ã‹ã©ã†ã‹ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°
 
 
 
-    // ƒ_ƒCƒX‚Ìó‘Ô‚ğ•\‚·—ñ‹“Œ^
+    // ãƒ€ã‚¤ã‚¹ã®çŠ¶æ…‹ã‚’è¡¨ã™åˆ—æŒ™å‹
     public enum DiceState
     {
         Idle,
@@ -41,7 +41,7 @@ public class DiceManager : MonoBehaviour
     }
     void Update()
     {
-            // ƒ_ƒCƒX‚Ìó‘Ô‚É‰‚¶‚½ˆ—‚ğs‚¤
+            // ãƒ€ã‚¤ã‚¹ã®çŠ¶æ…‹ã«å¿œã˜ãŸå‡¦ç†ã‚’è¡Œã†
             switch (diceState)
         {
             case DiceState.Idle:
@@ -53,13 +53,13 @@ public class DiceManager : MonoBehaviour
                 DiceText();
                 break;
             case DiceState.NextEvent:
-                // Ÿ‚ÌƒCƒxƒ“ƒg‚ÉˆÚ‚éˆ—‚ğ‚±‚±‚É‹Lq
+                // æ¬¡ã®ã‚¤ãƒ™ãƒ³ãƒˆã«ç§»ã‚‹å‡¦ç†ã‚’ã“ã“ã«è¨˜è¿°
                 tapCount = 0;
                 ActiveDice(false);
                 break;
         }
     }
-    // ƒ_ƒCƒX‚Ì•\¦‚ğØ‚è‘Ö‚¦‚éƒƒ\ƒbƒh
+    // ãƒ€ã‚¤ã‚¹ã®è¡¨ç¤ºã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     void ActiveDice(bool isDiceActive)
     {
         for (int i = 0; i < slotDataList.Count; i++)
@@ -79,7 +79,7 @@ public class DiceManager : MonoBehaviour
         }
         selectionPanel.SetActive(!isDiceActive);
     }
-    // ƒ_ƒCƒX‚Ì“ü—Íˆ—‚ğs‚¤ƒƒ\ƒbƒh
+    // ãƒ€ã‚¤ã‚¹ã®å…¥åŠ›å‡¦ç†ã‚’è¡Œã†ãƒ¡ã‚½ãƒƒãƒ‰
     void DiceInput()
     {
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
@@ -87,7 +87,7 @@ public class DiceManager : MonoBehaviour
             tapCount++;
             if (tapCount <= 2)
             {
-                // ƒ^ƒbƒv‰ñ”‚ª2‰ñˆÈ‰º‚Ìê‡A‰ñ“]ó‘Ô‚ğØ‚è‘Ö‚¦‚é
+                // ã‚¿ãƒƒãƒ—å›æ•°ãŒ2å›ä»¥ä¸‹ã®å ´åˆã€å›è»¢çŠ¶æ…‹ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
                 isRotating = !isRotating;
             }
             else
@@ -97,7 +97,7 @@ public class DiceManager : MonoBehaviour
 
         }
     }
-    // ƒ_ƒCƒX‚ÌƒeƒLƒXƒg‚ğXV‚·‚éƒƒ\ƒbƒh
+    // ãƒ€ã‚¤ã‚¹ã®ãƒ†ã‚­ã‚¹ãƒˆã‚’æ›´æ–°ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     void DiceText()
     {
         if (isRotating)
@@ -125,7 +125,7 @@ public class DiceManager : MonoBehaviour
             else
             {
                 slotDataList[i].isSelectedDice = false;
-                Debug.Log("ƒ_ƒCƒX‘I‘ğ‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+                Debug.Log("ãƒ€ã‚¤ã‚¹é¸æŠã•ã‚Œã¦ã„ã¾ã›ã‚“");
             }
         }
 

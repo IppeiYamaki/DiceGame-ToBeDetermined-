@@ -4,8 +4,9 @@ using UnityEngine.EventSystems;
 
 public class TextureClickUI_Beta : MonoBehaviour, IPointerClickHandler
 {
+    //サイコロをクリックすると実行される処理
+
     public int textureID, groupID;
-    public DetailDice test;
 
     public void OnPointerClick(PointerEventData eventData)//対象Imageをクリックすると実行
     {

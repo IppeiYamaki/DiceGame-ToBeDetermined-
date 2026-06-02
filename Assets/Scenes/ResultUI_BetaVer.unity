@@ -4459,8 +4459,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81a411d027fbbd0409de9eec1c465451, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneChangeManager
-  nextScene: {fileID: 102900000, guid: 4540b98bf9b25904c9872616974c784b, type: 3}
-  sceneName: NewScene
+  nextScene: {fileID: 102900000, guid: a404e64f39f67a34aa1a64d72b6afc81, type: 3}
+  sceneName: Test_Game
 --- !u!1001 &2132441093
 PrefabInstance:
   m_ObjectHideFlags: 0

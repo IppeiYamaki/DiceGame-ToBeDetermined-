@@ -33,6 +33,7 @@ public class Test_DiceData : MonoBehaviour
     //面情報取得
     public int GetNumber(int g, int id, int n)
     {
+        //0なら新しいサイコロ
         if (g == 0)
         {
             return n_diceData[id, n];

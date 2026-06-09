@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   itemID: 5
   itemName: "\u904B\u547D\u306E\u30EA\u30D6\u30FC\u30C8"
-  description: "\u30C0\u30A4\u30B9\u3092\u632F\u308A\u306A\u304A\u3059"
+  description: "\u30C0\u30A4\u30B9\u3092\u632F\u308A\u306A\u304A\u3059\uFF08\u51FA\u76EE\u78BA\u5B9A\u5F8C\u306B\u4F7F\u7528\uFF09"
   icon: {fileID: 2800000, guid: 4ab662028901f66488258be74c6c2370, type: 3}

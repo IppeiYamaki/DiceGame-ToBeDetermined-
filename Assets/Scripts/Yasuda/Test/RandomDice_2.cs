@@ -6,19 +6,19 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
-public class RandomDice : MonoBehaviour
+public class RandomDice_2 : MonoBehaviour
 {
-    
+
     [SerializeField] private Vector3 torque = new Vector3(1, 1, 1);  // 回転軸
     [SerializeField] private Vector3 spawn = new Vector3(-4, 5, 0);   // 出現位置
-    [SerializeField] private DiceRecorder diceRecorder;  // 録画用コンポーネント
+    [SerializeField] private DiceRecorder2 diceRecorder;  // 録画用コンポーネント
     public List<string> recordingId = new List<string>();
 
     private Rigidbody rb;
     [SerializeField] private int notStoppedDice = 0;
-    public DiceRole role;
+    public DiceRole_2 role;
     private bool notLooped = false;
-    [SerializeField]private bool isRecording = false;
+    [SerializeField] private bool isRecording = false;
     public bool isStopped = false;
     public int stopCount = 0;
 
@@ -42,7 +42,7 @@ public class RandomDice : MonoBehaviour
         notLooped = true;
         this.transform.position = spawn;
         rb = GetComponent<Rigidbody>();
-        role = GetComponent<DiceRole>();
+        role = GetComponent<DiceRole_2>();
     }
 
     // Update is called once per frame
@@ -69,24 +69,24 @@ public class RandomDice : MonoBehaviour
 
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
-            //switch (state)
-            //{
-            //    case DiceState.Idle:
-            //        state = DiceState.Dropping;
-            //        break;
-            //    //case DiceState.Dropping:
-            //    //    state = DiceState.Stopped;
-            //    //    break;
-            //    //case DiceState.Stopped:
-            //    //    state = DiceState.NextEvent;
-            //    //    break;
-            //    case DiceState.NextEvent:
-            //        state = DiceState.Idle;
-            //        break;
-            //}
-            //
-            //if (diceRecorder != null && isRecording == true)
-            //    diceRecorder.StartRecording();
+            switch (state)
+            {
+                case DiceState.Idle:
+                    state = DiceState.Dropping;
+                    break;
+                //case DiceState.Dropping:
+                //    state = DiceState.Stopped;
+                //    break;
+                //case DiceState.Stopped:
+                //    state = DiceState.NextEvent;
+                //    break;
+                case DiceState.NextEvent:
+                    state = DiceState.Idle;
+                    break;
+            }
+
+            if (diceRecorder != null && isRecording == true)
+                diceRecorder.StartRecording();
         }
 
         if (Keyboard.current.rKey.wasPressedThisFrame)
@@ -129,7 +129,7 @@ public class RandomDice : MonoBehaviour
 
         notLooped = true;
         notStoppedDice += 1;
-        if (notStoppedDice > 3000)
+        if (notStoppedDice > 1800)
         {
             rb.AddForce(Vector3.up * 50, ForceMode.Force);
             rb.AddTorque(torque * rotateSpeed, ForceMode.Force);
@@ -243,27 +243,5 @@ public class RandomDice : MonoBehaviour
             if (diceRecorder != null && isRecording == true)
                 diceRecorder.StopRecording();
         }
-    }
-
-    public void ChangeState()
-    {
-        switch (state)
-        {
-            case DiceState.Idle:
-                state = DiceState.Dropping;
-                break;
-            //case DiceState.Dropping:
-            //    state = DiceState.Stopped;
-            //    break;
-            //case DiceState.Stopped:
-            //    state = DiceState.NextEvent;
-            //    break;
-            case DiceState.NextEvent:
-                state = DiceState.Idle;
-                break;
-        }
-
-        if (diceRecorder != null && isRecording == true)
-            diceRecorder.StartRecording();
     }
 }

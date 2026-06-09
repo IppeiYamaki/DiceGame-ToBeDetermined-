@@ -9,7 +9,18 @@ public class BattleFlow2 : MonoBehaviour
     [SerializeField]
     DemeChusen test;
 
+    [SerializeField]
+    DiceRole dr;
+
+    [SerializeField]
+    RandomDice rd1;
+    [SerializeField]
+    RandomDice rd2;
+    [SerializeField]
+    RandomDice rd3;
+
     private int[] deme = new int[3];//新しいサイコロ
+    private bool turn = false;
 
     void Start()
     {
@@ -22,26 +33,39 @@ public class BattleFlow2 : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if(test.GetSyori())
-            {
-                deme = test.GetDeme();
-                Debug.Log("出目：" + deme[0] + "、" + deme[1] + "、" + deme[2]);
-                enemy.SetDamege(deme[0] + deme[1] + deme[2]);
-                test.ChangeSyori();
-            }
-            else
-            {
-                test.ChangeSyori();
-            }
+            turn = true;
 
+            //if(test.GetSyori())
+            //{
+            //    deme = test.GetDeme();
+            //    Debug.Log("出目：" + deme[0] + "、" + deme[1] + "、" + deme[2]);
+            //    enemy.SetDamege(deme[0] + deme[1] + deme[2]);
+            //    test.ChangeSyori();
+            //}
+            //else
+            //{
+            //    test.ChangeSyori();
+            //}
 
-               
-
-            
-
-
-            
+            rd1.ChangeState();
+            rd2.ChangeState();
+            rd3.ChangeState();
         }
+
+        //if (Input.GetKeyDown(KeyCode.W))
+        //{
+        //    enemy.SetDamege(dr.GetValue());
+        //}
+
+        if(dr.GetAllStop()&&turn)
+        {
+            enemy.SetDamege(dr.GetValue());
+            turn = false;
+        }
+
+
+
+
         if (Input.GetKeyDown(KeyCode.V))
         {
             player.SetDamege(10);

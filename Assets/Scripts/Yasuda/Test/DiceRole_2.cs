@@ -4,11 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class DiceRole : MonoBehaviour
+public class DiceRole_2 : MonoBehaviour
 {
     [SerializeField] private int totalValue = 0;
     private bool allStop = false;
-    public List<RandomDice> getDiceValue = new List<RandomDice>();
+    public List<RandomDice_2> getDiceValue = new List<RandomDice_2>();
     public List<int> diceValue = new List<int>();
     public TMP_Text totalValueText;
 
@@ -42,7 +42,7 @@ public class DiceRole : MonoBehaviour
                     diceValue[i] = getDiceValue[i].diceValue;
 
                 totalValue += diceValue[i];
-                getDiceValue[i].state = RandomDice.DiceState.NextEvent;
+                getDiceValue[i].state = RandomDice_2.DiceState.NextEvent;
             }
 
             int multiplier = GetMultiplier(diceValue);
@@ -113,13 +113,6 @@ public class DiceRole : MonoBehaviour
         return 1;
     }
 
-    public int GetValue()
-    {
-        return totalValue;
-    }
 
-    public bool GetAllStop()
-    {
-        return allStop;
-    }
+
 }

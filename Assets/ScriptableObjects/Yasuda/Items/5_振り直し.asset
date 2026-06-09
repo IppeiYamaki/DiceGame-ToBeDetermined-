@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf30df17bbe4a774da3088aab4709334, type: 3}
-  m_Name: "\u6BD2"
+  m_Name: "5_\u632F\u308A\u76F4\u3057"
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  itemID: 1
-  itemName: "\u6BD2"
-  description: "\u6575\u30923\u30BF\u30FC\u30F3\u6BD2\u72B6\u614B\u306B\u3059\u308B\uFF08\u6BD2\u306F\u6BCE\u30BF\u30FC\u30F35\u30C0\u30E1\u30FC\u30B8\u304F\u3089\u3046\uFF09"
-  icon: {fileID: 2800000, guid: dd80d94bfb8dbb8458f34b5d8d93561f, type: 3}
+  itemID: 5
+  itemName: "\u904B\u547D\u306E\u30EA\u30D6\u30FC\u30C8"
+  description: "\u30C0\u30A4\u30B9\u3092\u632F\u308A\u306A\u304A\u3059"
+  icon: {fileID: 2800000, guid: 4ab662028901f66488258be74c6c2370, type: 3}

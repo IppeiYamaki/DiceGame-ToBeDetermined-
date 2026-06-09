@@ -9,25 +9,26 @@ public class ItemManager : MonoBehaviour
     private void Start()
     {
         int test = 0;
-        while (test<10)
+        int check = 0;
+        while (check<11)
         {
-            ItemData item = itemDatabase.GetItemByID(test);
+            ItemData item = itemDatabase.GetItemByID(check);
 
             if (item != null)
             {
-                Debug.Log(item.itemName);
-                Debug.Log(item.description);
+                Debug.Log(item.itemName +" : "+ item.description);
+                test++;
             }
             else
             {
-                Debug.Log("“o˜^‚³‚ê‚½ƒAƒCƒeƒ€”F" + test);
+               
                 //Debug.Log("“o˜^‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
-                break;
+                //break;
             }
-            test++;
+            check++;
         }
-      
+        Debug.Log("“o˜^‚³‚ê‚½ƒAƒCƒeƒ€”F" + test);
 
-        
+
     }
 }

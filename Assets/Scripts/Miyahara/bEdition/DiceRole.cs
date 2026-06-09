@@ -12,6 +12,8 @@ public class DiceRole : MonoBehaviour
     public List<int> diceValue = new List<int>();
     public TMP_Text totalValueText;
 
+
+
     void Start()
     {
 
@@ -113,5 +115,9 @@ public class DiceRole : MonoBehaviour
         return 1;
     }
 
+    public int GetValue()
+    {
+        return totalValue;
+    }
 
 }

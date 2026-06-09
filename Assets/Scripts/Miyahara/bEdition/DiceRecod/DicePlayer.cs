@@ -58,6 +58,13 @@ public class DicePlayer : MonoBehaviour
             recordingId = randomDice.recordingId[1];
         else if (Keyboard.current.digit3Key.wasPressedThisFrame)
             recordingId = randomDice.recordingId[2];
+        else if (Keyboard.current.digit4Key.wasPressedThisFrame)
+            recordingId = randomDice.recordingId[3];
+        else if (Keyboard.current.digit5Key.wasPressedThisFrame)
+            recordingId = randomDice.recordingId[4];
+        else if (Keyboard.current.digit6Key.wasPressedThisFrame)
+            recordingId = randomDice.recordingId[5];
+
 
 
         if (!isPlaying)

@@ -11,6 +11,11 @@ public class Player : MonoBehaviour
     {
         HP -= damege;
         Debug.Log("プレイヤーHP " + HP);
+
+        if(HP <= 0 )
+        {
+            Debug.Log("プレイヤーは死んだ");
+        }
     }
 
 

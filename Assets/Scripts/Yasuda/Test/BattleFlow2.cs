@@ -61,14 +61,15 @@ public class BattleFlow2 : MonoBehaviour
         {
             enemy.SetDamege(dr.GetValue());
             turn = false;
+
+            if(!enemy.GetDie())
+            {
+                player.SetDamege(10);
+            }
+           
         }
 
 
 
-
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            player.SetDamege(10);
-        }
     }
 }

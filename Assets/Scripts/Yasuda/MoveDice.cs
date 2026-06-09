@@ -18,6 +18,7 @@ public class MoveDice : MonoBehaviour
     {
         startPos = transform.localPosition;
 
+        moveFrag = true;
         //Vector3 pos = transform.localPosition;
         //pos.y += offSet;
         //transform.localPosition = pos;

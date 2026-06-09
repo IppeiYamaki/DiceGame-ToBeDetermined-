@@ -8,6 +8,13 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     SceneChangeManager manager;
 
+    private bool die = false;
+
+    private void Start()
+    {
+        die = false;
+    }
+
     public void SetDamege(int damege)
     {
         HP -= damege;
@@ -16,7 +23,7 @@ public class Enemy : MonoBehaviour
         if (HP <= 0)
         {
             Debug.Log("Œ‚”j");
-
+            die = true;
             Invoke("ChangeSceneManager", 4.0f);
             
         }
@@ -25,5 +32,9 @@ public class Enemy : MonoBehaviour
     private void ChangeSceneManager()
     {
         manager.ChangeScene();
+    }
+    public bool GetDie()
+    {
+        return die;
     }
 }

@@ -12,19 +12,19 @@ public class RandomDice : MonoBehaviour
     [SerializeField] private Vector3 torque = new Vector3(1, 1, 1);  // 回転軸
     [SerializeField] private Vector3 spawn = new Vector3(-4, 5, 0);   // 出現位置
     [SerializeField] private DiceRecorder diceRecorder;  // 録画用コンポーネント
-    public List<string> recordingId = new List<string>();
+    public List<string> recordingId = new List<string>(); // 録画IDのリスト（Inspectorで設定）
 
-    private Rigidbody rb;
-    [SerializeField] private int notStoppedDice = 0;
-    public DiceRole role;
-    private bool notLooped = false;
-    [SerializeField]private bool isRecording = false;
-    public bool isStopped = false;
-    public int stopCount = 0;
+    private Rigidbody rb; // Rigidbodyコンポーネントへの参照
+    [SerializeField] private int notStoppedDice = 0; // サイコロが停止していないフレーム数のカウンタ
+    public DiceRole role; // DiceRoleコンポーネントへの参照
+    private bool notLooped = false; // ドロップ開始後の一度だけの処理を制御するフラグ
+    [SerializeField]private bool isRecording = false; // 録画中かどうかのフラグ
+    public bool isStopped = false; // サイコロが停止しているかどうかのフラグ
+    public int stopCount = 0;// サイコロが停止しているフレーム数のカウンタ
 
-    [HideInInspector] public int diceValue;
-    public float rotateSpeed = 1f;
-    public TMP_Text randomText;
+    [HideInInspector] public int diceValue;// サイコロの目の値
+    public float rotateSpeed = 1f;// 回転の速さ
+    public TMP_Text randomText;// サイコロの目の値を表示するテキスト
 
 
     public enum DiceState
@@ -74,12 +74,6 @@ public class RandomDice : MonoBehaviour
                 case DiceState.Idle:
                     state = DiceState.Dropping;
                     break;
-                //case DiceState.Dropping:
-                //    state = DiceState.Stopped;
-                //    break;
-                //case DiceState.Stopped:
-                //    state = DiceState.NextEvent;
-                //    break;
                 case DiceState.NextEvent:
                     state = DiceState.Idle;
                     break;
@@ -104,11 +98,6 @@ public class RandomDice : MonoBehaviour
             rb.constraints = RigidbodyConstraints.None;
             rb.constraints = RigidbodyConstraints.FreezePosition;
 
-
-
-            //int rotatex = 1;
-            //int rotatey = 2;
-            //int rotatez = 2;
             float rotatex = Random.Range(-3f, 3f);
             float rotatey = Random.Range(1f, 3f);
             float rotatez = Random.Range(-3f, 3f);
@@ -129,7 +118,7 @@ public class RandomDice : MonoBehaviour
 
         notLooped = true;
         notStoppedDice += 1;
-        if (notStoppedDice > 1800)
+        if (notStoppedDice > 800)
         {
             rb.AddForce(Vector3.up * 50, ForceMode.Force);
             rb.AddTorque(torque * rotateSpeed, ForceMode.Force);

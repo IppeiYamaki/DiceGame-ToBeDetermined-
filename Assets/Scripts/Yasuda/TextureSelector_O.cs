@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class TextureSelector_O : MonoBehaviour
 {
+    //持ってるサイコロのピックアップ表示
+
     public static TextureSelector_O Instance;
    
     public Image[] images;
@@ -25,9 +27,14 @@ public class TextureSelector_O : MonoBehaviour
         Instance = this;
     }
 
-    public int SelectID()
+    public int GetSelectID()
     {
         return currentSelected;
+    }
+    public void ReSetSelectID()
+    {
+        currentSelected = -1;
+        UpdateView();//表示更新
     }
 
     public void Select(int id)
@@ -35,7 +42,7 @@ public class TextureSelector_O : MonoBehaviour
         if (currentSelected == id)
         {
             currentSelected = -1;
-            dice.HideDetail();
+            dice.HideDetail(1);
         }
         else
         {

@@ -8,11 +8,11 @@ using UnityEngine.InputSystem;
 // =========================
 public enum NodeType
 {
-    Start,   // ① スタート
-    Battle,  // ② 敵
-    Rest,    // ③ 休憩
-    Item,    // ④ アイテム
-    Boss     // ⑤ ボス
+    Start,
+    Battle,
+    Rest,
+    Item,
+    Boss
 }
 
 public enum MapDirection
@@ -65,18 +65,15 @@ public static class MapGenerator
         float layerSpacing = 170f;
         float laneSpacing = 110f;
 
-        // ノード数を各レイヤーで決める
         var nodeCounts = new int[layerCount];
         for (int layer = 0; layer < layerCount; layer++)
         {
-            // スタート・休憩固定レイヤー・ボスは1個
             if (layer == 0 || layer == 2 || layer == 4 || layer == layerCount - 1)
                 nodeCounts[layer] = 1;
             else
                 nodeCounts[layer] = Random.Range(minNodesPerLayer, maxNodesPerLayer + 1);
         }
 
-        // ノード生成
         for (int layer = 0; layer < layerCount; layer++)
         {
             var layerNodes = new List<MapNode>();
@@ -100,7 +97,6 @@ public static class MapGenerator
                                     : new Vector2(cross, along)
                 };
 
-                // Battleノードに敵をランダム割り当て
                 if (node.Type == NodeType.Battle && enemyDatabase != null)
                     node.Enemy = enemyDatabase.GetRandom();
 
@@ -110,13 +106,11 @@ public static class MapGenerator
             layers.Add(layerNodes);
         }
 
-        // 接続
         for (int layer = 0; layer < layerCount - 1; layer++)
         {
             var cur = layers[layer];
             var next = layers[layer + 1];
 
-            // ボス直前は全員ボスへ収束
             if (layer == layerCount - 2)
             {
                 foreach (var node in cur)
@@ -127,7 +121,6 @@ public static class MapGenerator
                 continue;
             }
 
-            // 次レイヤーが1個（休憩固定）なら全員そこへ収束
             if (next.Count == 1)
             {
                 foreach (var node in cur)
@@ -187,7 +180,6 @@ public static class MapGenerator
                     node.NextNodeIds.Add(next[center].Id);
             }
 
-            // 孤立した次レイヤーノードへの保証接続
             for (int ni = 0; ni < nextCount; ni++)
             {
                 var child = next[ni];
@@ -237,12 +229,10 @@ public static class MapGenerator
 
     private static NodeType DecideNodeType(int layer, int maxLayer)
     {
-        // 固定レイヤー
         if (layer == 0) return NodeType.Start;
         if (layer == 2 || layer == 4) return NodeType.Rest;
         if (layer == maxLayer - 1) return NodeType.Boss;
 
-        // 残りはBattleかItemをランダム
         return Random.value < 0.7f ? NodeType.Battle : NodeType.Item;
     }
 }
@@ -266,20 +256,37 @@ public class MapFlow : MonoBehaviour
 
     void Awake()
     {
-        graph = MapGenerator.Generate(
-            layerCount: 6,
-            direction: MapDirection.Horizontal,
-            enemyDatabase: enemyDatabase
-        );
+        if (!MapSession.HasData)
+        {
+            graph = MapGenerator.Generate(
+                layerCount: 6,
+                direction: MapDirection.Horizontal,
+                enemyDatabase: enemyDatabase
+            );
+            MapSession.Graph = graph;
+            MapSession.CurrentNodeId = graph.StartNodeId;
+            MapSession.VisitedNodeIds.Add(graph.StartNodeId);
+        }
+        else
+        {
+            graph = MapSession.Graph;
+        }
+
         Nodes = graph.Nodes;
-        CurrentNodeId = graph.StartNodeId;
-        visitedNodeIds.Add(CurrentNodeId);
+        CurrentNodeId = MapSession.CurrentNodeId;
+        visitedNodeIds = MapSession.VisitedNodeIds;
     }
 
     void Start()
     {
         DebugAllNodes();
         DebugDrawConnections();
+
+        // 修正①：UIを生成する前にparentの子を全削除して二重生成を防ぐ
+        foreach (Transform child in parent)
+            Destroy(child.gameObject);
+        nodeButtons.Clear();
+
         CreateUI();
         RefreshAllNodes();
     }
@@ -298,6 +305,7 @@ public class MapFlow : MonoBehaviour
 
         CurrentNodeId = nextId;
         visitedNodeIds.Add(nextId);
+        MapSession.CurrentNodeId = CurrentNodeId;
 
         var node = Nodes[nextId];
 
@@ -307,29 +315,27 @@ public class MapFlow : MonoBehaviour
             Debug.Log($"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動 | タイプ:Battle | 敵ID:{enemyId}");
 
             // TODO: 戦闘シーンへ遷移
-            // 1. BattleSessionなどstaticクラスに node.Enemy を渡す
-            // 2. SceneManager.LoadScene("BattleScene") を呼ぶ
+            // 1. BattleSession.Set(node.Enemy);
+            // 2. SceneManager.LoadScene("BattleScene");
         }
         else if (node.Type == NodeType.Rest)
         {
             Debug.Log($"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動 | タイプ:Rest");
 
             // TODO: 休憩処理
-            // HP回復などの処理をここで呼ぶ
         }
         else if (node.Type == NodeType.Item)
         {
             Debug.Log($"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動 | タイプ:Item");
 
             // TODO: アイテム取得処理
-            // アイテムシーンへ遷移、またはその場でアイテム選択UIを出す
         }
         else if (node.Type == NodeType.Boss)
         {
             Debug.Log($"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動 | タイプ:Boss");
 
             // TODO: ボス戦闘シーンへ遷移
-            // SceneManager.LoadScene("BossScene") を呼ぶ
+            // SceneManager.LoadScene("BossScene");
         }
         else
         {
@@ -367,8 +373,10 @@ public class MapFlow : MonoBehaviour
             int nodeLayer = Nodes[id].Layer;
             bool showIcon = nodeLayer <= currentLayer + 1
                             && (state == NodeState.Selectable || state == NodeState.Current || state == NodeState.Visited);
+            // 変更後
+            bool dimIcon = (state == NodeState.Current || state == NodeState.Visited);
 
-            btn.Refresh(state, Nodes[id].Type, focused, Nodes[id].Enemy, showIcon);
+            btn.Refresh(state, Nodes[id].Type, focused, Nodes[id].Enemy, showIcon, dimIcon);
         }
     }
 
@@ -489,5 +497,14 @@ public class MapFlow : MonoBehaviour
             SelectNextNode(selectables[selectableIndex].Id);
             selectableIndex = 0;
         }
+    }
+
+    // =========================
+    // 修正②：シーン離脱時にMapSessionが不正にならないよう
+    // ゲームオーバーやタイトル戻りのタイミングで外部から呼ぶ
+    // =========================
+    public static void ResetSession()
+    {
+        MapSession.Clear();
     }
 }

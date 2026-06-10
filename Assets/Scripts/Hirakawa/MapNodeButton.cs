@@ -69,7 +69,7 @@ public class MapNodeButton : MonoBehaviour
     }
 
     // enemyDataを受け取るようにRefreshを変更
-    public void Refresh(NodeState state, NodeType nodeType, bool focused = false, EnemyData enemyData = null, bool showEnemyIcon = false)
+    public void Refresh(NodeState state, NodeType nodeType, bool focused = false, EnemyData enemyData = null, bool showEnemyIcon = false, bool dimIcon = false)
     {
         currentState = state;
         isFocused = focused;
@@ -92,7 +92,6 @@ public class MapNodeButton : MonoBehaviour
 
         transform.localScale = isFocused ? Vector3.one * focusedScale : Vector3.one;
 
-       
         // アイコン表示
         if (enemyIconImage != null)
         {
@@ -101,8 +100,8 @@ public class MapNodeButton : MonoBehaviour
                 enemyIconImage.gameObject.SetActive(true);
                 enemyIconImage.sprite = enemyData.Icon;
 
-                // 通過済みなら暗くする
-                enemyIconImage.color = state == NodeState.Visited
+                // 乗ったときに暗くする
+                enemyIconImage.color = dimIcon
                     ? new Color(0.3f, 0.3f, 0.3f, 1f)
                     : Color.white;
             }

@@ -92,4 +92,14 @@ public struct DiceFaceData
             m_elements.RemoveAt(m_elements.Count - 1);
         }
     }
+
+    /// <summary>
+    /// 親DiceDefinitionから標準出目を設定するための補助メソッドです
+    /// </summary>
+    /// <param name="number">設定する目の数字（1～6）</param>
+    public void SetNumber(int number)
+    {
+        m_number = Mathf.Clamp(number, 1, 6);
+        SyncElementsWithNumber();
+    }
 }

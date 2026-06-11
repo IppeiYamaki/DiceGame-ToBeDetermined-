@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5141af8e7e02ee54d9b1d83e9c0c2ea5, type: 3}
-  m_Name: Dice_Default_Attack
+  m_Name: Dice_Default_Attack 2
   m_EditorClassIdentifier: Assembly-CSharp::DiceDefinition
-  m_persistentId: 403a232b39f549e791c7d82fb598aa18
+  m_persistentId: 3f239e3e53b940249e426725106ffcd2
   m_diceName: Attack1~6
   m_faces:
   - m_number: 1

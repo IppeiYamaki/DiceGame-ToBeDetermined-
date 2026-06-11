@@ -35,6 +35,11 @@ public class DiceDefinition : PersistentScriptableObject
              "各面に目の数字（1～6）と属性リスト（攻撃、防御など）を設定します")]
     private DiceFaceData[] m_faces = new DiceFaceData[6];
 
+    [SerializeField]
+    [Header("標準出目を使用")]
+    [Tooltip("ON の場合、6面の目を 1,2,3,4,5,6 に自動設定します。特殊な出目配列にしたい場合はOFFにしてください。")]
+    private bool m_useStandardFaceNumbers = true;
+
     // ─────────────────────────────────────────────────────────
     // 読み取り専用プロパティ
     // ─────────────────────────────────────────────────────────
@@ -53,6 +58,11 @@ public class DiceDefinition : PersistentScriptableObject
     /// ダイスの面数（常に6）
     /// </summary>
     public int FaceCount => m_faces.Length;
+
+    /// <summary>
+    /// 標準出目（1～6）を自動使用するかどうか
+    /// </summary>
+    public bool UseStandardFaceNumbers => m_useStandardFaceNumbers;
 
     // ─────────────────────────────────────────────────────────
     // 初期化（Inspector で作成時に呼ばれる）
@@ -76,6 +86,11 @@ public class DiceDefinition : PersistentScriptableObject
         // DiceFaceData はネストされた Serializable 構造体のため、親 ScriptableObject 側で同期します
         for (int i = 0; i < m_faces.Length; i++)
         {
+            if (m_useStandardFaceNumbers)
+            {
+                m_faces[i].SetNumber(i + 1);
+            }
+
             m_faces[i].SyncElementsWithNumber();
         }
     }

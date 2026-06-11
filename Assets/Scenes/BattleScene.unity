@@ -2686,17 +2686,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3146561326984514442, guid: 822e04a7eb1d5af44bb92920d242b030, type: 3}
   m_PrefabInstance: {fileID: 642293542}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &644981321 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4000815637103477248, guid: 822e04a7eb1d5af44bb92920d242b030, type: 3}
-  m_PrefabInstance: {fileID: 642293542}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c92d37b15bca0d748baae34773f17cc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DiceItem
 --- !u!1 &647187238
 GameObject:
   m_ObjectHideFlags: 0
@@ -3238,17 +3227,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3146561326984514442, guid: 822e04a7eb1d5af44bb92920d242b030, type: 3}
   m_PrefabInstance: {fileID: 1439622079}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &797214317 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4000815637103477248, guid: 822e04a7eb1d5af44bb92920d242b030, type: 3}
-  m_PrefabInstance: {fileID: 1439622079}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c92d37b15bca0d748baae34773f17cc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DiceItem
 --- !u!1 &800656398
 GameObject:
   m_ObjectHideFlags: 0
@@ -6490,9 +6468,9 @@ MonoBehaviour:
   m_frontCanvas: {fileID: 623706260}
   m_canvasRawImage: {fileID: 1372758272}
   m_diceItems:
-  - {fileID: 644981321}
-  - {fileID: 1796544055}
-  - {fileID: 797214317}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   m_spinDuration: 1.5
   m_resultDisplayDuration: 1
   m_randomUpdateInterval: 0.1
@@ -7257,17 +7235,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3146561326984514442, guid: 822e04a7eb1d5af44bb92920d242b030, type: 3}
   m_PrefabInstance: {fileID: 1355061733}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1796544055 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4000815637103477248, guid: 822e04a7eb1d5af44bb92920d242b030, type: 3}
-  m_PrefabInstance: {fileID: 1355061733}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c92d37b15bca0d748baae34773f17cc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DiceItem
 --- !u!1 &1818352699
 GameObject:
   m_ObjectHideFlags: 0

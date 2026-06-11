@@ -1,0 +1,21 @@
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+    [SerializeField]
+    private int HP = 100;
+   
+
+
+    public void SetDamege(int damege)
+    {
+        HP -= damege;
+        Debug.Log("ÉvÉåÉCÉÑÅ[HP " + HP);
+    }
+
+
+    void Update()
+    {
+        
+    }
+}

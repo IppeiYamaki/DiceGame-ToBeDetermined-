@@ -1,28 +1,47 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[System.Serializable]
+public class DiceRecorderEvent
+{
+    public Vector3 DiceValue;
+    public string recordingId1;
+    public string recordingId2;
+    public string recordingId3;
+}
+
+//ダイスの役を判定するクラス
 public class DiceRole : MonoBehaviour
 {
-    [SerializeField] private int totalValue = 0;
-    private bool allStop = false;
-    public List<RandomDice> getDiceValue = new List<RandomDice>();
-    public List<int> diceValue = new List<int>();
-    public TMP_Text totalValueText;
+    [SerializeField] private int totalValue = 0;// ダイスの合計値
+    private bool allStop = false;// ダイスが全て止まったかどうか
+    public List<DiceRecorderEvent> recordingId = new List<DiceRecorderEvent>(); // 録画IDのリスト（Inspectorで設定）
+
+    public List<RandomDice> getDiceValue = new List<RandomDice>();// ダイスの値を取得するためのリスト
+    public List<int> diceValue = new List<int>();// ダイスの値を格納するリスト
+    public TMP_Text totalValueText;// ダイスの合計値を表示するテキスト
+
+
+    //各役の倍率
+    [InspectorName("ピンゾロ倍率")] public int Pinzoro = 10; // 1 が 3 つのときの倍率
+    [InspectorName("アラシイ倍率")] public int Arashii = 5; // 1 以外が 3 つのときの倍率
+    [InspectorName("ペア倍率")] public int Pair = 2; // ペアのときの倍率
+    [InspectorName("シゴロ倍率")] public int Shigoro = 3; // 4,5,6 がそろったときの倍率
+    [InspectorName("ヒフミ倍率")] public int Hifumi = 3; // 1,2,3 がそろったときの倍率
+    [InspectorName("偶数倍率")] public int Even = 3; // 異なる偶数がそろったときの倍率
+    [InspectorName("奇数倍率")] public int Odd = 3; // 異なる奇数がそろったときの倍率
 
 
 
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
+        
         allStop = true;
+        // ダイスが全て止まっているかどうかを確認
         for (int i = 0; i < getDiceValue.Count; i++)
         {
             if (!getDiceValue[i].isStopped)
@@ -31,6 +50,7 @@ public class DiceRole : MonoBehaviour
                 break;
             }
         }
+        // ダイスが全て止まっている場合、合計値を計算して表示する
         if (allStop)
         {
             totalValue = 0;
@@ -67,31 +87,31 @@ public class DiceRole : MonoBehaviour
         // 1.1 1 が 3 つ
         if (allSame && s[0] == 1)
         {
-            return 10; // 1×10 など好きな倍率
+            return Pinzoro; // 1×10 など好きな倍率
         }
 
         // 1.2 1 以外が 3 つ（2,3,4,5,6 のどれか 3 つ同じ）
         if (allSame && s[0] != 1)
         {
-            return 5; // 1 以外が 3 つなら×5
+            return Arashii; // 1 以外が 3 つなら×5
         }
         bool hasPair = (s[0] == s[1]) || (s[1] == s[2]);
 
         if (hasPair)
         {
-            return 2; // ペア：×2（好きな倍率に変更）
+            return Pair; // ペア：×2（好きな倍率に変更）
         }
 
         // 2. 4,5,6 がそろった場合（順番不要）
         if (s[0] == 4 && s[1] == 5 && s[2] == 6)
         {
-            return 3;
+            return Shigoro;
         }
 
         // 3. 1,2,3 がそろった場合（順番不要）
         if (s[0] == 1 && s[1] == 2 && s[2] == 3)
         {
-            return 3;
+            return Hifumi;
         }
 
         // 4. 異なる偶数がそろった場合（2,4,6 のみ）
@@ -100,7 +120,7 @@ public class DiceRole : MonoBehaviour
 
         if (allDifferent && allEven)
         {
-            return 3;
+            return Even;
         }
 
         // 5. 異なる奇数がそろった場合（1,3,5 のみ）
@@ -108,16 +128,12 @@ public class DiceRole : MonoBehaviour
 
         if (allDifferent && allOdd)
         {
-            return 3;
+            return Odd;
         }
 
         // 条件に合わない場合は倍率 1
         return 1;
     }
 
-    public int GetValue()
-    {
-        return totalValue;
-    }
 
 }

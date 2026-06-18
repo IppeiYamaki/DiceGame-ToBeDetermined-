@@ -9,11 +9,25 @@ public class DiceRecorder : MonoBehaviour
 {
     public DiceRecording recording;
     public RandomDice randomDice;
+    public DiceRole diceRole;
     public string recordingId = "Dice1";  // ← Inspector で ID を設定可能に
     public float recordInterval = 0.02f;  // 0.02秒ごとに記録（FixedUpdate に近い）
 
     private float lastRecordTime = 0f;
     private bool isRecording = false;
+    [SerializeField]
+    private int useIdIndex = 0; // 使用する recordingId のインデックス
+
+    private string GetRecordingId(DiceRecorderEvent e)
+    {
+        return useIdIndex switch
+        {
+            0 => e.recordingId1,
+            1 => e.recordingId2,
+            2 => e.recordingId3,
+            _ => e.recordingId1
+        };
+    }
 
     public void StartRecording()
     {
@@ -30,22 +44,22 @@ public class DiceRecorder : MonoBehaviour
 
     private void Start()
     {
-        recordingId = randomDice.recordingId[0]; // RandomDice から ID を取得
+
     }
     private void Update()
     {
         if (Keyboard.current.digit1Key.wasPressedThisFrame)
-            recordingId = randomDice.recordingId[0];
+            recordingId = GetRecordingId(diceRole.recordingId[0]);
         else if (Keyboard.current.digit2Key.wasPressedThisFrame)
-            recordingId = randomDice.recordingId[1];
+            recordingId = GetRecordingId(diceRole.recordingId[1]);
         else if (Keyboard.current.digit3Key.wasPressedThisFrame)
-            recordingId = randomDice.recordingId[2];
-        else if(Keyboard.current.digit4Key.wasPressedThisFrame)
-            recordingId = randomDice.recordingId[3];
-        else if(Keyboard.current.digit5Key.wasPressedThisFrame)
-            recordingId = randomDice.recordingId[4];
-        else if(Keyboard.current.digit6Key.wasPressedThisFrame)
-            recordingId = randomDice.recordingId[5];
+            recordingId = GetRecordingId(diceRole.recordingId[2]);
+        else if (Keyboard.current.digit4Key.wasPressedThisFrame)
+            recordingId = GetRecordingId(diceRole.recordingId[3]);
+        else if (Keyboard.current.digit5Key.wasPressedThisFrame)
+            recordingId = GetRecordingId(diceRole.recordingId[4]);
+        else if (Keyboard.current.digit6Key.wasPressedThisFrame)
+            recordingId = GetRecordingId(diceRole.recordingId[5]);
     }
     private void FixedUpdate()
     {

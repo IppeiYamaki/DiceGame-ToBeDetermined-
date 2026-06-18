@@ -4,15 +4,15 @@ using UnityEngine;
 
 /// <summary>
 /// ダイスを振って結果を計算するロジッククラス
-/// 3個のダイスIDを受け取り、各ダイスをランダムロール、属性合計、役判定を行い、
-/// 倍率適用後の最終値を含む DiceRollResult を返します
+/// 3個のダイスIDを受け取り、各ダイスをランダムロール、出目合計、役判定を行い、
+/// 倍率適用後の出目値を含む DiceRollResult を返します
 /// 
 /// 使用方法:
 /// <code>
 /// string[] diceIds = { "abc123...", "def456...", "ghi789..." };
 /// List&lt;DiceRoleDefinition&gt; roles = DiceMasterRegistry.Active.AllRoleDefinitions.ToList();
 /// DiceRollResult result = DiceRollCalculator.Roll(diceIds, roles);
-/// Debug.Log($"攻撃: {result.FinalAttributeValues[DiceAttributeType.Attack]}");
+/// Debug.Log($"最終値: {result.FinalValue}");
 /// </code>
 /// </summary>
 public static class DiceRollCalculator
@@ -23,8 +23,8 @@ public static class DiceRollCalculator
 
     /// <summary>
     /// 3個のダイスを振って結果を計算します
-    /// 各ダイスをランダムロール、属性合計、役判定を行い、
-    /// 倍率適用後の最終値を含む DiceRollResult を返します
+    /// 各ダイスをランダムロール、出目合計、役判定を行い、
+    /// 倍率適用後の出目値を含む DiceRollResult を返します
     /// </summary>
     /// <param name="diceIds">振るダイスの永続 ID（3個）</param>
     /// <param name="availableRoles">判定対象の役リスト</param>
@@ -51,18 +51,16 @@ public static class DiceRollCalculator
             rollData[i] = RollSingleDice(diceIds[i]);
         }
 
-        // 属性別の合計値を計算（倍率適用前）
-        Dictionary<DiceAttributeType, int> attributeTotals = CalculateAttributeTotals(rollData);
-
         // 出た目の数字のみを抽出して役判定
         int[] numbers = rollData.Select(r => r.Number).ToArray();
+        int totalNumber = numbers.Sum();
         DiceRoleEvaluateResult evaluateResult = DiceRoleEvaluator.Evaluate(numbers, availableRoles);
 
         // 倍率を適用した最終値を計算
-        Dictionary<DiceAttributeType, int> finalValues = ApplyMultiplier(attributeTotals, evaluateResult.Multiplier);
+        int finalValue = Mathf.FloorToInt(totalNumber * evaluateResult.Multiplier);
 
         // 結果を返す
-        return new DiceRollResult(rollData, evaluateResult, attributeTotals, finalValues);
+        return new DiceRollResult(rollData, evaluateResult, totalNumber, finalValue);
     }
 
     // ─────────────────────────────────────────────────────────
@@ -84,76 +82,17 @@ public static class DiceRollCalculator
             return CreateEmptyRollData(diceId);
         }
 
-        // 6面の中からランダムに1面を選択
-        int faceIndex = Random.Range(0, 6);
+        if (diceDefinition.FaceCount <= 0)
+        {
+            Debug.LogWarning($"[DiceRollCalculator] ダイス ID '{diceId}' に面が設定されていません。");
+            return CreateEmptyRollData(diceId);
+        }
+
+        // 設定されている面の中からランダムに1面を選択
+        int faceIndex = Random.Range(0, diceDefinition.FaceCount);
         DiceFaceData faceData = diceDefinition.Faces[faceIndex];
 
-        // 属性別の合計値を計算
-        Dictionary<DiceAttributeType, int> attributeTotals = new Dictionary<DiceAttributeType, int>();
-        foreach (DiceFaceElement element in faceData.Elements)
-        {
-            if (attributeTotals.ContainsKey(element.AttributeType))
-            {
-                attributeTotals[element.AttributeType]++;
-            }
-            else
-            {
-                attributeTotals[element.AttributeType] = 1;
-            }
-        }
-
-        return new DiceRollData(diceId, faceIndex, faceData.Number, attributeTotals);
-    }
-
-    // ─────────────────────────────────────────────────────────
-    // 内部実装：属性合計計算
-    // ─────────────────────────────────────────────────────────
-
-    /// <summary>
-    /// 3個のダイスロール結果から属性別の合計値を計算します
-    /// </summary>
-    /// <param name="rollData">3個のダイスロール結果</param>
-    /// <returns>属性別の合計値</returns>
-    private static Dictionary<DiceAttributeType, int> CalculateAttributeTotals(DiceRollData[] rollData)
-    {
-        Dictionary<DiceAttributeType, int> totals = new Dictionary<DiceAttributeType, int>();
-
-        foreach (DiceRollData data in rollData)
-        {
-            foreach (var pair in data.AttributeTotals)
-            {
-                if (totals.ContainsKey(pair.Key))
-                {
-                    totals[pair.Key] += pair.Value;
-                }
-                else
-                {
-                    totals[pair.Key] = pair.Value;
-                }
-            }
-        }
-
-        return totals;
-    }
-
-    /// <summary>
-    /// 属性別の合計値に倍率を適用した最終値を計算します
-    /// </summary>
-    /// <param name="attributeTotals">属性別の合計値（倍率適用前）</param>
-    /// <param name="multiplier">適用する倍率</param>
-    /// <returns>属性別の最終値（倍率適用後）</returns>
-    private static Dictionary<DiceAttributeType, int> ApplyMultiplier(
-        Dictionary<DiceAttributeType, int> attributeTotals,
-        float multiplier)
-    {
-        Dictionary<DiceAttributeType, int> finalValues = new Dictionary<DiceAttributeType, int>();
-
-        foreach (var pair in attributeTotals)
-        {
-            finalValues[pair.Key] = Mathf.FloorToInt(pair.Value * multiplier);
-        }
-
-        return finalValues;
+        return new DiceRollData(diceId, faceIndex, faceData.Number);
     }
 
     // ─────────────────────────────────────────────────────────
@@ -174,8 +113,8 @@ public static class DiceRollCalculator
         return new DiceRollResult(
             emptyRollData,
             DiceRoleEvaluateResult.None,
-            new Dictionary<DiceAttributeType, int>(),
-            new Dictionary<DiceAttributeType, int>()
+            0,
+            0
         );
     }
 
@@ -184,6 +123,6 @@ public static class DiceRollCalculator
     /// </summary>
     private static DiceRollData CreateEmptyRollData(string diceId)
     {
-        return new DiceRollData(diceId, 0, 1, new Dictionary<DiceAttributeType, int>());
+        return new DiceRollData(diceId, 0, 1);
     }
 }

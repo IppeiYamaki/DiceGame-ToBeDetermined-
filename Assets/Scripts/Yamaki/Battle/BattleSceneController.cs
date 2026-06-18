@@ -369,8 +369,8 @@ public class BattleSceneController : MonoBehaviour
     {
         SetPhase(BattlePhase.PlayerResult);
 
-        int baseAttack = GetFinalAttributeValue(rollResult, DiceAttributeType.Attack);
-        int baseDefense = GetFinalAttributeValue(rollResult, DiceAttributeType.Defense);
+        int baseAttack = rollResult.FinalValue;
+        int baseDefense = 0;
 
         // バフ/デバフによる攻撃補正を適用
         int finalAttack = Mathf.Max(0, baseAttack + GetAttackModifier(m_playerActiveStatusEffects));
@@ -592,12 +592,6 @@ public class BattleSceneController : MonoBehaviour
         return modifier;
     }
 
-    private int GetFinalAttributeValue(DiceRollResult rollResult, DiceAttributeType attributeType)
-    {
-        if (rollResult.FinalAttributeValues == null) return 0;
-        return rollResult.FinalAttributeValues.TryGetValue(attributeType, out int value) ? value : 0;
-    }
-
     private string CreateRollResultText(DiceRollResult rollResult, int attackValue, int defenseValue)
     {
         string numbers = rollResult.RollData != null
@@ -605,7 +599,7 @@ public class BattleSceneController : MonoBehaviour
             : "-";
         string roleName = rollResult.EvaluateResult.IsRoleMatched ? rollResult.EvaluateResult.Role.RoleName : "なし";
 
-        return $"出目: {numbers}\n役: {roleName} x{rollResult.EvaluateResult.Multiplier:0.##}\nAttack: {attackValue}\nDefense: {defenseValue}";
+        return $"出目: {numbers}\n合計: {rollResult.TotalNumber}\n役: {roleName} x{rollResult.EvaluateResult.Multiplier:0.##}\nAttack: {attackValue}";
     }
 
     private void SetPhase(BattlePhase phase)

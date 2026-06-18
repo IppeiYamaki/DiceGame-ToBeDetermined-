@@ -3,14 +3,14 @@ using UnityEngine;
 
 /// <summary>
 /// ダイス本体を表す ScriptableObject
-/// 6面分の DiceFaceData を持ち、各面の数字と属性を定義します
+/// DiceFaceData を持ち、各面の目の値を定義します
 /// 
 /// 作成方法:
 /// Project ビュー右クリック → Create → DiceGame/DiceDefinition
 /// 
 /// 使用方法:
 /// - Inspector でダイス名を設定します
-/// - 6面分のデータ（目の数字と属性リスト）を設定します
+/// - 面ごとの目の値を設定します
 /// - プレイヤーは PersistentId（自動付与される GUID）のみを保持します
 /// </summary>
 [CreateAssetMenu(fileName = "DiceDefinition_", menuName = "DiceGame/DiceDefinition")]
@@ -26,18 +26,17 @@ public class DiceDefinition : PersistentScriptableObject
     private string m_diceName = "";
 
     // ─────────────────────────────────────────────────────────
-    // 面リスト（6面固定）
+    // 面リスト
     // ─────────────────────────────────────────────────────────
 
     [SerializeField]
-    [Header("面リスト（6面）")]
-    [Tooltip("ダイスの6面分のデータ\n" +
-             "各面に目の数字（1～6）と属性リスト（攻撃、防御など）を設定します")]
+    [Header("面リスト")]
+    [Tooltip("ダイスの面ごとのデータ\n各面に目の値を設定します")]
     private DiceFaceData[] m_faces = new DiceFaceData[6];
 
     [SerializeField]
     [Header("標準出目を使用")]
-    [Tooltip("ON の場合、6面の目を 1,2,3,4,5,6 に自動設定します。特殊な出目配列にしたい場合はOFFにしてください。")]
+    [Tooltip("ON の場合、面の目を 1 から順番に自動設定します。特殊な出目配列にしたい場合はOFFにしてください。")]
     private bool m_useStandardFaceNumbers = true;
 
     // ─────────────────────────────────────────────────────────
@@ -55,9 +54,9 @@ public class DiceDefinition : PersistentScriptableObject
     public IReadOnlyList<DiceFaceData> Faces => m_faces;
 
     /// <summary>
-    /// ダイスの面数（常に6）
+    /// ダイスの面数
     /// </summary>
-    public int FaceCount => m_faces.Length;
+    public int FaceCount => m_faces != null ? m_faces.Length : 0;
 
     /// <summary>
     /// 標準出目（1～6）を自動使用するかどうか
@@ -70,28 +69,25 @@ public class DiceDefinition : PersistentScriptableObject
 
 #if UNITY_EDITOR
     /// <summary>
-    /// 新規作成時に配列を初期化し、各面の目の数字と属性リスト数を同期します
+    /// 新規作成時に配列を初期化し、必要に応じて各面の目の値を同期します
     /// </summary>
     protected override void OnValidate()
     {
         base.OnValidate();
 
-        // 配列が未初期化なら6面分確保
-        if (m_faces == null || m_faces.Length != 6)
+        // 配列が未初期化なら標準的な6面分を確保
+        if (m_faces == null)
         {
             m_faces = new DiceFaceData[6];
         }
 
-        // 各面の Number と Elements.Count を同期します
-        // DiceFaceData はネストされた Serializable 構造体のため、親 ScriptableObject 側で同期します
+        // DiceFaceData はネストされた Serializable 構造体のため、親 ScriptableObject 側で補正します
         for (int i = 0; i < m_faces.Length; i++)
         {
             if (m_useStandardFaceNumbers)
             {
                 m_faces[i].SetNumber(i + 1);
             }
-
-            m_faces[i].SyncElementsWithNumber();
         }
     }
 #endif

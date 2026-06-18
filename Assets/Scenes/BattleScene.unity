@@ -6028,7 +6028,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 15, y: -375}
+  m_AnchoredPosition: {x: 15, y: -380}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1363641150
@@ -6314,7 +6314,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f526d91d94552b7488b77d4b270eb1b2, type: 2}
   - {fileID: 11400000, guid: f526d91d94552b7488b77d4b270eb1b2, type: 2}
   - {fileID: 11400000, guid: f526d91d94552b7488b77d4b270eb1b2, type: 2}
-  m_enemyDefinition: {fileID: 11400000, guid: f164a1dad3294ae49b211f93be761e9c, type: 2}
+  m_enemyDefinition: {fileID: 11400000, guid: e39943009284a1048a3e603d3787a95f, type: 2}
   m_playerMaxHp: 100
   m_diceSelectionView: {fileID: 1140711403}
   m_playerHpView: {fileID: 2000995249}

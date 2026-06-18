@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f76755bb9ae1cb34abaf79eb82b22cfb, type: 3}
+  m_Name: Yamaki
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDefinition
+  m_enemyName: Yamaki
+  m_maxHp: 45
+  m_attackPower: 20
+  m_visualSprite: {fileID: 0}
+  m_visualTexture: {fileID: 2800000, guid: 085c74f19dcc7254b82402e963a350b9, type: 3}
+  m_idleTextures: []
+  m_actionTexture: {fileID: 0}
+  m_idleFrameInterval: 0.4
+  m_hpRangeActionSets:
+  - m_upperPercent: 100
+    m_lowerPercent: 0
+    m_actionGroups:
+    - m_weight: 1
+      m_actions:
+      - m_actionType: 0
+        m_power: 7
+        m_statusEffect: {fileID: 0}
+        m_useEffect: 0
+        m_effectPrefab: {fileID: 0}
+        m_effectAnchor: 0
+        m_effectDuration: 0
+        m_useSound: 1
+        m_audioClip: {fileID: 8300000, guid: 54cc2c6df956a934587ef208db51fada, type: 3}
+        m_soundTiming: 1
+        m_volume: 1
+    - m_weight: 1
+      m_actions:
+      - m_actionType: 1
+        m_power: 5
+        m_statusEffect: {fileID: 0}
+        m_useEffect: 0
+        m_effectPrefab: {fileID: 0}
+        m_effectAnchor: 0
+        m_effectDuration: 0
+        m_useSound: 0
+        m_audioClip: {fileID: 0}
+        m_soundTiming: 1
+        m_volume: 1

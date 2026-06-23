@@ -5,7 +5,12 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 public class SkillPointBox : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField]//テスト用
+    //ポイント管理するコード
+    //
+
+
+
+    [SerializeField]//テスト用。本番環境は出目から取るので不要になるはず
     private int m_SetSkillPoint = 30;
 
     private int m_SkillPoint = 0;
@@ -14,7 +19,7 @@ public class SkillPointBox : MonoBehaviour, IPointerClickHandler
 
     void Start()
     {
-        SetSkillPoint(m_SetSkillPoint);
+        SetSkillPoint(m_SetSkillPoint);//テスト用。本番は不要
     }
 
     public void SetSkillPoint(int skillPoint)
@@ -37,7 +42,7 @@ public class SkillPointBox : MonoBehaviour, IPointerClickHandler
     }
     public int GetSkillPoint()
     {
-        //スキル使えるポイント余っているか調べる時などに使う
+        //スキル使える分のポイント余っているか調べる時などに使う
         return m_SkillPoint;
     }
 

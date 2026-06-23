@@ -6,6 +6,8 @@ using System.Collections.Generic;
 
 public class DicePlayer : MonoBehaviour
 {
+    [SerializeField]
+    private int useIdIndex = 0; // 使用する recordingId のインデックス
     public DiceRecording recording;
     public RandomDice randomDice;
     public DiceRole diceRole;
@@ -15,8 +17,7 @@ public class DicePlayer : MonoBehaviour
     private Rigidbody rb;
     private float playbackTime = 0f;
     private bool isPlaying = false;
-    [SerializeField]
-    private int useIdIndex = 0; // 使用する recordingId のインデックス
+
 
     void Start()
     {

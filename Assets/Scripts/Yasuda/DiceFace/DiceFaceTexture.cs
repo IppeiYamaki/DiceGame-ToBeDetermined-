@@ -4,47 +4,32 @@ using UnityEngine.UI;
 public class DiceFaceTexture : MonoBehaviour
 {
     public SpriteRenderer[] detailImage;
-    public Sprite[] detailSprites;
+    public Sprite[] useSprites;
 
-    
-    private int number = 0;
+    public RandomDice randomDice;
+
+
 
     void Start()
     {
+
         for (int i = 0; i < detailImage.Length; i++)
         {
             //デフォルトスプライトを設定
-            detailImage[i].sprite = detailSprites[i];
+            detailImage[i].sprite = useSprites[i];
+            Debug.Log("スプライト設定完了: " + ((randomDice.diceDefinition.Faces[i].Number)-1));
         }
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+
+        for (int i = 0; i < detailImage.Length; i++)
         {
-
-            if (number < 0)
-            {
-                for (int i = 0; i < detailImage.Length; i++)
-                {
-                    //スプライト統一
-                    detailImage[i].sprite = detailSprites[i];
-                }
-            }
-            else
-            {
-                for (int i = 0; i < detailImage.Length; i++)
-                {
-                    //スプライト統一
-                    detailImage[i].sprite = detailSprites[number];
-                }
-            }
-
-            number++;
-            if(number >= detailImage.Length)
-            {
-                number = -1;
-            }
+            //スプライト統一
+            detailImage[i].sprite = useSprites[(randomDice.diceDefinition.Faces[i].Number) - 1];
         }
     }
+
+
 }

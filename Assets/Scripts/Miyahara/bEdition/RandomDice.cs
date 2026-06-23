@@ -8,43 +8,49 @@ using UnityEngine.UIElements;
 
 
 
+
 public class RandomDice : MonoBehaviour
 {
+    //private
 
-
-    [SerializeField]
-    private Vector3 torque = new Vector3(1, 1, 1);  // 回転軸
-    [SerializeField]
-    private Vector3 spawn = new Vector3(-4, 5, 0);   // 出現位置
-    [SerializeField]
-    private DiceRecorder diceRecorder;  // 録画用コンポーネント
     private Rigidbody rb; // Rigidbodyコンポーネントへの参照
-    [SerializeField]
-    private int notStoppedDice = 0; // サイコロが停止していないフレーム数のカウンタ
     private bool notLooped = false; // ドロップ開始後の一度だけの処理を制御するフラグ
     private bool notLooped2 = false; // サイコロが停止していないかどうかのフラグ
-    [SerializeField]
-    private bool isRecording = false; // 録画中かどうかのフラグ
-    [SerializeField]
-    private GameObject rotateDice; // 回転するサイコロのゲームオブジェクトへの参照
-
-    public int changeDiceValue = 0; // サイコロの目の値を変更するための変数
-    public DiceRole role; // DiceRoleコンポーネントへの参照
-    public bool isStopped = false; // サイコロが停止しているかどうかのフラグ
-    public int stopCount = 0;// サイコロが停止しているフレーム数のカウンタ
-    [HideInInspector]
-    public int diceValue;// サイコロの目の値
-    public float rotateSpeed = 1f;// 回転の速さ
-    public TMP_Text randomText;// サイコロの目の値を表示するテキスト
-    [SerializeField]
-    private int useIdIndex = 0;
-    [SerializeField]
     private int recordingIdIndex = 0;
 
-    public int debugtako = 0;
+    //public
+    public int changeDiceValue = 0; // 出したい目
+    public Vector3 spawn = new Vector3(-4, 5, 0);   // 出現位置
+    public float rotateSpeed = 1f;// 回転の速さ
+    public int useIdIndex = 0;//ダイスの録画IDのインデックスを指定するための変数
+    public List<int> DiceFace = new List<int>(); // サイコロの目の値を格納するリスト
 
 
 
+    [Header("オブジェクト参照用")]
+ 
+    public GameObject rotateDice; // 回転するサイコロのゲームオブジェクトへの参照
+    public DiceDefinition diceDefinition; // DiceDefinitionへの参照
+    public TMP_Text randomText;// サイコロの目の値を表示するテキスト
+    public DiceRole role; // DiceRoleコンポーネントへの参照
+    public DiceRecorder diceRecorder;  // 録画用コンポーネント
+
+    [Header("デバッグ用")]
+    [SerializeField]
+    private int notStoppedDice = 0; // サイコロが停止していないフレーム数のカウンタ
+    [SerializeField]
+    private bool isRecording = false; // 録画中かどうかのフラグ(デバッグ用)
+    [SerializeField]
+    private int stopCount = 0;// サイコロが停止しているフレーム数のカウンタ
+    [SerializeField]
+    private int debugtako = 0;
+    [SerializeField]
+    private Vector3 torque = new Vector3(1, 1, 1);  // 回転軸
+
+
+
+    public bool isStopped = false; // サイコロが停止しているかどうかのフラグ(別スクリプト判定用)
+    public int diceValue;// サイコロの目の結果を格納する変数
 
     // サイコロの状態を表す列挙型
     public enum DiceState
@@ -63,6 +69,10 @@ public class RandomDice : MonoBehaviour
         this.transform.position = spawn;
         rb = GetComponent<Rigidbody>();
         //role = GetComponent<DiceRole>();
+        for (int i = 0; i < DiceFace.Count; i++)
+        {
+            DiceFace[i] = diceDefinition.Faces[i].Number;
+        }
 
     }
 
@@ -152,7 +162,7 @@ public class RandomDice : MonoBehaviour
         };
     }
 
-    // サイコロを初期位置に戻し、回転を加える処理
+    // 停止中のステータス処理
     void IdolDice()
     {
         if (notLooped)
@@ -168,7 +178,7 @@ public class RandomDice : MonoBehaviour
             float rotatez = Random.Range(-3f, 3f);
 
             torque = new Vector3(rotatex, rotatey, rotatez);
-            rb.AddTorque(torque * rotateSpeed, ForceMode.Force);
+            //rb.AddTorque(torque * rotateSpeed, ForceMode.Force);
             notLooped = false;
             stopCount = 0;
             randomText.text = 0.ToString();
@@ -176,7 +186,7 @@ public class RandomDice : MonoBehaviour
         }
     }
 
-    // サイコロを落とす処理
+    // サイコロを落とした時のステータス処理
     void DropDice()
     {
         rb.constraints = RigidbodyConstraints.None;
@@ -191,19 +201,19 @@ public class RandomDice : MonoBehaviour
         }
     }
 
-    // 録画再生中の処理
+    // 録画を再生したときのステータス処理
     void RecordPlaying()
     {
         notLooped = true;
     }
-    // サイコロが停止しているときの処理
+    // サイコロが停止しているときのステータス処理
     void StopDice()
     {
         stopCount = 0;
         notStoppedDice = 0;
     }
 
-    // 次のイベントに移行する処理
+    // 次のイベントに移行するステータス処理
     void NextEvent()
     {
         isStopped = false;
@@ -212,14 +222,16 @@ public class RandomDice : MonoBehaviour
     }
 
 
+
+    //サイコロの目が決まったときのイベント処理
     public void Dice1Event()
     {
         stopCount++;
         if (stopCount > 30)
         {
             Debug.Log("1");
-            randomText.text = 1.ToString();
-            diceValue = 1;
+            randomText.text = DiceFace[0].ToString();
+            diceValue = DiceFace[0];
             isStopped = true;
             state = DiceState.Stopped;
             if (diceRecorder != null && isRecording == true)
@@ -233,8 +245,8 @@ public class RandomDice : MonoBehaviour
         if (stopCount > 30)
         {
             Debug.Log("2");
-            randomText.text = 2.ToString();
-            diceValue = 2;
+            randomText.text = DiceFace[1].ToString();
+            diceValue = DiceFace[1];
             isStopped = true;
             state = DiceState.Stopped;
             if (diceRecorder != null && isRecording == true)
@@ -248,8 +260,8 @@ public class RandomDice : MonoBehaviour
         if (stopCount > 30)
         {
             Debug.Log("3");
-            randomText.text = 3.ToString();
-            diceValue = 3;
+            randomText.text = DiceFace[2].ToString();
+            diceValue = DiceFace[2];
             isStopped = true;
             state = DiceState.Stopped;
             if (diceRecorder != null && isRecording == true)
@@ -263,8 +275,8 @@ public class RandomDice : MonoBehaviour
         if (stopCount > 30)
         {
             Debug.Log("4");
-            randomText.text = 4.ToString();
-            diceValue = 4;
+            randomText.text = DiceFace[3].ToString();
+            diceValue = DiceFace[3];
             isStopped = true;
             state = DiceState.Stopped;
             if (diceRecorder != null && isRecording == true)
@@ -278,8 +290,8 @@ public class RandomDice : MonoBehaviour
         if (stopCount > 30)
         {
             Debug.Log("5");
-            randomText.text = 5.ToString();
-            diceValue = 5;
+            randomText.text = DiceFace[4].ToString();
+            diceValue = DiceFace[4];
             isStopped = true;
             state = DiceState.Stopped;
             if (diceRecorder != null && isRecording == true)
@@ -293,14 +305,16 @@ public class RandomDice : MonoBehaviour
         if (stopCount > 30)
         {
             Debug.Log("6");
-            randomText.text = 6.ToString();
-            diceValue = 6;
+            randomText.text = DiceFace[5].ToString();
+            diceValue = DiceFace[5];
             isStopped = true;
             state = DiceState.Stopped;
             if (diceRecorder != null && isRecording == true)
                 diceRecorder.StopRecording();
         }
     }
+
+    //振る前にサイコロの目を変えるための関数
     public void PlayDiceRotate(int diceValue)
     {
         if (diceValue == 1)
@@ -420,7 +434,7 @@ public class RandomDice : MonoBehaviour
             }
             else if (changeDiceValue == 2)
             {
-                rotateDice.transform.rotation *= Quaternion.Euler(180, 0, 0);
+                rotateDice.transform.rotation *= Quaternion.Euler(0, 0, 180);
             }
             else if (changeDiceValue == 3)
             {
@@ -436,7 +450,7 @@ public class RandomDice : MonoBehaviour
             }
             else if (changeDiceValue == 6)
             {
-                rotateDice.transform.rotation *= Quaternion.Euler(-180, 0, 0);
+                rotateDice.transform.rotation *= Quaternion.Euler(0, 0, -90);
             }
         }
         else if (diceValue == 6)

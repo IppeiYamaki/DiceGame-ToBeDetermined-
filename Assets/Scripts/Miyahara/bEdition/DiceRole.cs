@@ -27,13 +27,13 @@ public class DiceRole : MonoBehaviour
 
 
     //Še–ğ‚Ì”{—¦
-    [InspectorName("ƒsƒ“ƒ]ƒ”{—¦")] public int Pinzoro = 10; // 1 ‚ª 3 ‚Â‚Ì‚Æ‚«‚Ì”{—¦
-    [InspectorName("ƒAƒ‰ƒVƒC”{—¦")] public int Arashii = 5; // 1 ˆÈŠO‚ª 3 ‚Â‚Ì‚Æ‚«‚Ì”{—¦
-    [InspectorName("ƒyƒA”{—¦")] public int Pair = 2; // ƒyƒA‚Ì‚Æ‚«‚Ì”{—¦
-    [InspectorName("ƒVƒSƒ”{—¦")] public int Shigoro = 3; // 4,5,6 ‚ª‚»‚ë‚Á‚½‚Æ‚«‚Ì”{—¦
-    [InspectorName("ƒqƒtƒ~”{—¦")] public int Hifumi = 3; // 1,2,3 ‚ª‚»‚ë‚Á‚½‚Æ‚«‚Ì”{—¦
-    [InspectorName("‹ô””{—¦")] public int Even = 3; // ˆÙ‚È‚é‹ô”‚ª‚»‚ë‚Á‚½‚Æ‚«‚Ì”{—¦
-    [InspectorName("Šï””{—¦")] public int Odd = 3; // ˆÙ‚È‚éŠï”‚ª‚»‚ë‚Á‚½‚Æ‚«‚Ì”{—¦
+    [Header("ƒsƒ“ƒ]ƒ”{—¦")] public int Pinzoro = 10; // 1 ‚ª 3 ‚Â‚Ì‚Æ‚«‚Ì”{—¦
+    [Header("ƒAƒ‰ƒVƒC”{—¦")] public int Arashii = 5; // 1 ˆÈŠO‚ª 3 ‚Â‚Ì‚Æ‚«‚Ì”{—¦
+    [Header("ƒyƒA”{—¦")] public int Pair = 2; // ƒyƒA‚Ì‚Æ‚«‚Ì”{—¦
+    [Header("ƒVƒSƒ”{—¦")] public int Shigoro = 3; // 4,5,6 ‚ª‚»‚ë‚Á‚½‚Æ‚«‚Ì”{—¦
+    [Header("ƒqƒtƒ~”{—¦")] public int Hifumi = 3; // 1,2,3 ‚ª‚»‚ë‚Á‚½‚Æ‚«‚Ì”{—¦
+    [Header("‹ô””{—¦")] public int Even = 3; // ˆÙ‚È‚é‹ô”‚ª‚»‚ë‚Á‚½‚Æ‚«‚Ì”{—¦
+    [Header("Šï””{—¦")] public int Odd = 3; // ˆÙ‚È‚éŠï”‚ª‚»‚ë‚Á‚½‚Æ‚«‚Ì”{—¦
 
 
 

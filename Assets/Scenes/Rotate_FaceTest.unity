@@ -375,11 +375,19 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 548893374}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: diceDefinition
+      value: 
+      objectReference: {fileID: 11400000, guid: 4051b0c81fd3bf64aa4f2b715e03460a, type: 2}
+    - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: changeDiceValue
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: dicecol.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: DiceFace.Array.size
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
@@ -972,11 +980,19 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1688169254}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: diceDefinition
+      value: 
+      objectReference: {fileID: 11400000, guid: 4051b0c81fd3bf64aa4f2b715e03460a, type: 2}
+    - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: changeDiceValue
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: dicecol.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: DiceFace.Array.size
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
@@ -3412,11 +3428,19 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1972092263}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: diceDefinition
+      value: 
+      objectReference: {fileID: 11400000, guid: 4051b0c81fd3bf64aa4f2b715e03460a, type: 2}
+    - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: changeDiceValue
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: dicecol.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: DiceFace.Array.size
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
@@ -3488,6 +3512,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: diceDefinition.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: 'recordingId.Array.data[0]'
       value: Dice1-1
       objectReference: {fileID: 0}
@@ -3515,6 +3543,10 @@ PrefabInstance:
       propertyPath: diceControllers.Array.size
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'diceDefinition.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 4051b0c81fd3bf64aa4f2b715e03460a, type: 2}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: diceEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.size
       value: 1

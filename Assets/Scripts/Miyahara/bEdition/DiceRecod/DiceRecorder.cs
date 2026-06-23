@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 // 実際のサイコロ（記録用）
 public class DiceRecorder : MonoBehaviour
 {
+    [SerializeField]
+    private int useIdIndex = 0; // 使用する recordingId のインデックス
     public DiceRecording recording;
     public RandomDice randomDice;
     public DiceRole diceRole;
@@ -15,8 +17,7 @@ public class DiceRecorder : MonoBehaviour
 
     private float lastRecordTime = 0f;
     private bool isRecording = false;
-    [SerializeField]
-    private int useIdIndex = 0; // 使用する recordingId のインデックス
+
 
     private string GetRecordingId(DiceRecorderEvent e)
     {

@@ -2,16 +2,23 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 // =========================
 // 型定義
 // =========================
+
+
+//ノード（マス）の種類を定義する列挙型。Start, Battle, Rest, Event, Bossの5種類。
+//増やしたい場合はここに新しいノードの名前を追加し、MapGenerator.DecideNodeTypeメソッドで割り当てる条件を追加する必要があります。
+//シーン遷移の処理もMapFlow.SelectNextNodeメソッドに追加する必要があります。
+//MapNodeButtonクラスのTypeColors配列にも新しいノードタイプの色を追加する必要があります。
 public enum NodeType
 {
     Start,
     Battle,
     Rest,
-    Item,
+    Event,
     Boss
 }
 
@@ -35,7 +42,7 @@ public class MapNode
     public int Lane;
     public List<int> NextNodeIds = new();
 
-    public EnemyData Enemy;
+    public EnemyDefinition Enemy;
 }
 
 public class MapGraph
@@ -45,11 +52,26 @@ public class MapGraph
     public int BossNodeId;
 }
 
+
+//
+
+
+
 // =========================
 // マップ生成
 // =========================
+
+
+
+// 生成アルゴリズムの概要
 public static class MapGenerator
 {
+
+    // 生成パラメータ
+    //maxNodesPerLayerは、各レイヤーに配置されるノードの最大数。増やせば選択肢が増える。
+    //enemyDatabaseは、敵データベースを指定することで、Battleノード敵を割り当てる。
+
+
     public static MapGraph Generate(
         int layerCount = 6,
         int minNodesPerLayer = 2,
@@ -57,6 +79,8 @@ public static class MapGenerator
         MapDirection direction = MapDirection.Horizontal,
         EnemyDatabase enemyDatabase = null
     )
+
+
     {
         var graph = new MapGraph();
         int nextId = 0;
@@ -201,6 +225,8 @@ public static class MapGenerator
         return graph;
     }
 
+
+    
     private static int GetNearestNextIndex(MapNode node, int curCount, int nextCount)
     {
         float t = (curCount <= 1) ? 0.5f : (float)node.IndexInLayer / (curCount - 1);
@@ -227,13 +253,16 @@ public static class MapGenerator
             node.Position -= center;
     }
 
+
+    // ノード(マス)タイプを決定するメソッド。レイヤー番号と最大レイヤー数に基づいて、ノードの種類を決定します。
+    //今現在は、レイヤー0はStart、レイヤー2と4はRest、最終レイヤーはBoss、それ以外のレイヤーでは70%の確率でBattle、30%の確率でEventとなるように設定されています。
     private static NodeType DecideNodeType(int layer, int maxLayer)
     {
         if (layer == 0) return NodeType.Start;
         if (layer == 2 || layer == 4) return NodeType.Rest;
         if (layer == maxLayer - 1) return NodeType.Boss;
 
-        return Random.value < 0.7f ? NodeType.Battle : NodeType.Item;
+        return Random.value < 0.7f ? NodeType.Battle : NodeType.Event;
     }
 }
 
@@ -258,6 +287,10 @@ public class MapFlow : MonoBehaviour
     {
         if (!MapSession.HasData)
         {
+
+            // 初回生成時のみ、マップを生成してセッションに保存
+            // 生成パラメータは必要に応じて調整可能にしてます  
+            //layerCountの数字を増やすと、マップのレイヤー数が増えます。ボスまでの道が長くなります。
             graph = MapGenerator.Generate(
                 layerCount: 6,
                 direction: MapDirection.Horizontal,
@@ -299,6 +332,7 @@ public class MapFlow : MonoBehaviour
             yield return Nodes[id];
     }
 
+    //ノード選択時の処理。Battle, Rest, Event, Boss以外にも対応する場合は、ここに追加する。
     public void SelectNextNode(int nextId)
     {
         if (!Nodes[CurrentNodeId].NextNodeIds.Contains(nextId)) return;
@@ -309,42 +343,39 @@ public class MapFlow : MonoBehaviour
 
         var node = Nodes[nextId];
 
-        if (node.Type == NodeType.Battle)
+        switch (node.Type)
         {
-            string enemyId = node.Enemy != null ? node.Enemy.InternalId : "未設定";
-            Debug.Log($"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動 | タイプ:Battle | 敵ID:{enemyId}");
+            case NodeType.Battle:
+                string enemyName = node.Enemy != null ? node.Enemy.EnemyName : "未設定";
+                Debug.Log($"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動 | タイプ:Battle | 敵:{enemyName}");
 
-            // TODO: 戦闘シーンへ遷移
-            // 1. BattleSession.Set(node.Enemy);
-            // 2. SceneManager.LoadScene("BattleScene");
-        }
-        else if (node.Type == NodeType.Rest)
-        {
-            Debug.Log($"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動 | タイプ:Rest");
+                
+                UnityEngine.SceneManagement.SceneManager.LoadScene(battleSceneName);
+                break;
 
-            // TODO: 休憩処理
-        }
-        else if (node.Type == NodeType.Item)
-        {
-            Debug.Log($"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動 | タイプ:Item");
+            case NodeType.Rest:
+                Debug.Log($"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動 | タイプ:Rest");
+                UnityEngine.SceneManagement.SceneManager.LoadScene(restSceneName);
+                break;
 
-            // TODO: アイテム取得処理
-        }
-        else if (node.Type == NodeType.Boss)
-        {
-            Debug.Log($"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動 | タイプ:Boss");
+            case NodeType.Event:
+                Debug.Log($"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動 | タイプ:Event");
+                UnityEngine.SceneManagement.SceneManager.LoadScene(eventSceneName);
+                break;
 
-            // TODO: ボス戦闘シーンへ遷移
-            // SceneManager.LoadScene("BossScene");
-        }
-        else
-        {
-            Debug.Log($"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動 | タイプ:{node.Type}");
-        }
+            case NodeType.Boss:
+                Debug.Log($"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動 | タイプ:Boss");
+                UnityEngine.SceneManagement.SceneManager.LoadScene(bossSceneName);
+                break;
 
-        RefreshAllNodes();
+            default:
+                Debug.Log($"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動 | タイプ:{node.Type}");
+                RefreshAllNodes();
+                return;
+        }
     }
 
+    
     void RefreshAllNodes()
     {
         var selectables = GetSelectableNodes().ToList();
@@ -446,6 +477,8 @@ public class MapFlow : MonoBehaviour
         CreateLines(nodeObjects);
     }
 
+
+    //ラインを生成するメソッド。ノード間の接続を視覚的に表現するために使用されます。
     void CreateLines(Dictionary<int, GameObject> nodeObjects)
     {
         foreach (var node in Nodes.Values)
@@ -499,12 +532,33 @@ public class MapFlow : MonoBehaviour
         }
     }
 
-    // =========================
-    // 修正②：シーン離脱時にMapSessionが不正にならないよう
-    // ゲームオーバーやタイトル戻りのタイミングで外部から呼ぶ
-    // =========================
+
     public static void ResetSession()
     {
         MapSession.Clear();
     }
+
+
+    [Header("シーン遷移設定")]
+#if UNITY_EDITOR
+    [SerializeField] UnityEditor.SceneAsset battleScene;
+    [SerializeField] UnityEditor.SceneAsset restScene;
+    [SerializeField] UnityEditor.SceneAsset eventScene;
+    [SerializeField] UnityEditor.SceneAsset bossScene;
+#endif
+
+    [SerializeField, HideInInspector] string battleSceneName;
+    [SerializeField, HideInInspector] string restSceneName;
+    [SerializeField, HideInInspector] string eventSceneName;
+    [SerializeField, HideInInspector] string bossSceneName;
+
+#if UNITY_EDITOR
+    void OnValidate()
+    {
+        if (battleScene != null) battleSceneName = battleScene.name;
+        if (restScene != null) restSceneName = restScene.name;
+        if (eventScene != null) eventSceneName = eventScene.name;
+        if (bossScene != null) bossSceneName = bossScene.name;
+    }
+#endif
 }

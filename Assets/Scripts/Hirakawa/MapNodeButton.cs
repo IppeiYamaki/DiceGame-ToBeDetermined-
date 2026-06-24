@@ -20,13 +20,15 @@ public class MapNodeButton : MonoBehaviour
     [SerializeField] Button button;
     [SerializeField] Sprite[] nodeTypeSprites;
 
-
-      static readonly Color[] TypeColors = new Color[]
+    // NodeTypeに対応する色を定義します。インデックスはNodeTypeの順序に対応しています。
+    //上から順に画像を差し込む感じですね。
+    //まあ画像差し込むので見えないかもしれませんがね
+    static readonly Color[] TypeColors = new Color[]
       {
             new Color(0.3f, 0.8f, 0.3f), // Start  → 緑
             new Color(0.9f, 0.3f, 0.3f), // Battle → 赤
             new Color(0.3f, 0.6f, 0.9f), // Rest   → 青
-            new Color(0.9f, 0.8f, 0.2f), // Item   → 黄
+            new Color(0.9f, 0.8f, 0.2f), // Event   → 黄
             new Color(1.0f, 0.5f, 0.0f), // Boss   → オレンジ
 
       };
@@ -69,7 +71,7 @@ public class MapNodeButton : MonoBehaviour
     }
 
     // enemyDataを受け取るようにRefreshを変更
-    public void Refresh(NodeState state, NodeType nodeType, bool focused = false, EnemyData enemyData = null, bool showEnemyIcon = false, bool dimIcon = false)
+    public void Refresh(NodeState state, NodeType nodeType, bool focused = false, EnemyDefinition enemyData = null, bool showEnemyIcon = false, bool dimIcon = false)
     {
         currentState = state;
         isFocused = focused;
@@ -95,15 +97,33 @@ public class MapNodeButton : MonoBehaviour
         // アイコン表示
         if (enemyIconImage != null)
         {
-            if (showEnemyIcon && enemyData != null && enemyData.Icon != null)
+            if (showEnemyIcon && enemyData != null)
             {
-                enemyIconImage.gameObject.SetActive(true);
-                enemyIconImage.sprite = enemyData.Icon;
+                Sprite iconSprite = enemyData.VisualSprite;
 
-                // 乗ったときに暗くする
-                enemyIconImage.color = dimIcon
-                    ? new Color(0.3f, 0.3f, 0.3f, 1f)
-                    : Color.white;
+                // VisualSpriteが無ければVisualTextureから動的生成
+                if (iconSprite == null && enemyData.VisualTexture != null)
+                {
+                    var tex = enemyData.VisualTexture;
+                    iconSprite = Sprite.Create(
+                        tex,
+                        new Rect(0, 0, tex.width, tex.height),
+                        new Vector2(0.5f, 0.5f)
+                    );
+                }
+
+                if (iconSprite != null)
+                {
+                    enemyIconImage.gameObject.SetActive(true);
+                    enemyIconImage.sprite = iconSprite;
+                    enemyIconImage.color = dimIcon
+                        ? new Color(0.3f, 0.3f, 0.3f, 1f)
+                        : Color.white;
+                }
+                else
+                {
+                    enemyIconImage.gameObject.SetActive(false);
+                }
             }
             else
             {

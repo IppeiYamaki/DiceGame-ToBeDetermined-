@@ -5,6 +5,11 @@ public class PS_BIManager : MonoBehaviour
     [SerializeField]
     PS_BlackImage[] m_ps_BlackImages;
 
+    private void Start()
+    {
+        PS_Manager.Instance.ResetPassiveSkill();
+    }
+
 
     public void SetAlpha(int number)
     {

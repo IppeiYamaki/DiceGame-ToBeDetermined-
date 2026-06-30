@@ -7,14 +7,26 @@ public class PS_BlackImage : MonoBehaviour
 
     private Image m_image;
 
-   
+    //Œˆ’èƒ{ƒ^ƒ“‚Ì‚Ýtrue‚É‚·‚é
+    public bool m_selectImage = false;
 
     void Start()
     {
-        m_image = GetComponent<Image>();
-        Color color = m_image.color;
-        color.a = 0.0f;
-        m_image.color = color;
+        if(m_selectImage)
+        {
+            m_image = GetComponent<Image>();
+            Color color = m_image.color;
+            color.a = 0.7f;
+            m_image.color = color;
+        }
+        else
+        {
+            m_image = GetComponent<Image>();
+            Color color = m_image.color;
+            color.a = 0.0f;
+            m_image.color = color;
+        }
+       
     }
 
     public void AlphaChangeImage(bool can)

@@ -28,7 +28,7 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class DiceRecorderEvent
+public class DiceRecorderEventBak
 {
     public Vector3 DiceValue;
     public string recordingId1;
@@ -37,19 +37,17 @@ public class DiceRecorderEvent
 }
 
 //ダイスの役を判定するクラス
-public class DiceRole : MonoBehaviour
+public class DiceRoleBak : MonoBehaviour
 {
     [SerializeField] private int totalValue = 0;// ダイスの合計値
     private bool allStop = false;// ダイスが全て止まったかどうか
-    public List<DiceRecorderEvent> recordingId = new List<DiceRecorderEvent>(); // 録画IDのリスト（Inspectorで設定）
+    public List<DiceRecorderEventBak> recordingId = new List<DiceRecorderEventBak>(); // 録画IDのリスト（Inspectorで設定）
     public List<RandomDice> getDiceValue = new List<RandomDice>();// ダイスの値を取得するためのリスト
     public List<int> diceValue = new List<int>();// ダイスの値を格納するリスト
     public List<GameObject> diceObjects = new List<GameObject>();// ダイスのオブジェクトを格納するリスト
     public TMP_Text totalValueText;// ダイスの合計値を表示するテキスト
     public Vector3 rolevalue; // ダイスの役の値を格納する変数
     public bool isPlaying = true; // 再生中かどうかを判定するフラグ
-
-
 
     public Role currentRole = Role.None;
 
@@ -76,19 +74,16 @@ public class DiceRole : MonoBehaviour
     }
 
     [System.Serializable]
-    public class DicePattern
+    public class RoleCard
     {
-        public int[] values;
         public Role role;
+        public int count;
     }
-
-    // 全216通りの出目
-    private List<DicePattern> allPatterns = new List<DicePattern>();
-
+    public List<RoleCard> roleCards;
     void Start()
     {
-        BuildRolePatterns();
-        RollDice();
+        currentRole = DrawRole();
+        rolevalue = RoleValue(currentRole);
         Debug.Log(currentRole);
     }
     void Update()
@@ -123,12 +118,11 @@ public class DiceRole : MonoBehaviour
             int multiplier = GetMultiplier(diceValue);
             totalValue *= multiplier;
             totalValueText.text = totalValue.ToString();
-            RollDice();
+            currentRole = DrawRole();
+            rolevalue = RoleValue(currentRole);
             Debug.Log(currentRole);
         }
     }
-
-
     /// <summary>
     /// サイコロ3個の出目から役を判定する。
     /// ここが役判定の基準となるため、新しい役を追加する場合はこの関数を編集する。
@@ -231,54 +225,207 @@ public class DiceRole : MonoBehaviour
                 return 1;
         }
     }
-
-
-    void BuildRolePatterns()
+    /// <summary>
+    /// 現在のサイコロ構成で実際に作ることができる役のみを抽選する。
+    /// 作れない役は抽選対象から除外される。
+    /// </summary>
+    public Role DrawRole()
     {
-        allPatterns.Clear();
+        // 現在のサイコロで実現可能な役だけを保存
+        List<RoleCard> available = new List<RoleCard>();
 
-        for (int i = 0; i < getDiceValue[0].DiceFace.Count; i++)
+        foreach (RoleCard card in roleCards)
         {
-            for (int j = 0; j < getDiceValue[1].DiceFace.Count; j++)
+            if (CanMakeRole(card.role))
             {
-                for (int k = 0; k < getDiceValue[2].DiceFace.Count; k++)
+                available.Add(card);
+            }
+        }
+
+        if (available.Count == 0)
+            return Role.None;
+
+        int total = 0;
+
+        foreach (RoleCard card in available)
+        {
+            total += card.count;
+        }
+
+        int rand = Random.Range(0, total);
+
+        foreach (RoleCard card in available)
+        {
+            if (rand < card.count)
+                return card.role;
+
+            rand -= card.count;
+        }
+
+        return Role.None;
+    }
+
+    /// <summary>
+    /// 指定した役になる出目を生成する。
+    /// 実際に各サイコロで出すことのできる組み合わせのみ返す。
+    /// </summary>
+    public Vector3 RoleValue(Role role)
+    {
+        // 指定した役になる代表パターンを取得
+        List<int[]> patterns = GeneratePatterns(role);
+
+        // 現在のサイコロで実現可能な出目だけ保存する
+        List<int[]> success = new List<int[]>();
+
+        foreach (int[] pattern in patterns)
+        {
+            int[] assign;
+
+            if (CanAssign(pattern, out assign))
+            {
+                int weight = GetWeight(assign);
+
+                for (int i = 0; i < weight; i++)
                 {
-                    List<int> dice = new List<int>()
-                {
-                    getDiceValue[0].DiceFace[i],
-                    getDiceValue[1].DiceFace[j],
-                    getDiceValue[2].DiceFace[k]
-                };
-
-                    DicePattern pattern = new DicePattern();
-
-                    pattern.values = new int[]
-                    {
-                    dice[0],
-                    dice[1],
-                    dice[2]
-                    };
-
-                    pattern.role = GetRole(dice);
-
-                    allPatterns.Add(pattern);
+                    success.Add(assign);
                 }
             }
         }
+
+        // 実現できる組み合わせが1つも無い
+        if (success.Count == 0)
+        {
+            return Vector3.zero;
+        }
+
+        // 実現可能な組み合わせの中からランダムに選ぶ
+        int[] result = success[Random.Range(0, success.Count)];
+
+        return new Vector3(
+            result[0],
+            result[1],
+            result[2]
+        );
     }
 
-    public void RollDice()
+
+    /// <summary>
+    /// 指定した役が現在の3つのサイコロで作れるか判定する。
+    /// DrawRole()で抽選可能か判断するために使用する。
+    /// </summary>
+    bool CanMakeRole(Role role)
     {
-        int index = Random.Range(0, allPatterns.Count);
+        List<int[]> patterns = GeneratePatterns(role);
 
-        DicePattern pattern = allPatterns[index];
+        foreach (int[] p in patterns)
+        {
+            int[] assign;
 
-        rolevalue = new Vector3(
-            pattern.values[0],
-            pattern.values[1],
-            pattern.values[2]);
+            if (CanAssign(p, out assign))
+                return true;
+        }
 
-        currentRole = pattern.role;
+        return false;
     }
 
+
+    /// <summary>
+    /// 指定した出目を現在の3つのサイコロで実現できるか判定する。
+    /// 実現できる場合は各サイコロに割り当てる数字(assign)も返す。
+    /// </summary>
+    /// <param name="target">実現したい出目</param>
+    /// <param name="assign">
+    /// 実際に各サイコロへ割り当てる数字
+    /// 例：{6,5,4}
+    /// </param>
+    /// <returns>実現可能ならtrue</returns>
+    bool CanAssign(int[] target, out int[] assign)
+    {
+        assign = null;
+        // サイコロ3個への数字の割り当て順（3! = 6通り）
+        int[][] orders =
+        {
+        new[]{0,1,2},
+        new[]{0,2,1},
+        new[]{1,0,2},
+        new[]{1,2,0},
+        new[]{2,0,1},
+        new[]{2,1,0}
+    };
+        // 全ての並び順を試す
+        foreach (var order in orders)
+        {
+            if (getDiceValue[0].DiceFace.Contains(target[order[0]]) &&
+               getDiceValue[1].DiceFace.Contains(target[order[1]]) &&
+               getDiceValue[2].DiceFace.Contains(target[order[2]]))
+            {
+                assign = new int[]
+                {
+                target[order[0]],
+                target[order[1]],
+                target[order[2]]
+                };
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+    /// <summary>
+    /// 指定した役になる代表パターンを全て生成する。
+    /// 並び順は生成せず、CanAssign()で実際の並び替えを行う。
+    /// 例：
+    /// Pair → 112
+    /// Shigoro → 456
+    /// Hifumi → 123
+    /// </summary>
+    List<int[]> GeneratePatterns(Role role)
+    {
+        List<int[]> result = new List<int[]>();
+
+        for (int a = 1; a <= 6; a++)
+        {
+            for (int b = a; b <= 6; b++)
+            {
+                for (int c = b; c <= 6; c++)
+                {
+                    List<int> dice = new List<int>()
+                {
+                    a,b,c
+                };
+
+                    if (GetRole(dice) == role)
+                    {
+                        result.Add(new int[]
+                        {
+                        a,b,c
+                        });
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+    int GetWeight(int[] assign)
+    {
+        int weight = 1;
+
+        for (int i = 0; i < 3; i++)
+        {
+            int count = 0;
+
+            foreach (int face in getDiceValue[i].DiceFace)
+            {
+                if (face == assign[i])
+                    count++;
+            }
+
+            weight *= count;
+        }
+
+        return weight;
+    }
 }
+

@@ -17,7 +17,7 @@ public class DiceFaceTexture : MonoBehaviour
         {
             //デフォルトスプライトを設定
             detailImage[i].sprite = useSprites[i];
-            Debug.Log("スプライト設定完了: " + ((randomDice.diceDefinition.Faces[i].Number)-1));
+            Debug.Log("スプライト設定完了: " + ((randomDice.DiceFace[i])-1));
         }
     }
 
@@ -27,7 +27,7 @@ public class DiceFaceTexture : MonoBehaviour
         for (int i = 0; i < detailImage.Length; i++)
         {
             //スプライト統一
-            detailImage[i].sprite = useSprites[(randomDice.diceDefinition.Faces[i].Number) - 1];
+            detailImage[i].sprite = useSprites[(randomDice.DiceFace[i]) - 1];
         }
     }
 

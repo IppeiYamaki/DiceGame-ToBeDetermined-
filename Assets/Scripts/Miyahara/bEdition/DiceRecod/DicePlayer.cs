@@ -57,10 +57,10 @@ public class DicePlayer : MonoBehaviour
     public void Play()
     {
         if (recording == null || recording.frames.Count == 0) return;
-
-        rb.isKinematic = true;
         rb.angularVelocity = Vector3.zero;
         rb.linearVelocity = Vector3.zero;
+        rb.isKinematic = true;
+
 
         playbackTime = 0f;
         isPlaying = true;
@@ -69,25 +69,12 @@ public class DicePlayer : MonoBehaviour
     void Update()
     {
 
-        if (Keyboard.current.digit1Key.wasPressedThisFrame)
-            recordingId = GetRecordingId(diceRole.recordingId[0]);
-        else if (Keyboard.current.digit2Key.wasPressedThisFrame)
-            recordingId = GetRecordingId(diceRole.recordingId[1]);
-        else if (Keyboard.current.digit3Key.wasPressedThisFrame)
-            recordingId = GetRecordingId(diceRole.recordingId[2]);
-        else if (Keyboard.current.digit4Key.wasPressedThisFrame)
-            recordingId = GetRecordingId(diceRole.recordingId[3]);
-        else if (Keyboard.current.digit5Key.wasPressedThisFrame)
-            recordingId = GetRecordingId(diceRole.recordingId[4]);
-        else if (Keyboard.current.digit6Key.wasPressedThisFrame)
-            recordingId = GetRecordingId(diceRole.recordingId[5]);
-
-
+        recordingId = GetRecordingId(diceRole.recordingId[randomDice.recordingIdIndex]);
 
         if (!isPlaying)
         {
             //,ID ÇâüÇµÇΩÇÁì«Ç›çûÇÒÇ≈çƒê∂
-            if (Keyboard.current?.pKey.wasPressedThisFrame == true && randomDice.state == RandomDice.DiceState.Idle)
+            if (Keyboard.current?.spaceKey.wasPressedThisFrame == true && randomDice.state == RandomDice.DiceState.Idle&&randomDice.isNextStep==true)
             {
                 LoadRecordingAndPlay();
             }

@@ -13,46 +13,46 @@ public class RandomDice : MonoBehaviour
 {
     //private
 
-    private Rigidbody rb; // RigidbodyƒRƒ“ƒ|[ƒlƒ“ƒg‚Ö‚ÌQÆ
-    private bool notLooped = false; // ƒhƒƒbƒvŠJnŒã‚Ìˆê“x‚¾‚¯‚Ìˆ—‚ğ§Œä‚·‚éƒtƒ‰ƒO
-    private bool notLooped2 = false; // ƒTƒCƒRƒ‚ª’â~‚µ‚Ä‚¢‚È‚¢‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
+    private Rigidbody rb; // Rigidbodyã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã¸ã®å‚ç…§
+    private bool notLooped = false; // ãƒ‰ãƒ­ãƒƒãƒ—é–‹å§‹å¾Œã®ä¸€åº¦ã ã‘ã®å‡¦ç†ã‚’åˆ¶å¾¡ã™ã‚‹ãƒ•ãƒ©ã‚°
+    private bool notLooped2 = false; // ã‚µã‚¤ã‚³ãƒ­ãŒåœæ­¢ã—ã¦ã„ãªã„ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
     private int recordingIdIndex = 0;
 
     //public
-    public int changeDiceValue = 0; // o‚µ‚½‚¢–Ú
-    public Vector3 spawn = new Vector3(-4, 5, 0);   // oŒ»ˆÊ’u
-    public float rotateSpeed = 1f;// ‰ñ“]‚Ì‘¬‚³
-    public int useIdIndex = 0;//ƒ_ƒCƒX‚Ì˜^‰æID‚ÌƒCƒ“ƒfƒbƒNƒX‚ğw’è‚·‚é‚½‚ß‚Ì•Ï”
-    public List<int> DiceFace = new List<int>(); // ƒTƒCƒRƒ‚Ì–Ú‚Ì’l‚ğŠi”[‚·‚éƒŠƒXƒg
+    public int changeDiceValue = 0; // å‡ºã—ãŸã„ç›®
+    public Vector3 spawn = new Vector3(-4, 5, 0);   // å‡ºç¾ä½ç½®
+    public float rotateSpeed = 1f;// å›è»¢ã®é€Ÿã•
+    public int useIdIndex = 0;//ãƒ€ã‚¤ã‚¹ã®éŒ²ç”»IDã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’æŒ‡å®šã™ã‚‹ãŸã‚ã®å¤‰æ•°
+    public List<int> DiceFace = new List<int>(); // ã‚µã‚¤ã‚³ãƒ­ã®ç›®ã®å€¤ã‚’æ ¼ç´ã™ã‚‹ãƒªã‚¹ãƒˆ
 
 
 
-    [Header("ƒIƒuƒWƒFƒNƒgQÆ—p")]
+    [Header("ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå‚ç…§ç”¨")]
  
-    public GameObject rotateDice; // ‰ñ“]‚·‚éƒTƒCƒRƒ‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ö‚ÌQÆ
-    public DiceDefinition diceDefinition; // DiceDefinition‚Ö‚ÌQÆ
-    public TMP_Text randomText;// ƒTƒCƒRƒ‚Ì–Ú‚Ì’l‚ğ•\¦‚·‚éƒeƒLƒXƒg
-    public DiceRole role; // DiceRoleƒRƒ“ƒ|[ƒlƒ“ƒg‚Ö‚ÌQÆ
-    public DiceRecorder diceRecorder;  // ˜^‰æ—pƒRƒ“ƒ|[ƒlƒ“ƒg
+    public GameObject rotateDice; // å›è»¢ã™ã‚‹ã‚µã‚¤ã‚³ãƒ­ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®å‚ç…§
+    public DiceDefinition diceDefinition; // DiceDefinitionã¸ã®å‚ç…§
+    public TMP_Text randomText;// ã‚µã‚¤ã‚³ãƒ­ã®ç›®ã®å€¤ã‚’è¡¨ç¤ºã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆ
+    public DiceRole role; // DiceRoleã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã¸ã®å‚ç…§
+    public DiceRecorder diceRecorder;  // éŒ²ç”»ç”¨ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 
-    [Header("ƒfƒoƒbƒO—p")]
+    [Header("ãƒ‡ãƒãƒƒã‚°ç”¨")]
     [SerializeField]
-    private int notStoppedDice = 0; // ƒTƒCƒRƒ‚ª’â~‚µ‚Ä‚¢‚È‚¢ƒtƒŒ[ƒ€”‚ÌƒJƒEƒ“ƒ^
+    private int notStoppedDice = 0; // ã‚µã‚¤ã‚³ãƒ­ãŒåœæ­¢ã—ã¦ã„ãªã„ãƒ•ãƒ¬ãƒ¼ãƒ æ•°ã®ã‚«ã‚¦ãƒ³ã‚¿
     [SerializeField]
-    private bool isRecording = false; // ˜^‰æ’†‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO(ƒfƒoƒbƒO—p)
+    private bool isRecording = false; // éŒ²ç”»ä¸­ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°(ãƒ‡ãƒãƒƒã‚°ç”¨)
     [SerializeField]
-    private int stopCount = 0;// ƒTƒCƒRƒ‚ª’â~‚µ‚Ä‚¢‚éƒtƒŒ[ƒ€”‚ÌƒJƒEƒ“ƒ^
+    private int stopCount = 0;// ã‚µã‚¤ã‚³ãƒ­ãŒåœæ­¢ã—ã¦ã„ã‚‹ãƒ•ãƒ¬ãƒ¼ãƒ æ•°ã®ã‚«ã‚¦ãƒ³ã‚¿
     [SerializeField]
     private int debugtako = 0;
     [SerializeField]
-    private Vector3 torque = new Vector3(1, 1, 1);  // ‰ñ“]²
+    private Vector3 torque = new Vector3(1, 1, 1);  // å›è»¢è»¸
 
 
 
-    public bool isStopped = false; // ƒTƒCƒRƒ‚ª’â~‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO(•ÊƒXƒNƒŠƒvƒg”»’è—p)
-    public int diceValue;// ƒTƒCƒRƒ‚Ì–Ú‚ÌŒ‹‰Ê‚ğŠi”[‚·‚é•Ï”
+    public bool isStopped = false; // ã‚µã‚¤ã‚³ãƒ­ãŒåœæ­¢ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°(åˆ¥ã‚¹ã‚¯ãƒªãƒ—ãƒˆåˆ¤å®šç”¨)
+    public int diceValue;// ã‚µã‚¤ã‚³ãƒ­ã®ç›®ã®çµæœã‚’æ ¼ç´ã™ã‚‹å¤‰æ•°
 
-    // ƒTƒCƒRƒ‚Ìó‘Ô‚ğ•\‚·—ñ‹“Œ^
+    // ã‚µã‚¤ã‚³ãƒ­ã®çŠ¶æ…‹ã‚’è¡¨ã™åˆ—æŒ™å‹
     public enum DiceState
     {
         Idle,
@@ -118,7 +118,7 @@ public class RandomDice : MonoBehaviour
                 }
                 break;
             case DiceState.Stopped:
-                Debug.Log("ƒ_ƒCƒXƒiƒ“ƒo[" + debugtako +"‚à‚Æ‚Ì”Ô†"+ (int)GetRecordingId(role) + "•Ï‚¦‚½‚¢ƒ_ƒCƒXƒiƒ“ƒo[" + changeDiceValue + "•Ï‚í‚Á‚½”Ô†" + diceValue);
+                Debug.Log("ãƒ€ã‚¤ã‚¹ãƒŠãƒ³ãƒãƒ¼" + debugtako +"ã‚‚ã¨ã®ç•ªå·"+ (int)GetRecordingId(role) + "å¤‰ãˆãŸã„ãƒ€ã‚¤ã‚¹ãƒŠãƒ³ãƒãƒ¼" + changeDiceValue + "å¤‰ã‚ã£ãŸç•ªå·" + diceValue);
                 StopDice();
                 break;
             case DiceState.NextEvent:
@@ -162,7 +162,7 @@ public class RandomDice : MonoBehaviour
         };
     }
 
-    // ’â~’†‚ÌƒXƒe[ƒ^ƒXˆ—
+    // åœæ­¢ä¸­ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å‡¦ç†
     void IdolDice()
     {
         if (notLooped)
@@ -178,7 +178,7 @@ public class RandomDice : MonoBehaviour
             float rotatez = Random.Range(-3f, 3f);
 
             torque = new Vector3(rotatex, rotatey, rotatez);
-            //rb.AddTorque(torque * rotateSpeed, ForceMode.Force);
+            rb.AddTorque(torque * rotateSpeed, ForceMode.Force);
             notLooped = false;
             stopCount = 0;
             randomText.text = 0.ToString();
@@ -186,7 +186,7 @@ public class RandomDice : MonoBehaviour
         }
     }
 
-    // ƒTƒCƒRƒ‚ğ—‚Æ‚µ‚½‚ÌƒXƒe[ƒ^ƒXˆ—
+    // ã‚µã‚¤ã‚³ãƒ­ã‚’è½ã¨ã—ãŸæ™‚ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å‡¦ç†
     void DropDice()
     {
         rb.constraints = RigidbodyConstraints.None;
@@ -201,19 +201,19 @@ public class RandomDice : MonoBehaviour
         }
     }
 
-    // ˜^‰æ‚ğÄ¶‚µ‚½‚Æ‚«‚ÌƒXƒe[ƒ^ƒXˆ—
+    // éŒ²ç”»ã‚’å†ç”Ÿã—ãŸã¨ãã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å‡¦ç†
     void RecordPlaying()
     {
         notLooped = true;
     }
-    // ƒTƒCƒRƒ‚ª’â~‚µ‚Ä‚¢‚é‚Æ‚«‚ÌƒXƒe[ƒ^ƒXˆ—
+    // ã‚µã‚¤ã‚³ãƒ­ãŒåœæ­¢ã—ã¦ã„ã‚‹ã¨ãã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å‡¦ç†
     void StopDice()
     {
         stopCount = 0;
         notStoppedDice = 0;
     }
 
-    // Ÿ‚ÌƒCƒxƒ“ƒg‚ÉˆÚs‚·‚éƒXƒe[ƒ^ƒXˆ—
+    // æ¬¡ã®ã‚¤ãƒ™ãƒ³ãƒˆã«ç§»è¡Œã™ã‚‹ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å‡¦ç†
     void NextEvent()
     {
         isStopped = false;
@@ -223,7 +223,7 @@ public class RandomDice : MonoBehaviour
 
 
 
-    //ƒTƒCƒRƒ‚Ì–Ú‚ªŒˆ‚Ü‚Á‚½‚Æ‚«‚ÌƒCƒxƒ“ƒgˆ—
+    //ã‚µã‚¤ã‚³ãƒ­ã®ç›®ãŒæ±ºã¾ã£ãŸã¨ãã®ã‚¤ãƒ™ãƒ³ãƒˆå‡¦ç†
     public void Dice1Event()
     {
         stopCount++;
@@ -314,7 +314,7 @@ public class RandomDice : MonoBehaviour
         }
     }
 
-    //U‚é‘O‚ÉƒTƒCƒRƒ‚Ì–Ú‚ğ•Ï‚¦‚é‚½‚ß‚ÌŠÖ”
+    //æŒ¯ã‚‹å‰ã«ã‚µã‚¤ã‚³ãƒ­ã®ç›®ã‚’å¤‰ãˆã‚‹ãŸã‚ã®é–¢æ•°
     public void PlayDiceRotate(int diceValue)
     {
         if (diceValue == 1)

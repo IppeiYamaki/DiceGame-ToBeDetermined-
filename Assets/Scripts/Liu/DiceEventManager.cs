@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using System.Collections;
 public class DiceEventManager : MonoBehaviour
 {
     [Header("UI")]
@@ -17,6 +17,9 @@ public class DiceEventManager : MonoBehaviour
 
     [Header("Reward Dice")]
     public DiceDefinition rewardDice;
+
+    [Header("Dice Visual")]
+    public DiceVisualRoller diceVisualRoller;
 
     private bool hasRolled = false;
 
@@ -42,15 +45,37 @@ public class DiceEventManager : MonoBehaviour
             return;
         }
 
+        StartCoroutine(RollDiceCoroutine());
+    }
+
+    IEnumerator RollDiceCoroutine()
+    {
         hasRolled = true;
         rollButton.interactable = false;
 
+        diceResultText.text = "ダイスを振っています...";
+
+        //ここで1回だけ出目を決める
         int dice1 = Random.Range(1, 7);
         int dice2 = Random.Range(1, 7);
         int dice3 = Random.Range(1, 7);
 
+
+
+        // 決めた出目をダイス表示にも渡す
+        if (diceVisualRoller != null)
+        {
+            yield return StartCoroutine(diceVisualRoller.RollAnimation(dice1, dice2, dice3));
+        }
+        else
+        {
+            yield return new WaitForSeconds(1.0f);
+        }
+
+        // 同じ出目を文字にも表示する
         diceResultText.text = $"結果：{dice1}・{dice2}・{dice3}";
 
+        // 同じ出目で役判定する
         bool isSuccess = CheckRole(dice1, dice2, dice3);
 
         if (isSuccess)
@@ -62,7 +87,6 @@ public class DiceEventManager : MonoBehaviour
             FailedEvent();
         }
     }
-
     bool CheckRole(int d1, int d2, int d3)
     {
         // 3つのダイスのうち、2つ以上同じ数字なら役成立

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PassiveSkillManager : MonoBehaviour, IPointerClickHandler
+public class PS_SkillNumber : MonoBehaviour, IPointerClickHandler
 {
     public int m_SkillNumber = -1;
 

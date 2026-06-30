@@ -302,6 +302,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 503991714}
     m_Modifications:
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: randomDice
+      value: 
+      objectReference: {fileID: 548893368}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: useSprites.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'useSprites.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1080573670, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'useSprites.Array.data[1]'
+      value: 
+      objectReference: {fileID: 43397940, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'useSprites.Array.data[2]'
+      value: 
+      objectReference: {fileID: -1775422750, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'useSprites.Array.data[3]'
+      value: 
+      objectReference: {fileID: -1740814096, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'useSprites.Array.data[4]'
+      value: 
+      objectReference: {fileID: -849807132, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'useSprites.Array.data[5]'
+      value: 
+      objectReference: {fileID: -1335058926, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
     - target: {fileID: 1772626451990420367, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: m_AngularDamping
       value: 0.05
@@ -373,14 +405,18 @@ PrefabInstance:
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: diceRecorder
       value: 
-      objectReference: {fileID: 548893374}
+      objectReference: {fileID: 548893380}
+    - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: stepInterval
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: diceDefinition
       value: 
       objectReference: {fileID: 11400000, guid: 4051b0c81fd3bf64aa4f2b715e03460a, type: 2}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: changeDiceValue
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: dicecol.Array.size
@@ -478,6 +514,22 @@ PrefabInstance:
       propertyPath: diceControllers.Array.size
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 4412429363850253701, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: diceRole
+      value: 
+      objectReference: {fileID: 1903560349}
+    - target: {fileID: 4412429363850253701, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: recording
+      value: 
+      objectReference: {fileID: 11400000, guid: a96180b2a9e06d140a01accaf9afe044, type: 2}
+    - target: {fileID: 4412429363850253701, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: useIdIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4412429363850253701, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: recordingId
+      value: Dice2-1
+      objectReference: {fileID: 0}
     - target: {fileID: 5348005371022613125, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -502,16 +554,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Diec2
       objectReference: {fileID: 0}
+    - target: {fileID: 9057784841419564932, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: diceRole
+      value: 
+      objectReference: {fileID: 1903560349}
+    - target: {fileID: 9057784841419564932, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: recording
+      value: 
+      objectReference: {fileID: 11400000, guid: a96180b2a9e06d140a01accaf9afe044, type: 2}
+    - target: {fileID: 9057784841419564932, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: useIdIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9057784841419564932, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: recordingId
+      value: Dice2-1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6148920366295459662, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 548893374}
-    - targetCorrespondingSourceObject: {fileID: 6148920366295459662, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 548893373}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
 --- !u!4 &77274057 stripped
 Transform:
@@ -522,11 +584,6 @@ Transform:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8948665165911384789, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
   m_PrefabInstance: {fileID: 2852028918874836826}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &162074175 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6148920366295459662, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
-  m_PrefabInstance: {fileID: 77274056}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &170723020
 GameObject:
@@ -911,9 +968,69 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 503991714}
     m_Modifications:
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: randomDice
+      value: 
+      objectReference: {fileID: 1688169248}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: useSprites.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'useSprites.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1080573670, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'useSprites.Array.data[1]'
+      value: 
+      objectReference: {fileID: 43397940, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'useSprites.Array.data[2]'
+      value: 
+      objectReference: {fileID: -1775422750, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'useSprites.Array.data[3]'
+      value: 
+      objectReference: {fileID: -1740814096, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'useSprites.Array.data[4]'
+      value: 
+      objectReference: {fileID: -849807132, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'useSprites.Array.data[5]'
+      value: 
+      objectReference: {fileID: -1335058926, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: defaultSprites.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'defaultSprites.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1080573670, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'defaultSprites.Array.data[1]'
+      value: 
+      objectReference: {fileID: 43397940, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'defaultSprites.Array.data[2]'
+      value: 
+      objectReference: {fileID: -1775422750, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'defaultSprites.Array.data[3]'
+      value: 
+      objectReference: {fileID: -1740814096, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'defaultSprites.Array.data[4]'
+      value: 
+      objectReference: {fileID: -849807132, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'defaultSprites.Array.data[5]'
+      value: 
+      objectReference: {fileID: -1335058926, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
     - target: {fileID: 3255362186196042633, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.0000000020548168
+      value: 0.00000003290829
       objectReference: {fileID: 0}
     - target: {fileID: 3255362186196042633, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: m_LocalPosition.y
@@ -921,7 +1038,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3255362186196042633, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.0000000036504009
+      value: -0.00000002777376
       objectReference: {fileID: 0}
     - target: {fileID: 3255362186196042633, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: m_LocalRotation.w
@@ -978,14 +1095,18 @@ PrefabInstance:
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: diceRecorder
       value: 
-      objectReference: {fileID: 1688169254}
+      objectReference: {fileID: 1688169260}
+    - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: stepInterval
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: diceDefinition
       value: 
-      objectReference: {fileID: 11400000, guid: 4051b0c81fd3bf64aa4f2b715e03460a, type: 2}
+      objectReference: {fileID: 11400000, guid: 35de4ad2a42e1e14a94948be4cfa3fea, type: 2}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: changeDiceValue
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: dicecol.Array.size
@@ -1083,22 +1204,48 @@ PrefabInstance:
       propertyPath: diceControllers.Array.size
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 4412429363850253701, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: diceRole
+      value: 
+      objectReference: {fileID: 1903560349}
+    - target: {fileID: 4412429363850253701, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: recording
+      value: 
+      objectReference: {fileID: 11400000, guid: ba58cdb2d2f903f45bf6ff98f645f3a3, type: 2}
+    - target: {fileID: 4412429363850253701, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: useIdIndex
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4412429363850253701, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: recordingId
+      value: Dice3-1
+      objectReference: {fileID: 0}
     - target: {fileID: 6148920366295459662, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: m_Name
       value: Diec3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9057784841419564932, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: diceRole
+      value: 
+      objectReference: {fileID: 1903560349}
+    - target: {fileID: 9057784841419564932, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: recording
+      value: 
+      objectReference: {fileID: 11400000, guid: ba58cdb2d2f903f45bf6ff98f645f3a3, type: 2}
+    - target: {fileID: 9057784841419564932, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: useIdIndex
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9057784841419564932, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: recordingId
+      value: Dice3-1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7422857791851471705, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
     - {fileID: 4204598061192631228, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6148920366295459662, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1688169254}
-    - targetCorrespondingSourceObject: {fileID: 6148920366295459662, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1688169253}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
 --- !u!4 &382348349 stripped
 Transform:
@@ -1119,11 +1266,6 @@ GameObject:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 981539662530977884, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
   m_PrefabInstance: {fileID: 77274056}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &480815718 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9103133890436252924, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
-  m_PrefabInstance: {fileID: 2852028918874836826}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &503991713
 GameObject:
@@ -1181,48 +1323,23 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
   m_PrefabInstance: {fileID: 77274056}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 162074175}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a9ee84cf79c59e4daaf44ab1b92ec3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RandomDice
---- !u!114 &548893373
+--- !u!114 &548893380 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 4412429363850253701, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+  m_PrefabInstance: {fileID: 77274056}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 162074175}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f963e779afe88b4887ddac13f177cec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DicePlayer
-  recording: {fileID: 11400000, guid: a96180b2a9e06d140a01accaf9afe044, type: 2}
-  randomDice: {fileID: 548893368}
-  diceRole: {fileID: 1903560349}
-  recordingId: Dice1
-  playbackSpeed: 1
-  useIdIndex: 1
---- !u!114 &548893374
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 162074175}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2631fb61c7e62c4f8e2458adec47f07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DiceRecorder
-  recording: {fileID: 11400000, guid: a96180b2a9e06d140a01accaf9afe044, type: 2}
-  randomDice: {fileID: 548893368}
-  diceRole: {fileID: 1903560349}
-  recordingId: Dice1
-  recordInterval: 0.02
-  useIdIndex: 1
 --- !u!1 &551372141 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4272897258702448275, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
@@ -2810,58 +2927,28 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1583548428}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1644265118 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6148920366295459662, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
-  m_PrefabInstance: {fileID: 382348348}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1688169248 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
   m_PrefabInstance: {fileID: 382348348}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1644265118}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a9ee84cf79c59e4daaf44ab1b92ec3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RandomDice
---- !u!114 &1688169253
+--- !u!114 &1688169260 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 4412429363850253701, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+  m_PrefabInstance: {fileID: 382348348}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1644265118}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f963e779afe88b4887ddac13f177cec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DicePlayer
-  recording: {fileID: 11400000, guid: cc881ffd04f7bad4c94363264bae5b58, type: 2}
-  randomDice: {fileID: 1688169248}
-  diceRole: {fileID: 1903560349}
-  recordingId: Dice1
-  playbackSpeed: 1
-  useIdIndex: 2
---- !u!114 &1688169254
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1644265118}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2631fb61c7e62c4f8e2458adec47f07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DiceRecorder
-  recording: {fileID: 11400000, guid: cc881ffd04f7bad4c94363264bae5b58, type: 2}
-  randomDice: {fileID: 1688169248}
-  diceRole: {fileID: 1903560349}
-  recordingId: Dice1
-  recordInterval: 0.02
-  useIdIndex: 2
 --- !u!1 &1699612214
 GameObject:
   m_ObjectHideFlags: 0
@@ -2974,7 +3061,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
   m_PrefabInstance: {fileID: 2852028918874836826}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1972092255}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a9ee84cf79c59e4daaf44ab1b92ec3d, type: 3}
@@ -3202,7 +3289,11 @@ MonoBehaviour:
   - {fileID: 548893368}
   - {fileID: 1688169248}
   diceValue: 
+  diceObjects: []
   totalValueText: {fileID: 1090669623}
+  rolevalue: {x: 0, y: 0, z: 0}
+  isPlaying: 1
+  currentRole: 0
   Pinzoro: 10
   Arashii: 5
   Pair: 2
@@ -3210,6 +3301,23 @@ MonoBehaviour:
   Hifumi: 3
   Even: 3
   Odd: 3
+  roleCards:
+  - role: 0
+    count: 40
+  - role: 1
+    count: 5
+  - role: 2
+    count: 5
+  - role: 3
+    count: 30
+  - role: 4
+    count: 5
+  - role: 5
+    count: 5
+  - role: 6
+    count: 5
+  - role: 7
+    count: 5
 --- !u!1 &1939772857
 GameObject:
   m_ObjectHideFlags: 0
@@ -3289,47 +3397,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1464906012}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1972092255 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6148920366295459662, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
-  m_PrefabInstance: {fileID: 2852028918874836826}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1972092262
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1972092255}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f963e779afe88b4887ddac13f177cec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DicePlayer
-  recording: {fileID: 11400000, guid: 827d637ecff694246b1c23ba52899919, type: 2}
-  randomDice: {fileID: 1712773648}
-  diceRole: {fileID: 1903560349}
-  recordingId: Dice1
-  playbackSpeed: 1
-  useIdIndex: 0
---- !u!114 &1972092263
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1972092255}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2631fb61c7e62c4f8e2458adec47f07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DiceRecorder
-  recording: {fileID: 11400000, guid: 827d637ecff694246b1c23ba52899919, type: 2}
-  randomDice: {fileID: 1712773648}
-  diceRole: {fileID: 1903560349}
-  recordingId: Dice1
-  recordInterval: 0.02
-  useIdIndex: 0
 --- !u!1 &1987328672 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3851383301444558001, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
@@ -3363,6 +3430,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 503991714}
     m_Modifications:
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: randomDice
+      value: 
+      objectReference: {fileID: 1712773648}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: useSprites.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'useSprites.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1080573670, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'useSprites.Array.data[1]'
+      value: 
+      objectReference: {fileID: 43397940, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'useSprites.Array.data[2]'
+      value: 
+      objectReference: {fileID: -1775422750, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'useSprites.Array.data[3]'
+      value: 
+      objectReference: {fileID: -1740814096, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'useSprites.Array.data[4]'
+      value: 
+      objectReference: {fileID: -849807132, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+    - target: {fileID: 1724249169374948927, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: 'useSprites.Array.data[5]'
+      value: 
+      objectReference: {fileID: -1335058926, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
     - target: {fileID: 3255362186196042633, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.000000011567744
@@ -3416,31 +3515,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1339276833}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
-      propertyPath: rotateDice
-      value: 
-      objectReference: {fileID: 480815718}
-    - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
-      propertyPath: isRecording
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
-      propertyPath: diceRecorder
-      value: 
-      objectReference: {fileID: 1972092263}
-    - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
-      propertyPath: diceDefinition
-      value: 
-      objectReference: {fileID: 11400000, guid: 4051b0c81fd3bf64aa4f2b715e03460a, type: 2}
-    - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: changeDiceValue
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: dicecol.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
-      propertyPath: DiceFace.Array.size
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
@@ -3512,10 +3591,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
-      propertyPath: diceDefinition.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: 'recordingId.Array.data[0]'
       value: Dice1-1
       objectReference: {fileID: 0}
@@ -3544,10 +3619,6 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
-      propertyPath: 'diceDefinition.Array.data[0]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 4051b0c81fd3bf64aa4f2b715e03460a, type: 2}
-    - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: diceEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -3555,6 +3626,10 @@ PrefabInstance:
       propertyPath: diceEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4412429363850253701, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: diceRole
+      value: 
+      objectReference: {fileID: 1903560349}
     - target: {fileID: 5348005371022613125, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -3603,16 +3678,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9057784841419564932, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: diceRole
+      value: 
+      objectReference: {fileID: 1903560349}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6148920366295459662, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1972092263}
-    - targetCorrespondingSourceObject: {fileID: 6148920366295459662, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1972092262}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

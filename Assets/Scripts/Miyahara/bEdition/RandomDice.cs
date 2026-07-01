@@ -144,10 +144,10 @@ public class RandomDice : MonoBehaviour
                 diceRecorder.StartRecording();
         }
 
-        if (Keyboard.current.rKey.wasPressedThisFrame)
-        {
-            isRecording = !isRecording;
-        }
+        //if (Keyboard.current.rKey.wasPressedThisFrame)
+        //{
+        //    isRecording = !isRecording;
+        //}
 
 
 

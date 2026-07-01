@@ -413,7 +413,7 @@ PrefabInstance:
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: diceDefinition
       value: 
-      objectReference: {fileID: 11400000, guid: 4051b0c81fd3bf64aa4f2b715e03460a, type: 2}
+      objectReference: {fileID: 11400000, guid: 35de4ad2a42e1e14a94948be4cfa3fea, type: 2}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: changeDiceValue
       value: 4
@@ -1103,7 +1103,7 @@ PrefabInstance:
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: diceDefinition
       value: 
-      objectReference: {fileID: 11400000, guid: 35de4ad2a42e1e14a94948be4cfa3fea, type: 2}
+      objectReference: {fileID: 11400000, guid: b39f590e807d4e845b4493ae3b78841a, type: 2}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: changeDiceValue
       value: 4
@@ -3301,23 +3301,6 @@ MonoBehaviour:
   Hifumi: 3
   Even: 3
   Odd: 3
-  roleCards:
-  - role: 0
-    count: 40
-  - role: 1
-    count: 5
-  - role: 2
-    count: 5
-  - role: 3
-    count: 30
-  - role: 4
-    count: 5
-  - role: 5
-    count: 5
-  - role: 6
-    count: 5
-  - role: 7
-    count: 5
 --- !u!1 &1939772857
 GameObject:
   m_ObjectHideFlags: 0
@@ -3514,6 +3497,10 @@ PrefabInstance:
       propertyPath: randomText
       value: 
       objectReference: {fileID: 1339276833}
+    - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
+      propertyPath: diceDefinition
+      value: 
+      objectReference: {fileID: 11400000, guid: 35de4ad2a42e1e14a94948be4cfa3fea, type: 2}
     - target: {fileID: 3926065578617183881, guid: 6049f8c8bc2a7734cb7ac37817d21d13, type: 3}
       propertyPath: changeDiceValue
       value: 4

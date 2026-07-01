@@ -8,6 +8,8 @@ public class PS_SkillNumber : MonoBehaviour, IPointerClickHandler
     [SerializeField]
     PS_BIManager m_ps_BIManager;
 
+   
+
     public void OnPointerClick(PointerEventData eventData)//対象Imageをクリックすると実行
     { 
         Debug.Log(m_SkillNumber);

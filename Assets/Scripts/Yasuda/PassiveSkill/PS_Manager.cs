@@ -7,7 +7,7 @@ public class PS_Manager : MonoBehaviour
     public enum PassiveSkill
     {
         None,
-        Gyakko,
+        Gyakkyo,
         Haisui,
         Yoigosi
     }
@@ -43,7 +43,7 @@ public class PS_Manager : MonoBehaviour
     {
         if(number == 0)
         {
-            m_passiveSkill = PassiveSkill.Gyakko;
+            m_passiveSkill = PassiveSkill.Gyakkyo;
         }
         else if (number == 1)
         {

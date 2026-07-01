@@ -37,7 +37,7 @@ public class DicePlayer : MonoBehaviour
 
     public void LoadRecordingAndPlay()
     {
-        string dir = Path.Combine(Application.persistentDataPath, "DiceRecordings");
+        string dir = Path.Combine(Application.streamingAssetsPath, "DiceRecordings");
         string fileName = recordingId + ".json";
         string fullPath = Path.Combine(dir, fileName);
 

@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5141af8e7e02ee54d9b1d83e9c0c2ea5, type: 3}
   m_Name: DiceDefinition_ 1
   m_EditorClassIdentifier: Assembly-CSharp::DiceDefinition
-  m_persistentId: 
+  m_persistentId: 425c9d56808a42a3992db4f60eaebbbf
   m_diceName: 
   m_faces:
-  - m_number: 0
-  - m_number: 0
-  - m_number: 0
-  - m_number: 0
-  - m_number: 0
-  - m_number: 0
-  m_useStandardFaceNumbers: 1
+  - m_number: 5
+  - m_number: 6
+  - m_number: 6
+  - m_number: 6
+  - m_number: 6
+  - m_number: 6
+  m_useStandardFaceNumbers: 0

@@ -40,6 +40,7 @@ public class Skill_Doku : MonoBehaviour, IPointerClickHandler
     public void UseSkill()
     {
         //“G‚ð“Å‚É‚·‚é
+        Debug.Log("“Å");
     }
 
 
@@ -58,9 +59,10 @@ public class Skill_Doku : MonoBehaviour, IPointerClickHandler
     {
         if (CheckUseSkill() == true)
         {
+            m_use = true;
             m_point.UseSkillPoint(m_usePoint);
             UseSkill();//‚±‚±‚ÅƒXƒLƒ‹”­“®
-            m_use = true;
+           
         }
     }
 }

@@ -17,9 +17,19 @@ public class SkillPointBox : MonoBehaviour, IPointerClickHandler
     [SerializeField]
     private TMP_Text m_NokoriSkillPoint;
 
+    [SerializeField]
+    private SkillManager m_manager;
+
+    void ImageUpdater()
+    {
+        m_manager.ImageUpdate();
+    }
+
+
+
     void Start()
     {
-        SetSkillPoint(m_SetSkillPoint);//テスト用。本番は不要
+        //SetSkillPoint(m_SetSkillPoint);//テスト用。本番は不要
     }
 
     public void SetSkillPoint(int skillPoint)
@@ -27,18 +37,27 @@ public class SkillPointBox : MonoBehaviour, IPointerClickHandler
         //ここで出目の合計を受け取る
         m_SkillPoint = skillPoint;
         m_NokoriSkillPoint.text = m_SkillPoint.ToString();
+
+        //明るくするか確認
+        ImageUpdater();
     }
     public void AddSkillPoint(int skillPoint)
     {
         //ポイントを増やすならこっち
         m_SkillPoint += skillPoint;
         m_NokoriSkillPoint.text = m_SkillPoint.ToString();
+
+        //明るくするか確認
+        ImageUpdater();
     }
     public void UseSkillPoint(int skillPoint)
     {
         //スキルを使う時に消費
         m_SkillPoint -= skillPoint;
         m_NokoriSkillPoint.text = m_SkillPoint.ToString();
+
+        //暗くするか確認
+        ImageUpdater();
     }
     public int GetSkillPoint()
     {

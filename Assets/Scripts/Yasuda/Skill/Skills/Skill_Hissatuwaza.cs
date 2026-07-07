@@ -58,9 +58,10 @@ public class Skill_Hissatuwaza : MonoBehaviour, IPointerClickHandler
     {
         if (CheckUseSkill() == true)
         {
+            m_use = true;
             m_point.UseSkillPoint(m_usePoint);
             UseSkill();//‚±‚±‚ÅƒXƒLƒ‹”­“®
-            m_use = true;
+           
         }
     }
 }

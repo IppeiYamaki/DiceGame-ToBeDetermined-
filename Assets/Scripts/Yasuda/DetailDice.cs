@@ -25,7 +25,7 @@ public class DetailDice : MonoBehaviour
 
         if(group==0)
         {
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < detailImage.Length; i++)
             {
                 int num = test.GetNumber(group, id, i);//この部分でサイコロの面データ（数字）を受け取る
                 detailImage[i].sprite = detailSprites[num];//数字にそったスプライトにする
@@ -34,7 +34,7 @@ public class DetailDice : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < detailImage2.Length; i++)
             {
                 int num = test.GetNumber(group, id, i);//この部分でサイコロの面データ（数字）を受け取る
                 detailImage2[i].sprite = detailSprites[num];//数字にそったスプライトにする
@@ -49,7 +49,7 @@ public class DetailDice : MonoBehaviour
     {
         if(g==0)
         {
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < detailImage.Length; i++)
             {
                 detailImage[i].gameObject.SetActive(false);
                
@@ -57,7 +57,7 @@ public class DetailDice : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < detailImage2.Length; i++)
             {
                 
                 detailImage2[i].gameObject.SetActive(false);

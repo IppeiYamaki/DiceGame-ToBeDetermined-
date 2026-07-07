@@ -1,15 +1,14 @@
 using System;
-using System.Collections.Generic;
 
 /// <summary>
 /// 3個のダイスをロールした全体結果を表すデータ
-/// 各ダイスのロール結果、成立した役、属性別の合計値、倍率適用後の最終値を保持します
+/// 各ダイスのロール結果、成立した役、出目合計、倍率適用後の最終値を保持します
 /// 
 /// 使用例:
-/// - 各ダイスのロール結果: [ { 出目: 3, 属性: Attack 1 } , { 出目: 3, 属性: Defense 2 }, { 出目: 3, 属性: Attack 1 } ]
+/// - 各ダイスのロール結果: [ { 出目: 3 } , { 出目: 3 }, { 出目: 3 } ]
 /// - 成立役: ゾロ目（倍率 2.0f）
-/// - 属性別合計（倍率適用前）: { Attack: 2, Defense: 2 }
-/// - 属性別最終値（倍率適用後）: { Attack: 4, Defense: 4 }
+/// - 出目合計（倍率適用前）: 9
+/// - 最終値（倍率適用後）: 18
 /// </summary>
 [Serializable]
 public struct DiceRollResult
@@ -24,11 +23,11 @@ public struct DiceRollResult
     /// <summary>成立した役の判定結果</summary>
     public DiceRoleEvaluateResult EvaluateResult;
 
-    /// <summary>属性別の合計値（倍率適用前）</summary>
-    public Dictionary<DiceAttributeType, int> AttributeTotals;
+    /// <summary>出目合計（倍率適用前）</summary>
+    public int TotalNumber;
 
-    /// <summary>属性別の最終値（倍率適用後）</summary>
-    public Dictionary<DiceAttributeType, int> FinalAttributeValues;
+    /// <summary>最終値（倍率適用後）</summary>
+    public int FinalValue;
 
     // ─────────────────────────────────────────────────────────
     // コンストラクタ
@@ -39,18 +38,18 @@ public struct DiceRollResult
     /// </summary>
     /// <param name="rollData">各ダイスのロール結果（3個分）</param>
     /// <param name="evaluateResult">成立した役の判定結果</param>
-    /// <param name="attributeTotals">属性別の合計値（倍率適用前）</param>
-    /// <param name="finalAttributeValues">属性別の最終値（倍率適用後）</param>
+    /// <param name="totalNumber">出目合計（倍率適用前）</param>
+    /// <param name="finalValue">最終値（倍率適用後）</param>
     public DiceRollResult(
         DiceRollData[] rollData,
         DiceRoleEvaluateResult evaluateResult,
-        Dictionary<DiceAttributeType, int> attributeTotals,
-        Dictionary<DiceAttributeType, int> finalAttributeValues)
+        int totalNumber,
+        int finalValue)
     {
         RollData = rollData ?? new DiceRollData[3];
         EvaluateResult = evaluateResult;
-        AttributeTotals = attributeTotals ?? new Dictionary<DiceAttributeType, int>();
-        FinalAttributeValues = finalAttributeValues ?? new Dictionary<DiceAttributeType, int>();
+        TotalNumber = totalNumber;
+        FinalValue = finalValue;
     }
 
     // ─────────────────────────────────────────────────────────

@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f76755bb9ae1cb34abaf79eb82b22cfb, type: 3}
+  m_Name: EnemyDefinition_
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDefinition
+  m_enemyName: Slime
+  m_maxHp: 50
+  m_attackPower: 15
+  m_visualSprite: {fileID: 0}
+  m_visualTexture: {fileID: 2800000, guid: cf7e69180159d4140bcdf501115bb6ca, type: 3}
+  m_idleTextures:
+  - {fileID: 2800000, guid: 475350879a04d2c48bd6a6521b3bf9dd, type: 3}
+  - {fileID: 2800000, guid: cf7e69180159d4140bcdf501115bb6ca, type: 3}
+  - {fileID: 2800000, guid: 3fb53c365d3c71c45a43a164f0d8e3f9, type: 3}
+  m_actionTexture: {fileID: 2800000, guid: 20b10f2ed5a99a34f8174acbe2abffa1, type: 3}
+  m_idleFrameInterval: 0.2
+  m_hpRangeActionSets:
+  - m_upperPercent: 100
+    m_lowerPercent: 0
+    m_actionGroups:
+    - m_weight: 1
+      m_actions:
+      - m_actionType: 0
+        m_power: 10
+        m_statusEffect: {fileID: 0}
+        m_useEffect: 0
+        m_effectPrefab: {fileID: 0}
+        m_effectAnchor: 0
+        m_effectDuration: 0
+        m_useSound: 1
+        m_audioClip: {fileID: 8300000, guid: 54cc2c6df956a934587ef208db51fada, type: 3}
+        m_soundTiming: 1
+        m_volume: 1
+    - m_weight: 1
+      m_actions:
+      - m_actionType: 0
+        m_power: 5
+        m_statusEffect: {fileID: 0}
+        m_useEffect: 0
+        m_effectPrefab: {fileID: 0}
+        m_effectAnchor: 0
+        m_effectDuration: 0
+        m_useSound: 1
+        m_audioClip: {fileID: 8300000, guid: 54cc2c6df956a934587ef208db51fada, type: 3}
+        m_soundTiming: 1
+        m_volume: 1
+      - m_actionType: 1
+        m_power: 5
+        m_statusEffect: {fileID: 0}
+        m_useEffect: 0
+        m_effectPrefab: {fileID: 0}
+        m_effectAnchor: 0
+        m_effectDuration: 0
+        m_useSound: 0
+        m_audioClip: {fileID: 0}
+        m_soundTiming: 0
+        m_volume: 0
+    - m_weight: 1
+      m_actions:
+      - m_actionType: 1
+        m_power: 5
+        m_statusEffect: {fileID: 0}
+        m_useEffect: 0
+        m_effectPrefab: {fileID: 0}
+        m_effectAnchor: 0
+        m_effectDuration: 0
+        m_useSound: 0
+        m_audioClip: {fileID: 0}
+        m_soundTiming: 0
+        m_volume: 0

@@ -463,13 +463,8 @@ MonoBehaviour:
   - {fileID: 980473848076806679}
   - {fileID: 2946872752381450518}
   - {fileID: 5918401408187284450}
-  detailSprites:
-  - {fileID: 1080573670, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
-  - {fileID: 43397940, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
-  - {fileID: -1775422750, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
-  - {fileID: -1740814096, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
-  - {fileID: -849807132, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
-  - {fileID: -1335058926, guid: 64ec24c717ce3aa4b8b000dbdbdb306c, type: 3}
+  useSprites: []
+  randomDice: {fileID: 0}
 --- !u!1 &2886318643121793827
 GameObject:
   m_ObjectHideFlags: 0
@@ -1230,6 +1225,8 @@ GameObject:
   - component: {fileID: 2421293834881272451}
   - component: {fileID: 1772626451990420367}
   - component: {fileID: 3926065578617183881}
+  - component: {fileID: 4412429363850253701}
+  - component: {fileID: 9057784841419564932}
   m_Layer: 0
   m_Name: Diec
   m_TagString: Untagged
@@ -1370,19 +1367,62 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9ee84cf79c59e4daaf44ab1b92ec3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RandomDice
-  torque: {x: 1, y: 1, z: 1}
+  DiceFace: 000000000000000000000000000000000000000000000000
   spawn: {x: 0, y: 5, z: 0}
-  diceRecorder: {fileID: 0}
+  rotateSpeed: 100
+  stepInterval: 0.5
+  useIdIndex: 0
+  recordingIdIndex: 0
+  isNotPlayer: 0
+  isNextStep: 0
+  rotateDice: {fileID: 9103133890436252924}
+  diceDefinition: {fileID: 11400000, guid: 4051b0c81fd3bf64aa4f2b715e03460a, type: 2}
+  randomText: {fileID: 0}
+  role: {fileID: 0}
+  diceRecorder: {fileID: 4412429363850253701}
   notStoppedDice: 0
   isRecording: 0
-  changeDiceValue: 0
-  role: {fileID: 0}
-  isStopped: 0
   stopCount: 0
+  torque: {x: 1, y: 1, z: 1}
+  isStopped: 0
   diceValue: 0
-  rotateSpeed: 100
-  randomText: {fileID: 0}
   state: 0
+--- !u!114 &4412429363850253701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6148920366295459662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2631fb61c7e62c4f8e2458adec47f07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DiceRecorder
+  useIdIndex: 0
+  recording: {fileID: 11400000, guid: 827d637ecff694246b1c23ba52899919, type: 2}
+  randomDice: {fileID: 3926065578617183881}
+  diceRole: {fileID: 0}
+  recordingId: Dice1-1
+  recordInterval: 0.02
+--- !u!114 &9057784841419564932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6148920366295459662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f963e779afe88b4887ddac13f177cec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DicePlayer
+  useIdIndex: 0
+  recording: {fileID: 11400000, guid: 827d637ecff694246b1c23ba52899919, type: 2}
+  randomDice: {fileID: 3926065578617183881}
+  diceRole: {fileID: 0}
+  recordingId: Dice1-1
+  playbackSpeed: 1
 --- !u!1 &6635761081150544143
 GameObject:
   m_ObjectHideFlags: 0

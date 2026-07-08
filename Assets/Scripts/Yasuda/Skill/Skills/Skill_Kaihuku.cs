@@ -54,13 +54,16 @@ public class Skill_Kaihuku : MonoBehaviour, IPointerClickHandler
     }
 
 
+
+
     public void OnPointerClick(PointerEventData eventData)//対象Imageをクリックすると実行
     {
         if (CheckUseSkill() == true)
         {
+            m_use = true;
             m_point.UseSkillPoint(m_usePoint);
             UseSkill();//ここでスキル発動
-            m_use = true;
+           
         }
     }
 }

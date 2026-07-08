@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
@@ -16,15 +17,17 @@ public class RandomDice : MonoBehaviour
     private Rigidbody rb; // Rigidbodyコンポーネントへの参照
     private bool notLooped = false; // ドロップ開始後の一度だけの処理を制御するフラグ
     private bool notLooped2 = false; // サイコロが停止していないかどうかのフラグ
-    private int recordingIdIndex = 0;
+    private float stepIntervalTime = 0.1f; // サイコロが停止していると判定するまでの時間の間隔
+    private int changeDiceValue = 0; // 出したい目
 
     //public
-    public int changeDiceValue = 0; // 出したい目
+    public List<int> DiceFace = new List<int>(); // サイコロの目の値を格納するリスト
     public Vector3 spawn = new Vector3(-4, 5, 0);   // 出現位置
     public float rotateSpeed = 1f;// 回転の速さ
+    public float stepInterval = 0.5f; // サイコロが停止していると判定するまでのフレーム数の間隔
     public int useIdIndex = 0;//ダイスの録画IDのインデックスを指定するための変数
-    public List<int> DiceFace = new List<int>(); // サイコロの目の値を格納するリスト
-
+    public int recordingIdIndex = 0;
+    public bool isNextStep = false; // 次のステップに進むかどうかのフラグ
 
 
     [Header("オブジェクト参照用")]
@@ -34,6 +37,8 @@ public class RandomDice : MonoBehaviour
     public TMP_Text randomText;// サイコロの目の値を表示するテキスト
     public DiceRole role; // DiceRoleコンポーネントへの参照
     public DiceRecorder diceRecorder;  // 録画用コンポーネント
+    public DiceFaceTexture diceFaceTexture; // サイコロの目のテクスチャを管理するコンポーネントへの参照
+
 
     [Header("デバッグ用")]
     [SerializeField]
@@ -43,11 +48,9 @@ public class RandomDice : MonoBehaviour
     [SerializeField]
     private int stopCount = 0;// サイコロが停止しているフレーム数のカウンタ
     [SerializeField]
-    private int debugtako = 0;
-    [SerializeField]
     private Vector3 torque = new Vector3(1, 1, 1);  // 回転軸
 
-
+    
 
     public bool isStopped = false; // サイコロが停止しているかどうかのフラグ(別スクリプト判定用)
     public int diceValue;// サイコロの目の結果を格納する変数
@@ -69,11 +72,10 @@ public class RandomDice : MonoBehaviour
         this.transform.position = spawn;
         rb = GetComponent<Rigidbody>();
         //role = GetComponent<DiceRole>();
-        for (int i = 0; i < DiceFace.Count; i++)
-        {
-            DiceFace[i] = diceDefinition.Faces[i].Number;
-        }
 
+        DiceDefault();
+
+        recordingIdIndex = 0;
     }
 
 
@@ -98,6 +100,7 @@ public class RandomDice : MonoBehaviour
         {
             case DiceState.Idle:
                 IdolDice();
+                DiceDefault();
                 if (!notLooped2)
                 {
                     rotateDice.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -110,15 +113,14 @@ public class RandomDice : MonoBehaviour
                 break;
             case DiceState.RecordPlaying:
                 RecordPlaying();
-                if (notLooped2)
+                if (notLooped2 && role.isPlaying)
                 {
                     PlayDiceRotate((int)GetRecordingId(role));
-                    
                     notLooped2 = false;
                 }
                 break;
             case DiceState.Stopped:
-                Debug.Log("ダイスナンバー" + debugtako +"もとの番号"+ (int)GetRecordingId(role) + "変えたいダイスナンバー" + changeDiceValue + "変わった番号" + diceValue);
+                //Debug.Log("ダイスナンバー" + debugtako +"もとの番号"+ (int)GetRecordingId(role) + "変えたいダイスナンバー" + changeDiceValue + "変わった番号" + diceValue);
                 StopDice();
                 break;
             case DiceState.NextEvent:
@@ -126,12 +128,12 @@ public class RandomDice : MonoBehaviour
                 break;
         }
 
+
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             switch (state)
             {
                 case DiceState.Idle:
-                    state = DiceState.Dropping;
                     break;
                 case DiceState.NextEvent:
                     state = DiceState.Idle;
@@ -142,10 +144,10 @@ public class RandomDice : MonoBehaviour
                 diceRecorder.StartRecording();
         }
 
-        if (Keyboard.current.rKey.wasPressedThisFrame)
-        {
-            isRecording = !isRecording;
-        }
+        //if (Keyboard.current.rKey.wasPressedThisFrame)
+        //{
+        //    isRecording = !isRecording;
+        //}
 
 
 
@@ -162,11 +164,35 @@ public class RandomDice : MonoBehaviour
         };
     }
 
+    private int GetRoleIdIndex(DiceRole r)
+    {
+        return useIdIndex switch
+        {
+            0 => (int)r.rolevalue.x,
+            1 => (int)r.rolevalue.y,
+            2 => (int)r.rolevalue.z,
+            _ => (int)r.rolevalue.x
+        };
+    }
+
     // 停止中のステータス処理
     void IdolDice()
     {
+        diceFaceTexture.SetDiceFaceTexture();
+        stepIntervalTime += Time.deltaTime;
+        if(stepIntervalTime >= stepInterval)
+        {
+            isNextStep = true;
+        }
+
         if (notLooped)
         {
+
+
+            recordingIdIndex += 1;
+            if (recordingIdIndex > 5)
+                recordingIdIndex = 0;
+
             rb.isKinematic = false;
             this.transform.position = spawn;
             this.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -183,6 +209,8 @@ public class RandomDice : MonoBehaviour
             stopCount = 0;
             randomText.text = 0.ToString();
             isStopped = false;
+            changeDiceValue = GetRoleIdIndex(role);
+            Debug.Log(GetRoleIdIndex(role));
         }
     }
 
@@ -219,6 +247,8 @@ public class RandomDice : MonoBehaviour
         isStopped = false;
         stopCount = 0;
         notStoppedDice = 0;
+        stepIntervalTime = 0;
+        isNextStep = false;
     }
 
 
@@ -229,7 +259,6 @@ public class RandomDice : MonoBehaviour
         stopCount++;
         if (stopCount > 30)
         {
-            Debug.Log("1");
             randomText.text = DiceFace[0].ToString();
             diceValue = DiceFace[0];
             isStopped = true;
@@ -244,7 +273,6 @@ public class RandomDice : MonoBehaviour
         stopCount++;
         if (stopCount > 30)
         {
-            Debug.Log("2");
             randomText.text = DiceFace[1].ToString();
             diceValue = DiceFace[1];
             isStopped = true;
@@ -259,7 +287,6 @@ public class RandomDice : MonoBehaviour
         stopCount++;
         if (stopCount > 30)
         {
-            Debug.Log("3");
             randomText.text = DiceFace[2].ToString();
             diceValue = DiceFace[2];
             isStopped = true;
@@ -274,7 +301,6 @@ public class RandomDice : MonoBehaviour
         stopCount++;
         if (stopCount > 30)
         {
-            Debug.Log("4");
             randomText.text = DiceFace[3].ToString();
             diceValue = DiceFace[3];
             isStopped = true;
@@ -289,7 +315,6 @@ public class RandomDice : MonoBehaviour
         stopCount++;
         if (stopCount > 30)
         {
-            Debug.Log("5");
             randomText.text = DiceFace[4].ToString();
             diceValue = DiceFace[4];
             isStopped = true;
@@ -304,7 +329,6 @@ public class RandomDice : MonoBehaviour
         stopCount++;
         if (stopCount > 30)
         {
-            Debug.Log("6");
             randomText.text = DiceFace[5].ToString();
             diceValue = DiceFace[5];
             isStopped = true;
@@ -478,6 +502,47 @@ public class RandomDice : MonoBehaviour
             else if (changeDiceValue == 6)
             {
                 rotateDice.transform.rotation *= Quaternion.Euler(0, 0, 0);
+            }
+        }
+    }
+
+    void DiceDefault()
+    {
+        DiceFace.Clear();
+        for (int i = 0; i < 6; i++)
+        {
+            DiceFace.Add(0);
+        }
+
+
+        List<int> remainNumbers = new List<int>();
+
+        // 対応位置に入れる
+        for (int i = 0; i < diceDefinition.Faces.Count; i++)
+        {
+            int number = diceDefinition.Faces[i].Number;
+            int targetIndex = number - 1;
+
+            // 対応位置が空いている
+            if (DiceFace[targetIndex] == 0)
+            {
+                DiceFace[targetIndex] = number;
+            }
+            else
+            {
+                remainNumbers.Add(number);
+            }
+        }
+
+        // 残りを空いている場所へ入れる
+        int remainIndex = 0;
+
+        for (int i = 0; i < DiceFace.Count; i++)
+        {
+            if (DiceFace[i] == 0)
+            {
+                DiceFace[i] = remainNumbers[remainIndex];
+                remainIndex++;
             }
         }
     }

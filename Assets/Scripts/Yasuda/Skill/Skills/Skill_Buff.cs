@@ -61,9 +61,10 @@ public class Skill_Buff : MonoBehaviour, IPointerClickHandler
     {
         if (CheckUseSkill() == true)
         {
+            m_use = true;
             m_point.UseSkillPoint(m_usePoint);
             UseSkill();//‚±‚±‚ÅƒXƒLƒ‹”­“®
-            m_use = true;
+            
         }
     }
 }

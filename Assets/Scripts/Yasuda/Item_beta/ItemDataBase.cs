@@ -25,6 +25,12 @@ public class ItemDataBase : MonoBehaviour
 #endif
     }
 
+    public void UseItem(ItemData item)
+    {
+
+    }
+
+
 
     public ItemData GetItemByID(int id)
     {

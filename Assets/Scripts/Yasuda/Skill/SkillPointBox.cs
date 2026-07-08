@@ -50,5 +50,7 @@ public class SkillPointBox : MonoBehaviour, IPointerClickHandler
     {
         //テスト（クリックしたらスキルポイントセット）
         SetSkillPoint(m_SetSkillPoint);
+
+        
     }
 }

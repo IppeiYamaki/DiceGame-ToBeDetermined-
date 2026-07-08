@@ -4,30 +4,39 @@ using UnityEngine.UI;
 public class DiceFaceTexture : MonoBehaviour
 {
     public SpriteRenderer[] detailImage;
-    public Sprite[] useSprites;
-
+    public TextureDefinition[] diceDefinition;
     public RandomDice randomDice;
 
+    [System.Serializable]
+    public class TextureDefinition
+    {
+        public DiceDefinition diceDefinition;
+        public Sprite[] useSprites;
+    };
 
 
     void Start()
     {
-
-        for (int i = 0; i < detailImage.Length; i++)
-        {
-            //デフォルトスプライトを設定
-            detailImage[i].sprite = useSprites[i];
-            Debug.Log("スプライト設定完了: " + ((randomDice.DiceFace[i])-1));
-        }
+        SetDiceFaceTexture();
     }
 
     void Update()
     {
+    }
 
-        for (int i = 0; i < detailImage.Length; i++)
+    //新しいダイスを取得したときに呼び出す
+    public void SetDiceFaceTexture()
+    {
+        for (int i = 0; i < diceDefinition.Length-1; i++)
         {
-            //スプライト統一
-            detailImage[i].sprite = useSprites[(randomDice.DiceFace[i]) - 1];
+            if (randomDice.diceDefinition == diceDefinition[i].diceDefinition)
+            {
+                for (int j = 0; j < detailImage.Length; j++)
+                {
+                    //スプライト統一
+                    detailImage[j].sprite = diceDefinition[i].useSprites[(randomDice.DiceFace[j]) - 1];
+                }
+            }
         }
     }
 

@@ -27,7 +27,6 @@ public class RandomDice : MonoBehaviour
     public float stepInterval = 0.5f; // サイコロが停止していると判定するまでのフレーム数の間隔
     public int useIdIndex = 0;//ダイスの録画IDのインデックスを指定するための変数
     public int recordingIdIndex = 0;
-    public bool isNotPlayer = false; // プレイヤーが操作していないかどうかのフラグ
     public bool isNextStep = false; // 次のステップに進むかどうかのフラグ
 
 
@@ -38,6 +37,7 @@ public class RandomDice : MonoBehaviour
     public TMP_Text randomText;// サイコロの目の値を表示するテキスト
     public DiceRole role; // DiceRoleコンポーネントへの参照
     public DiceRecorder diceRecorder;  // 録画用コンポーネント
+    public DiceFaceTexture diceFaceTexture; // サイコロの目のテクスチャを管理するコンポーネントへの参照
 
 
     [Header("デバッグ用")]
@@ -178,6 +178,7 @@ public class RandomDice : MonoBehaviour
     // 停止中のステータス処理
     void IdolDice()
     {
+        diceFaceTexture.SetDiceFaceTexture();
         stepIntervalTime += Time.deltaTime;
         if(stepIntervalTime >= stepInterval)
         {

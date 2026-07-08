@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
+
+[System.Serializable]
+
 public class Item_DataMaster : MonoBehaviour
 {
     public static Item_DataMaster Instance;
@@ -13,14 +16,16 @@ public class Item_DataMaster : MonoBehaviour
     }
 
  
-    private static int itemSuu = 5;//アイテムの種類数をここに入れる
+    public static int itemSuu = 5;//アイテムの種類数をここに入れる
 
 
-    //[SerializeField]
-    //public Item[] Items2 = new Item[itemSuu];
+   
+    [SerializeField]
+    private string[] ItemName = new string[itemSuu];
+    
 
 
-    public Item[] Items = new Item[itemSuu];
+    private Item[] Items = new Item[itemSuu];
 
     
 
@@ -164,27 +169,13 @@ public class Item_DataMaster : MonoBehaviour
         for (int i = 0; i < itemSuu; i++)
         {
             Items[i].id = i;
+            Items[i].name = ItemName[i];
             Items[i].count = i+1;//テスト。本番時はi+1を0にする
 
-            switch (i)
-            {
-                case 0:
-                    Items[i].name = "テスト１";
-                    break;
-                case 1:
-                    Items[i].name = "テスト２";
-                    break;
-                case 2:
-                    Items[i].name = "テスト３";
-                    break;
-                case 3:
-                    Items[i].name = "テスト４";
-                    break;
-                case 4:
-                    Items[i].name = "テスト５";
-                    break;
-            }
 
+
+            Debug.Log("Items[" + i + "]のID＝" + Items[i].id);
+            Debug.Log("Items[" + i + "]の名前＝" + Items[i].name);
             Debug.Log("Items[" + i + "]のアイテム数＝" + Items[i].count);
         }
 

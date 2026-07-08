@@ -61,4 +61,13 @@ public class PS_Manager : MonoBehaviour
     {
         return m_passiveSkill;
     }
+
+    //ŒÄ‚Ño‚µ—á
+    //if(PS_Manager.Instance.GetPassiveSkill() == PassiveSkill.Gyakkyo)
+    //{
+    //  Debug.Log(PS_Manager.Instance.GetPassiveSkill());
+    //}
+      
+
+
 }

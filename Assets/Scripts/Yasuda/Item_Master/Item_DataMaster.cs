@@ -19,7 +19,7 @@ public class Item_DataMaster : MonoBehaviour
     public static int itemSuu = 5;//アイテムの種類数をここに入れる
 
 
-   
+    [Header("ここにスキル名を入れるとスキル名を記録できる")]
     [SerializeField]
     private string[] ItemName = new string[itemSuu];
     

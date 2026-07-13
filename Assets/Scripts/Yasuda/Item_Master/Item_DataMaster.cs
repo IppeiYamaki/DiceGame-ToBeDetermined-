@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Rendering;
 
 
@@ -8,11 +9,17 @@ public class Item_DataMaster : MonoBehaviour
 {
     public static Item_DataMaster Instance;
 
+  
+  
+ 
+   
+
     public struct Item
     {
         public int id;
         public string name;
         public int count;
+        public AudioClip clip;
     }
 
  
@@ -22,13 +29,18 @@ public class Item_DataMaster : MonoBehaviour
     [Header("ここにスキル名を入れるとスキル名を記録できる")]
     [SerializeField]
     private string[] ItemName = new string[itemSuu];
-    
-
+    [Header("ここにSEを記録できる")]
+    [SerializeField]
+    private AudioClip[] seList = new AudioClip[itemSuu];
+    private AudioSource audioSource;
 
     private Item[] Items = new Item[itemSuu];
 
-    
 
+    private void PlaySE(AudioClip se)
+    {
+        audioSource.PlayOneShot(se);
+    }
 
     //アイテム取得時に呼び出す
     public void AddItemCount(int id)
@@ -76,6 +88,8 @@ public class Item_DataMaster : MonoBehaviour
                 //ここでアイテムの効果処理を行う
                 break;
         }
+
+        PlaySE(Items[id].clip);
 
        //for (int i = 0; i < Items.Length; i++)
        //{
@@ -164,19 +178,20 @@ public class Item_DataMaster : MonoBehaviour
         }
 
         Instance = this;
-
+        audioSource = GetComponent<AudioSource>();
         Debug.Log("Item_DataMasterのAwake()");
         for (int i = 0; i < itemSuu; i++)
         {
             Items[i].id = i;
             Items[i].name = ItemName[i];
             Items[i].count = i+1;//テスト。本番時はi+1を0にする
-
+            Items[i].clip = seList[i];
 
 
             Debug.Log("Items[" + i + "]のID＝" + Items[i].id);
             Debug.Log("Items[" + i + "]の名前＝" + Items[i].name);
             Debug.Log("Items[" + i + "]のアイテム数＝" + Items[i].count);
+            Debug.Log("Items[" + i + "]のSE名＝" + Items[i].clip.ToString());
         }
 
         DontDestroyOnLoad(gameObject);

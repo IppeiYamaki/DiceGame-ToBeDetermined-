@@ -36,12 +36,13 @@ public class MoveDice : MonoBehaviour
             transform.localPosition =
                 startPos + new Vector3(0, y, 0);
         }
-       
 
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space))
         {
             SwitchMove();
         }
+#endif
     }
 
     public void SwitchMove()

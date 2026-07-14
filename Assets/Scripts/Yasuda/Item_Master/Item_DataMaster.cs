@@ -184,7 +184,7 @@ public class Item_DataMaster : MonoBehaviour
         {
             Items[i].id = i;
             Items[i].name = ItemName[i];
-            Items[i].count = i+1;//テスト。本番時はi+1を0にする
+            Items[i].count = 1;//テスト。本番時はi+1を0にする
             Items[i].clip = seList[i];
 
 

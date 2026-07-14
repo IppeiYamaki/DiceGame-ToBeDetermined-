@@ -14,6 +14,18 @@ public class Skill_Mahi : MonoBehaviour, IPointerClickHandler
     //このターン使ったか。使ったらtrueにする
     private bool m_use = false;
 
+    [SerializeField]
+    private AudioClip se;
+    private AudioSource audioSource;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+    private void PlaySE()
+    {
+        audioSource.PlayOneShot(se);
+    }
 
     public bool CheckUseSkill()
     {
@@ -40,6 +52,7 @@ public class Skill_Mahi : MonoBehaviour, IPointerClickHandler
     public void UseSkill()
     {
         //敵を麻痺
+        PlaySE();
     }
 
 

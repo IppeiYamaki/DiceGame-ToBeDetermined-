@@ -16,7 +16,7 @@ public class SkillManager : MonoBehaviour
     [SerializeField]
     private BlackImage[] m_BlackImage;
 
-    private int abcde = 5;
+    private static int abcde = 5;
 
     
 

@@ -13,7 +13,6 @@ public class DiceItem : MonoBehaviour
     public float liftAmount = 0.6f;     
 
     private bool isRolling = false;
-    private bool isDecided = false;
     private bool isUp = false;
 
     private Vector3 originalPos;

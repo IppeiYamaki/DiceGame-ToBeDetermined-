@@ -75,6 +75,8 @@ public class RandomDice : MonoBehaviour
 
         DiceDefault();
 
+        diceFaceTexture.SetDiceFaceTexture();
+
         recordingIdIndex = 0;
     }
 

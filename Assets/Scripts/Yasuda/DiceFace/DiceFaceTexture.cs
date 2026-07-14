@@ -17,7 +17,7 @@ public class DiceFaceTexture : MonoBehaviour
 
     void Start()
     {
-        SetDiceFaceTexture();
+
     }
 
     void Update()
@@ -27,12 +27,13 @@ public class DiceFaceTexture : MonoBehaviour
     //新しいダイスを取得したときに呼び出す
     public void SetDiceFaceTexture()
     {
-        for (int i = 0; i < diceDefinition.Length-1; i++)
+        for (int i = 0; i < diceDefinition.Length; i++)
         {
             if (randomDice.diceDefinition == diceDefinition[i].diceDefinition)
             {
                 for (int j = 0; j < detailImage.Length; j++)
                 {
+
                     //スプライト統一
                     detailImage[j].sprite = diceDefinition[i].useSprites[(randomDice.DiceFace[j]) - 1];
                 }

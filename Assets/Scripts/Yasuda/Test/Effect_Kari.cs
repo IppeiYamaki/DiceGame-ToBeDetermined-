@@ -19,7 +19,7 @@ public class Effect_Kari : MonoBehaviour
     [Header("エフェクト全体の時間（1 = 1秒）")]
     public float effectAllTime = 1.0f;
 
-    private float all = 0;
+    
 
     void Start()
     {
@@ -59,7 +59,7 @@ public class Effect_Kari : MonoBehaviour
             Color color = effect.color;
             color.a = colorA;
             effect.color = color;
-            Debug.Log(colorA);
+            //Debug.Log(colorA);
         }
     }
 
@@ -78,6 +78,7 @@ public class Effect_Kari : MonoBehaviour
                 color = color_Hissatuwaza; break;
             case 4:
                 color = color_Buff; break;
+           
             default:
                 color = Color.white; break;
         }   

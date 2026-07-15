@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -25,8 +26,14 @@ public class RestSceneManager : MonoBehaviour
     public Button healDepartButton;
     public Button maxHPDepartButton;
 
+    [Header("サウンド")]
+    public AudioSource audioSource;
+    public AudioClip clickSound;
+    public AudioClip healSound;
+    public AudioClip levelUpSound;
+
     [Header("戻るシーン名")]
-    public string nextSceneName = "MapScene";
+    public string nextSceneName = "NewScene";
 
     void Start()
     {
@@ -46,11 +53,14 @@ public class RestSceneManager : MonoBehaviour
     {
         hpSlider.maxValue = maxHP;
         hpSlider.value = currentHP;
+
         hpText.text = "HP: " + currentHP + " / " + maxHP;
     }
 
     void OnClickHeal()
     {
+        PlaySound(clickSound);
+
         int healAmount = currentHP / 2;
 
         currentHP += healAmount;
@@ -67,10 +77,14 @@ public class RestSceneManager : MonoBehaviour
 
         healButton.interactable = false;
         maxHPButton.interactable = false;
+
+        StartCoroutine(PlayHealSound());
     }
 
     void OnClickMaxHP()
     {
+        PlaySound(clickSound);
+
         maxHP += 20;
         currentHP += 20;
 
@@ -86,10 +100,39 @@ public class RestSceneManager : MonoBehaviour
 
         healButton.interactable = false;
         maxHPButton.interactable = false;
+
+        StartCoroutine(PlayLevelUpSound());
     }
 
     void OnClickDepart()
     {
+        PlaySound(clickSound);
+        StartCoroutine(LoadNextScene());
+    }
+
+    IEnumerator PlayHealSound()
+    {
+        yield return new WaitForSeconds(0.1f);
+        PlaySound(healSound);
+    }
+
+    IEnumerator PlayLevelUpSound()
+    {
+        yield return new WaitForSeconds(0.1f);
+        PlaySound(levelUpSound);
+    }
+
+    IEnumerator LoadNextScene()
+    {
+        yield return new WaitForSeconds(0.15f);
         SceneManager.LoadScene(nextSceneName);
+    }
+
+    void PlaySound(AudioClip sound)
+    {
+        if (audioSource != null && sound != null)
+        {
+            audioSource.PlayOneShot(sound);
+        }
     }
 }

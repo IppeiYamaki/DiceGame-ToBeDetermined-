@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using UnityEngine.Audio;
 public class DiceEventManager : MonoBehaviour
 {
     [Header("UI")]
@@ -11,6 +12,12 @@ public class DiceEventManager : MonoBehaviour
     public TextMeshProUGUI diceResultText;
     public Button rollButton;
     public Button skipButton;
+
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip diceRollSound;
+    public AudioClip successSound;
+    public AudioClip damageSound;
 
     [Header("Player")]
     public PlayerStatus playerStatus;
@@ -54,6 +61,8 @@ public class DiceEventManager : MonoBehaviour
         rollButton.interactable = false;
 
         diceResultText.text = "ダイスを振っています...";
+
+        PlaySound(diceRollSound);
 
         //ここで1回だけ出目を決める
         int dice1 = Random.Range(1, 7);
@@ -102,6 +111,8 @@ public class DiceEventManager : MonoBehaviour
     {
         diceResultText.text += "\n役成立！新ダイス獲得！";
 
+        PlaySound(successSound);
+
         if (rewardDice != null)
         {
             diceResultText.text += "\n獲得ダイス：" + rewardDice.DiceName;
@@ -111,6 +122,8 @@ public class DiceEventManager : MonoBehaviour
     void FailedEvent()
     {
         diceResultText.text += "\n役に満たない！10ダメージ！";
+
+        PlaySound(damageSound);
 
         if (playerStatus != null)
         {
@@ -122,4 +135,12 @@ public class DiceEventManager : MonoBehaviour
     {
         eventPanel.SetActive(false);
     }
+    void PlaySound(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+        {
+            audioSource.PlayOneShot(clip);
+        }
+    }
+
 }

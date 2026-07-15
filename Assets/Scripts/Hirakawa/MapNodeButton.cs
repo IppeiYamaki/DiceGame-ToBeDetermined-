@@ -16,20 +16,23 @@ public class MapNodeButton : MonoBehaviour
 
     [SerializeField] Image nodeImage;
     [SerializeField] Image cursorImage;
-    [SerializeField] Image enemyIconImage; // 追加：敵アイコン表示用
     [SerializeField] Button button;
     [SerializeField] Sprite[] nodeTypeSprites;
 
     // NodeTypeに対応する色を定義します。インデックスはNodeTypeの順序に対応しています。
     //上から順に画像を差し込む感じですね。
     //まあ画像差し込むので見えないかもしれませんがね
+
+    //嘘です。画像データそのままの色にするため全部白にしときます
     static readonly Color[] TypeColors = new Color[]
       {
-            new Color(0.3f, 0.8f, 0.3f), // Start  → 緑
-            new Color(0.9f, 0.3f, 0.3f), // Battle → 赤
-            new Color(0.3f, 0.6f, 0.9f), // Rest   → 青
-            new Color(0.9f, 0.8f, 0.2f), // Event   → 黄
-            new Color(1.0f, 0.5f, 0.0f), // Boss   → オレンジ
+            new Color(1.0f, 1.0f, 1.0f), // Start
+            new Color(1.0f, 1.0f, 1.0f), // Battle
+            new Color(1.0f, 1.0f, 1.0f), // Rest  
+            new Color(1.0f, 1.0f, 1.0f), // Event
+            new Color(1.0f, 1.0f, 1.0f), // Treasure
+            new Color(1.0f, 1.0f, 1.0f), // Item   → 灰
+            new Color(1.0f, 1.0f, 1.0f), // Boss   → オレンジ
 
       };
 
@@ -51,9 +54,7 @@ public class MapNodeButton : MonoBehaviour
             cursorImage.color = Color.white;
 
 
-        // 起動時はアイコンを非表示にしておく
-        if (enemyIconImage != null)
-            enemyIconImage.gameObject.SetActive(false);
+      
     }
 
     void OnClick()
@@ -71,7 +72,7 @@ public class MapNodeButton : MonoBehaviour
     }
 
     // enemyDataを受け取るようにRefreshを変更
-    public void Refresh(NodeState state, NodeType nodeType, bool focused = false, EnemyDefinition enemyData = null, bool showEnemyIcon = false, bool dimIcon = false)
+    public void Refresh(NodeState state, NodeType nodeType, bool focused = false)
     {
         currentState = state;
         isFocused = focused;
@@ -92,43 +93,16 @@ public class MapNodeButton : MonoBehaviour
             _ => baseColor * MultLocked
         };
 
-        transform.localScale = isFocused ? Vector3.one * focusedScale : Vector3.one;
-
-        // アイコン表示
-        if (enemyIconImage != null)
+        // 変更後
+        if (nodeType == NodeType.Boss)
         {
-            if (showEnemyIcon && enemyData != null)
-            {
-                Sprite iconSprite = enemyData.VisualSprite;
-
-                // VisualSpriteが無ければVisualTextureから動的生成
-                if (iconSprite == null && enemyData.VisualTexture != null)
-                {
-                    var tex = enemyData.VisualTexture;
-                    iconSprite = Sprite.Create(
-                        tex,
-                        new Rect(0, 0, tex.width, tex.height),
-                        new Vector2(0.5f, 0.5f)
-                    );
-                }
-
-                if (iconSprite != null)
-                {
-                    enemyIconImage.gameObject.SetActive(true);
-                    enemyIconImage.sprite = iconSprite;
-                    enemyIconImage.color = dimIcon
-                        ? new Color(0.3f, 0.3f, 0.3f, 1f)
-                        : Color.white;
-                }
-                else
-                {
-                    enemyIconImage.gameObject.SetActive(false);
-                }
-            }
-            else
-            {
-                enemyIconImage.gameObject.SetActive(false);
-            }
+            // BOSSは常に大きく表示
+            transform.localScale = Vector3.one * 3f;
         }
+        else
+        {
+            transform.localScale = isFocused ? Vector3.one * focusedScale : Vector3.one;
+        }
+
     }
 }

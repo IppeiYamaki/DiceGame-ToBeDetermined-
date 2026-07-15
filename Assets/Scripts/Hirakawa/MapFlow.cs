@@ -7,18 +7,14 @@ using UnityEngine.SceneManagement;
 // =========================
 // 型定義
 // =========================
-
-
-//ノード（マス）の種類を定義する列挙型。Start, Battle, Rest, Event, Bossの5種類。
-//増やしたい場合はここに新しいノードの名前を追加し、MapGenerator.DecideNodeTypeメソッドで割り当てる条件を追加する必要があります。
-//シーン遷移の処理もMapFlow.SelectNextNodeメソッドに追加する必要があります。
-//MapNodeButtonクラスのTypeColors配列にも新しいノードタイプの色を追加する必要があります。
 public enum NodeType
 {
     Start,
     Battle,
     Rest,
     Event,
+    Treasure,
+    Item,
     Boss
 }
 
@@ -52,76 +48,94 @@ public class MapGraph
     public int BossNodeId;
 }
 
-
-//
-
-
-
 // =========================
-// マップ生成
+// マップ生成（固定マップ）
 // =========================
-
-
-
-// 生成アルゴリズムの概要
+// レイヤー構成：
+// L0: Start(1)
+// L1: Battle(1)
+// L2: Battle(2) ← 分岐
+// L3: Treasure(1) ← 収束
+// L4: Battle(2) ← 分岐
+// L5: Rest(1) / Event(1)
+// L6: Treasure(1) ← 収束
+// L7: Battle(2) ← 分岐
+// L8: Event(1) / Rest(1) ← 交差接続
+// L9: Boss(1) ← 収束
 public static class MapGenerator
 {
-
-    // 生成パラメータ
-    //maxNodesPerLayerは、各レイヤーに配置されるノードの最大数。増やせば選択肢が増える。
-    //enemyDatabaseは、敵データベースを指定することで、Battleノード敵を割り当てる。
-
-
     public static MapGraph Generate(
-        int layerCount = 6,
-        int minNodesPerLayer = 2,
-        int maxNodesPerLayer = 4,
         MapDirection direction = MapDirection.Horizontal,
         EnemyDatabase enemyDatabase = null
     )
-
-
     {
         var graph = new MapGraph();
         int nextId = 0;
-        List<List<MapNode>> layers = new();
 
-        float layerSpacing = 170f;
-        float laneSpacing = 110f;
+        float layerSpacing = 130f;
+        float laneSpacing = 400f;
 
-        var nodeCounts = new int[layerCount];
-        for (int layer = 0; layer < layerCount; layer++)
+        // -------------------------
+        // レイヤー構成定義
+        // (NodeType, laneIndex) のリスト
+        // -------------------------
+        var layerDefs = new List<List<(NodeType type, int lane)>>
         {
-            if (layer == 0 || layer == 2 || layer == 4 || layer == layerCount - 1)
-                nodeCounts[layer] = 1;
-            else
-                nodeCounts[layer] = Random.Range(minNodesPerLayer, maxNodesPerLayer + 1);
-        }
+            // L0: Start
+            new() { (NodeType.Start, 0) },
+            // L1: Battle×1
+            new() { (NodeType.Battle, 0) },
+            // L2: Battle×2（分岐）
+            new() { (NodeType.Battle, 0), (NodeType.Battle, 1) },
+            // L3: Treasure×1（収束）
+            new() { (NodeType.Treasure, 0) },
+            // L4: Battle×2（分岐）
+            new() { (NodeType.Battle, 0), (NodeType.Battle, 1) },
+            // L5: Rest / Event
+            new() { (NodeType.Rest, 0), (NodeType.Event, 1) },
+            // L6: Treasure×1（収束）
+            new() { (NodeType.Treasure, 0) },
+            // L7: Battle×2（分岐）
+            new() { (NodeType.Battle, 0), (NodeType.Battle, 1) },
+            // L8: Event / Rest（交差接続）
+            new() { (NodeType.Event, 0), (NodeType.Rest, 1) },
+            // L9: Boss×1（収束）
+            new() { (NodeType.Boss, 0) },
+        };
 
-        for (int layer = 0; layer < layerCount; layer++)
+        // -------------------------
+        // ノード生成
+        // -------------------------
+        var layers = new List<List<MapNode>>();
+
+        for (int layer = 0; layer < layerDefs.Count; layer++)
         {
             var layerNodes = new List<MapNode>();
-            int count = nodeCounts[layer];
+            var defs = layerDefs[layer];
+            int count = defs.Count;
             float centerOffset = (count - 1) / 2f;
 
             for (int i = 0; i < count; i++)
             {
+                var (type, lane) = defs[i];
+
                 float along = layer * layerSpacing;
                 float cross = (i - centerOffset) * laneSpacing;
+
+                float x = direction == MapDirection.Horizontal ? along : cross;
+                float y = direction == MapDirection.Horizontal ? cross : along;
 
                 var node = new MapNode
                 {
                     Id = nextId++,
                     Layer = layer,
-                    Lane = i,
+                    Lane = lane,
                     IndexInLayer = i,
-                    Type = DecideNodeType(layer, layerCount),
-                    Position = direction == MapDirection.Horizontal
-                                    ? new Vector2(along, cross)
-                                    : new Vector2(cross, along)
+                    Type = type,
+                    Position = new Vector2(x, y)
                 };
 
-                if (node.Type == NodeType.Battle && enemyDatabase != null)
+                if (type == NodeType.Battle && enemyDatabase != null)
                     node.Enemy = enemyDatabase.GetRandom();
 
                 graph.Nodes[node.Id] = node;
@@ -130,107 +144,62 @@ public static class MapGenerator
             layers.Add(layerNodes);
         }
 
-        for (int layer = 0; layer < layerCount - 1; layer++)
-        {
-            var cur = layers[layer];
-            var next = layers[layer + 1];
+        // -------------------------
+        // 接続定義
+        // 基本：同インデックス or 収束は全員→0番
+        // 交差：L8はL7の0番→L8の1番、L7の1番→L8の0番
+        // -------------------------
 
-            if (layer == layerCount - 2)
-            {
-                foreach (var node in cur)
-                {
-                    node.NextNodeIds.Clear();
-                    node.NextNodeIds.Add(next[0].Id);
-                }
-                continue;
-            }
+        // L0(Start) → L1(Battle)
+        Connect(layers[0][0], layers[1][0]);
 
-            if (next.Count == 1)
-            {
-                foreach (var node in cur)
-                {
-                    if (!node.NextNodeIds.Contains(next[0].Id))
-                        node.NextNodeIds.Add(next[0].Id);
-                }
-                continue;
-            }
+        // L1(Battle) → L2(Battle×2) 分岐
+        Connect(layers[1][0], layers[2][0]);
+        Connect(layers[1][0], layers[2][1]);
 
-            int curCount = cur.Count;
-            int nextCount = next.Count;
+        // L2(Battle×2) → L3(Treasure) 収束
+        Connect(layers[2][0], layers[3][0]);
+        Connect(layers[2][1], layers[3][0]);
 
-            foreach (var node in cur)
-            {
-                float t = (curCount <= 1) ? 0.5f : (float)node.IndexInLayer / (curCount - 1);
-                float centerF = t * (nextCount - 1);
-                int center = Mathf.RoundToInt(centerF);
+        // L3(Treasure) → L4(Battle×2) 分岐
+        Connect(layers[3][0], layers[4][0]);
+        Connect(layers[3][0], layers[4][1]);
 
-                var candidates = Enumerable.Range(0, nextCount).ToList();
-                candidates.Sort((a, b) =>
-                    Mathf.Abs(a - center).CompareTo(Mathf.Abs(b - center)));
+        // L4(Battle×2) → L5(Rest/Event) 各自対応
+        // ①ルート(lane0) → Rest(0番)
+        // ②ルート(lane1) → Event(1番)
+        Connect(layers[4][0], layers[5][0]);
+        Connect(layers[4][1], layers[5][1]);
 
-                int connected = 0;
-                foreach (int ni in candidates)
-                {
-                    if (connected >= 2) break;
+        // L5(Rest/Event) → L6(Treasure) 収束
+        Connect(layers[5][0], layers[6][0]);
+        Connect(layers[5][1], layers[6][0]);
 
-                    bool crosses = false;
-                    for (int pi = 0; pi < curCount; pi++)
-                    {
-                        var other = cur[pi];
-                        foreach (var cid in other.NextNodeIds)
-                        {
-                            int otherNi = next.FindIndex(n => n.Id == cid);
-                            if (otherNi < 0) continue;
+        // L6(Treasure) → L7(Battle×2) 分岐
+        Connect(layers[6][0], layers[7][0]);
+        Connect(layers[6][0], layers[7][1]);
 
-                            int fi = node.IndexInLayer;
-                            if ((fi < pi && ni > otherNi) ||
-                                (fi > pi && ni < otherNi))
-                            {
-                                crosses = true;
-                                break;
-                            }
-                        }
-                        if (crosses) break;
-                    }
+        // L7(Battle×2) → L8(Event/Rest) 交差接続
+        // ①ルート(lane0) → Rest(1番)  ※交差
+        // ②ルート(lane1) → Event(0番) ※交差
+        Connect(layers[7][0], layers[8][1]);
+        Connect(layers[7][1], layers[8][0]);
 
-                    if (!crosses)
-                    {
-                        node.NextNodeIds.Add(next[ni].Id);
-                        connected++;
-                    }
-                }
-
-                if (node.NextNodeIds.Count == 0)
-                    node.NextNodeIds.Add(next[center].Id);
-            }
-
-            for (int ni = 0; ni < nextCount; ni++)
-            {
-                var child = next[ni];
-                if (cur.Any(p => p.NextNodeIds.Contains(child.Id))) continue;
-
-                var bestParent = cur
-                    .OrderBy(p => Mathf.Abs(GetNearestNextIndex(p, curCount, nextCount) - ni))
-                    .First();
-
-                if (!bestParent.NextNodeIds.Contains(child.Id))
-                    bestParent.NextNodeIds.Add(child.Id);
-            }
-        }
+        // L8(Event/Rest) → L9(Boss) 収束
+        Connect(layers[8][0], layers[9][0]);
+        Connect(layers[8][1], layers[9][0]);
 
         graph.StartNodeId = layers[0][0].Id;
-        graph.BossNodeId = layers[^1][0].Id;
+        graph.BossNodeId = layers[9][0].Id;
 
         CenterGraph(graph);
         return graph;
     }
 
-
-    
-    private static int GetNearestNextIndex(MapNode node, int curCount, int nextCount)
+    private static void Connect(MapNode from, MapNode to)
     {
-        float t = (curCount <= 1) ? 0.5f : (float)node.IndexInLayer / (curCount - 1);
-        return Mathf.RoundToInt(t * (nextCount - 1));
+        if (!from.NextNodeIds.Contains(to.Id))
+            from.NextNodeIds.Add(to.Id);
     }
 
     private static void CenterGraph(MapGraph graph)
@@ -251,18 +220,6 @@ public static class MapGenerator
         Vector2 center = new Vector2((minX + maxX) * 0.5f, (minY + maxY) * 0.5f);
         foreach (var node in graph.Nodes.Values)
             node.Position -= center;
-    }
-
-
-    // ノード(マス)タイプを決定するメソッド。レイヤー番号と最大レイヤー数に基づいて、ノードの種類を決定します。
-    //今現在は、レイヤー0はStart、レイヤー2と4はRest、最終レイヤーはBoss、それ以外のレイヤーでは70%の確率でBattle、30%の確率でEventとなるように設定されています。
-    private static NodeType DecideNodeType(int layer, int maxLayer)
-    {
-        if (layer == 0) return NodeType.Start;
-        if (layer == 2 || layer == 4) return NodeType.Rest;
-        if (layer == maxLayer - 1) return NodeType.Boss;
-
-        return Random.value < 0.7f ? NodeType.Battle : NodeType.Event;
     }
 }
 
@@ -287,12 +244,7 @@ public class MapFlow : MonoBehaviour
     {
         if (!MapSession.HasData)
         {
-
-            // 初回生成時のみ、マップを生成してセッションに保存
-            // 生成パラメータは必要に応じて調整可能にしてます  
-            //layerCountの数字を増やすと、マップのレイヤー数が増えます。ボスまでの道が長くなります。
             graph = MapGenerator.Generate(
-                layerCount: 6,
                 direction: MapDirection.Horizontal,
                 enemyDatabase: enemyDatabase
             );
@@ -315,7 +267,6 @@ public class MapFlow : MonoBehaviour
         DebugAllNodes();
         DebugDrawConnections();
 
-        // 修正①：UIを生成する前にparentの子を全削除して二重生成を防ぐ
         foreach (Transform child in parent)
             Destroy(child.gameObject);
         nodeButtons.Clear();
@@ -332,10 +283,10 @@ public class MapFlow : MonoBehaviour
             yield return Nodes[id];
     }
 
-    //ノード選択時の処理。Battle, Rest, Event, Boss以外にも対応する場合は、ここに追加する。
     public void SelectNextNode(int nextId)
     {
-        if (!Nodes[CurrentNodeId].NextNodeIds.Contains(nextId)) return;
+        if (!Nodes[CurrentNodeId].NextNodeIds.Contains(nextId))
+            return;
 
         CurrentNodeId = nextId;
         visitedNodeIds.Add(nextId);
@@ -346,36 +297,121 @@ public class MapFlow : MonoBehaviour
         switch (node.Type)
         {
             case NodeType.Battle:
-                string enemyName = node.Enemy != null ? node.Enemy.EnemyName : "未設定";
-                Debug.Log($"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動 | タイプ:Battle | 敵:{enemyName}");
+                {
+                    string enemyName =
+                        node.Enemy != null
+                        ? node.Enemy.EnemyName
+                        : "未設定";
 
-                
-                UnityEngine.SceneManagement.SceneManager.LoadScene(battleSceneName);
-                break;
+                    Debug.Log(
+                        $"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動" +
+                        $" | タイプ:Battle | 敵:{enemyName}"
+                    );
+
+                    LoadSceneSafe(battleSceneName, node.Type);
+                    break;
+                }
 
             case NodeType.Rest:
-                Debug.Log($"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動 | タイプ:Rest");
-                UnityEngine.SceneManagement.SceneManager.LoadScene(restSceneName);
-                break;
+                {
+                    Debug.Log(
+                        $"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動" +
+                        $" | タイプ:Rest"
+                    );
+
+                    LoadSceneSafe(restSceneName, node.Type);
+                    break;
+                }
 
             case NodeType.Event:
-                Debug.Log($"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動 | タイプ:Event");
-                UnityEngine.SceneManagement.SceneManager.LoadScene(eventSceneName);
-                break;
+                {
+                    Debug.Log(
+                        $"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動" +
+                        $" | タイプ:Event"
+                    );
+
+                    LoadSceneSafe(eventSceneName, node.Type);
+                    break;
+                }
+
+            case NodeType.Treasure:
+                {
+                    Debug.Log(
+                        $"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動" +
+                        $" | タイプ:Treasure"
+                    );
+
+                    LoadSceneSafe(treasureSceneName, node.Type);
+                    break;
+                }
+
+            case NodeType.Item:
+                {
+                    Debug.Log(
+                        $"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動" +
+                        $" | タイプ:Item"
+                    );
+
+                    LoadSceneSafe(itemSceneName, node.Type);
+                    break;
+                }
 
             case NodeType.Boss:
-                Debug.Log($"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動 | タイプ:Boss");
-                UnityEngine.SceneManagement.SceneManager.LoadScene(bossSceneName);
-                break;
+                {
+                    Debug.Log(
+                        $"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動" +
+                        $" | タイプ:Boss"
+                    );
+
+                    LoadSceneSafe(bossSceneName, node.Type);
+                    break;
+                }
 
             default:
-                Debug.Log($"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動 | タイプ:{node.Type}");
-                RefreshAllNodes();
-                return;
+                {
+                    Debug.Log(
+                        $"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動" +
+                        $" | タイプ:{node.Type}"
+                    );
+
+                    RefreshAllNodes();
+                    return;
+                }
         }
+
+        RefreshAllNodes();
+    }
+    private void LoadSceneSafe(string sceneName, NodeType nodeType)
+    {
+        // シーン名が設定されていない場合
+        if (string.IsNullOrWhiteSpace(sceneName))
+        {
+            Debug.LogError(
+                $"{nodeType}用のシーンが設定されていません。\n" +
+                "MapFlowのInspectorにある「シーン遷移設定」を確認してください。",
+                this
+            );
+
+            return;
+        }
+
+        // Build Settings / Build Profiles に
+        // シーンが登録されているか確認
+        if (!Application.CanStreamedLevelBeLoaded(sceneName))
+        {
+            Debug.LogError(
+                $"シーン「{sceneName}」を読み込めません。\n" +
+                "Build Settings または Build Profiles のScene Listに" +
+                "シーンが登録されているか確認してください。",
+                this
+            );
+
+            return;
+        }
+
+        SceneManager.LoadScene(sceneName);
     }
 
-    
     void RefreshAllNodes()
     {
         var selectables = GetSelectableNodes().ToList();
@@ -385,7 +421,6 @@ public class MapFlow : MonoBehaviour
             selectableIndex = 0;
 
         int focusedId = selectables.Count > 0 ? selectables[selectableIndex].Id : -1;
-        int currentLayer = Nodes[CurrentNodeId].Layer;
 
         foreach (var (id, btn) in nodeButtons)
         {
@@ -401,13 +436,7 @@ public class MapFlow : MonoBehaviour
                 state = NodeState.Locked;
 
             bool focused = (id == focusedId);
-            int nodeLayer = Nodes[id].Layer;
-            bool showIcon = nodeLayer <= currentLayer + 1
-                            && (state == NodeState.Selectable || state == NodeState.Current || state == NodeState.Visited);
-            // 変更後
-            bool dimIcon = (state == NodeState.Current || state == NodeState.Visited);
-
-            btn.Refresh(state, Nodes[id].Type, focused, Nodes[id].Enemy, showIcon, dimIcon);
+            btn.Refresh(state, Nodes[id].Type, focused);
         }
     }
 
@@ -477,8 +506,6 @@ public class MapFlow : MonoBehaviour
         CreateLines(nodeObjects);
     }
 
-
-    //ラインを生成するメソッド。ノード間の接続を視覚的に表現するために使用されます。
     void CreateLines(Dictionary<int, GameObject> nodeObjects)
     {
         foreach (var node in Nodes.Values)
@@ -532,24 +559,26 @@ public class MapFlow : MonoBehaviour
         }
     }
 
-
     public static void ResetSession()
     {
         MapSession.Clear();
     }
-
 
     [Header("シーン遷移設定")]
 #if UNITY_EDITOR
     [SerializeField] UnityEditor.SceneAsset battleScene;
     [SerializeField] UnityEditor.SceneAsset restScene;
     [SerializeField] UnityEditor.SceneAsset eventScene;
+    [SerializeField] UnityEditor.SceneAsset treasureScene;
+    [SerializeField] UnityEditor.SceneAsset itemScene;
     [SerializeField] UnityEditor.SceneAsset bossScene;
 #endif
 
     [SerializeField, HideInInspector] string battleSceneName;
     [SerializeField, HideInInspector] string restSceneName;
     [SerializeField, HideInInspector] string eventSceneName;
+    [SerializeField, HideInInspector] string treasureSceneName;
+    [SerializeField, HideInInspector] string itemSceneName;
     [SerializeField, HideInInspector] string bossSceneName;
 
 #if UNITY_EDITOR
@@ -558,6 +587,8 @@ public class MapFlow : MonoBehaviour
         if (battleScene != null) battleSceneName = battleScene.name;
         if (restScene != null) restSceneName = restScene.name;
         if (eventScene != null) eventSceneName = eventScene.name;
+        if (treasureScene != null) treasureSceneName = treasureScene.name;
+        if (itemScene != null) itemSceneName = itemScene.name;
         if (bossScene != null) bossSceneName = bossScene.name;
     }
 #endif

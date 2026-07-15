@@ -16,6 +16,6 @@ MonoBehaviour:
   m_effectName: "\u731B\u6BD2"
   m_description: 
   m_effectType: 1
-  m_effectValue: 1
+  m_effectValue: 5
   m_durationTurns: 1
   m_customIcon: {fileID: 0}

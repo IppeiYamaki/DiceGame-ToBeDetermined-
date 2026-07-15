@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using System.Collections;
+using UnityEngine.Audio;
 public class DiceEventManager : MonoBehaviour
 {
     [Header("UI")]
@@ -12,11 +13,20 @@ public class DiceEventManager : MonoBehaviour
     public Button rollButton;
     public Button skipButton;
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip diceRollSound;
+    public AudioClip successSound;
+    public AudioClip damageSound;
+
     [Header("Player")]
     public PlayerStatus playerStatus;
 
     [Header("Reward Dice")]
     public DiceDefinition rewardDice;
+
+    [Header("Dice Visual")]
+    public DiceVisualRoller diceVisualRoller;
 
     private bool hasRolled = false;
 
@@ -42,15 +52,39 @@ public class DiceEventManager : MonoBehaviour
             return;
         }
 
+        StartCoroutine(RollDiceCoroutine());
+    }
+
+    IEnumerator RollDiceCoroutine()
+    {
         hasRolled = true;
         rollButton.interactable = false;
 
+        diceResultText.text = "ダイスを振っています...";
+
+        PlaySound(diceRollSound);
+
+        //ここで1回だけ出目を決める
         int dice1 = Random.Range(1, 7);
         int dice2 = Random.Range(1, 7);
         int dice3 = Random.Range(1, 7);
 
+
+
+        // 決めた出目をダイス表示にも渡す
+        if (diceVisualRoller != null)
+        {
+            yield return StartCoroutine(diceVisualRoller.RollAnimation(dice1, dice2, dice3));
+        }
+        else
+        {
+            yield return new WaitForSeconds(1.0f);
+        }
+
+        // 同じ出目を文字にも表示する
         diceResultText.text = $"結果：{dice1}・{dice2}・{dice3}";
 
+        // 同じ出目で役判定する
         bool isSuccess = CheckRole(dice1, dice2, dice3);
 
         if (isSuccess)
@@ -62,7 +96,6 @@ public class DiceEventManager : MonoBehaviour
             FailedEvent();
         }
     }
-
     bool CheckRole(int d1, int d2, int d3)
     {
         // 3つのダイスのうち、2つ以上同じ数字なら役成立
@@ -78,6 +111,8 @@ public class DiceEventManager : MonoBehaviour
     {
         diceResultText.text += "\n役成立！新ダイス獲得！";
 
+        PlaySound(successSound);
+
         if (rewardDice != null)
         {
             diceResultText.text += "\n獲得ダイス：" + rewardDice.DiceName;
@@ -87,6 +122,8 @@ public class DiceEventManager : MonoBehaviour
     void FailedEvent()
     {
         diceResultText.text += "\n役に満たない！10ダメージ！";
+
+        PlaySound(damageSound);
 
         if (playerStatus != null)
         {
@@ -98,4 +135,12 @@ public class DiceEventManager : MonoBehaviour
     {
         eventPanel.SetActive(false);
     }
+    void PlaySound(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+        {
+            audioSource.PlayOneShot(clip);
+        }
+    }
+
 }

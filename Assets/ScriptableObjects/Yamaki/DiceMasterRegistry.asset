@@ -14,5 +14,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DiceMasterRegistry
   m_diceDefinitions:
   - {fileID: 11400000, guid: 4051b0c81fd3bf64aa4f2b715e03460a, type: 2}
+  - {fileID: 11400000, guid: f526d91d94552b7488b77d4b270eb1b2, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   m_roleDefinitions:
   - {fileID: 11400000, guid: 25d2537c48140a44c8fef7805bacc68e, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

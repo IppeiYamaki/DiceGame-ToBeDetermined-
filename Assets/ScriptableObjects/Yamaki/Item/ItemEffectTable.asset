@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55e2cb6fea5dcaf4f961d92d1049995e, type: 3}
+  m_Name: ItemEffectTable
+  m_EditorClassIdentifier: Assembly-CSharp::ItemEffectTable
+  m_entries:
+  - m_item: {fileID: 0}
+    m_effectType: 0
+    m_statusEffect: {fileID: 0}
+    m_effectValue: 0
+    m_targetType: 0
+    m_iconOverride: {fileID: 0}
+    m_descriptionOverride: 
+  - m_item: {fileID: 11400000, guid: 2f4a01779dd2a754f8cfd70dc49f946c, type: 2}
+    m_effectType: 5
+    m_statusEffect: {fileID: 11400000, guid: 198309da78210b949ba80b29caf7ad8f, type: 2}
+    m_effectValue: 3
+    m_targetType: 1
+    m_iconOverride: {fileID: 0}
+    m_descriptionOverride: 
+  - m_item: {fileID: 11400000, guid: a8370f2366c52ae4c83fd5c818354446, type: 2}
+    m_effectType: 5
+    m_statusEffect: {fileID: 0}
+    m_effectValue: 1
+    m_targetType: 1
+    m_iconOverride: {fileID: 0}
+    m_descriptionOverride: 
+  - m_item: {fileID: 11400000, guid: 33a990b1d48b9784bb25c1d925604342, type: 2}
+    m_effectType: 4
+    m_statusEffect: {fileID: 0}
+    m_effectValue: 0
+    m_targetType: 0
+    m_iconOverride: {fileID: 0}
+    m_descriptionOverride: 

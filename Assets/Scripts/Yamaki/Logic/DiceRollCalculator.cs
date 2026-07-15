@@ -63,6 +63,43 @@ public static class DiceRollCalculator
         return new DiceRollResult(rollData, evaluateResult, totalNumber, finalValue);
     }
 
+    /// <summary>
+    /// 外部のダイスロール演出などで確定した出目からロール結果を計算します。
+    /// ダイス選択と出目表示は外部で行い、役判定とActionPoint計算だけを共通化したい場合に使用します。
+    /// </summary>
+    /// <param name="diceIds">振ったダイスの永続 ID（3個）</param>
+    /// <param name="numbers">外部ロールで確定した出目（3個）</param>
+    /// <param name="availableRoles">判定対象の役リスト</param>
+    /// <returns>ロール結果全体</returns>
+    public static DiceRollResult CalculateFromRolledNumbers(string[] diceIds, int[] numbers, List<DiceRoleDefinition> availableRoles)
+    {
+        if (diceIds == null || diceIds.Length != 3)
+        {
+            Debug.LogWarning("[DiceRollCalculator] diceIds は 3個の配列である必要があります。");
+            return CreateEmptyResult();
+        }
+
+        if (numbers == null || numbers.Length != 3)
+        {
+            Debug.LogWarning("[DiceRollCalculator] numbers は 3個の配列である必要があります。");
+            return CreateEmptyResult();
+        }
+
+        DiceRollData[] rollData = new DiceRollData[3];
+        for (int i = 0; i < 3; i++)
+        {
+            int safeNumber = Mathf.Max(1, numbers[i]);
+            int faceIndex = ResolveFaceIndex(diceIds[i], safeNumber);
+            rollData[i] = new DiceRollData(diceIds[i], faceIndex, safeNumber);
+        }
+
+        int totalNumber = rollData.Sum(r => r.Number);
+        DiceRoleEvaluateResult evaluateResult = DiceRoleEvaluator.Evaluate(rollData.Select(r => r.Number).ToArray(), availableRoles);
+        int finalValue = Mathf.FloorToInt(totalNumber * evaluateResult.Multiplier);
+
+        return new DiceRollResult(rollData, evaluateResult, totalNumber, finalValue);
+    }
+
     // ─────────────────────────────────────────────────────────
     // 内部実装：ダイスロール
     // ─────────────────────────────────────────────────────────
@@ -93,6 +130,33 @@ public static class DiceRollCalculator
         DiceFaceData faceData = diceDefinition.Faces[faceIndex];
 
         return new DiceRollData(diceId, faceIndex, faceData.Number);
+    }
+
+    /// <summary>
+    /// 外部指定の出目に対応する面Indexを可能な範囲で解決します。
+    /// </summary>
+    private static int ResolveFaceIndex(string diceId, int number)
+    {
+        if (DiceMasterRegistry.Active == null || string.IsNullOrEmpty(diceId))
+        {
+            return 0;
+        }
+
+        DiceDefinition diceDefinition = DiceMasterRegistry.Active.ResolveDefinition(diceId);
+        if (diceDefinition == null || diceDefinition.Faces == null)
+        {
+            return 0;
+        }
+
+        for (int i = 0; i < diceDefinition.Faces.Count; i++)
+        {
+            if (diceDefinition.Faces[i].Number == number)
+            {
+                return i;
+            }
+        }
+
+        return 0;
     }
 
     // ─────────────────────────────────────────────────────────

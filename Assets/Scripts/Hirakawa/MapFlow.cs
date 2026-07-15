@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -25,7 +26,23 @@ public enum MapDirection
 }
 
 // =========================
-// データクラス
+// レイヤー別敵データベース
+// =========================
+[System.Serializable]
+public class LayerEnemyDatabase
+{
+    [Tooltip("このデータベースを使用し始めるレイヤー")]
+    public int minLayer;
+
+    [Tooltip("このデータベースを使用する最後のレイヤー")]
+    public int maxLayer;
+
+    [Tooltip("この範囲で使用する敵データベース")]
+    public EnemyDatabase enemyDatabase;
+}
+
+// =========================
+// マップデータ
 // =========================
 [System.Serializable]
 public class MapNode
@@ -49,24 +66,14 @@ public class MapGraph
 }
 
 // =========================
-// マップ生成（固定マップ）
+// 固定マップ生成
 // =========================
-// レイヤー構成：
-// L0: Start(1)
-// L1: Battle(1)
-// L2: Battle(2) ← 分岐
-// L3: Treasure(1) ← 収束
-// L4: Battle(2) ← 分岐
-// L5: Rest(1) / Event(1)
-// L6: Treasure(1) ← 収束
-// L7: Battle(2) ← 分岐
-// L8: Event(1) / Rest(1) ← 交差接続
-// L9: Boss(1) ← 収束
 public static class MapGenerator
 {
     public static MapGraph Generate(
         MapDirection direction = MapDirection.Horizontal,
-        EnemyDatabase enemyDatabase = null
+        EnemyDatabase enemyDatabase = null,
+        List<LayerEnemyDatabase> layerEnemyDatabases = null
     )
     {
         var graph = new MapGraph();
@@ -75,55 +82,104 @@ public static class MapGenerator
         float layerSpacing = 130f;
         float laneSpacing = 400f;
 
-        // -------------------------
-        // レイヤー構成定義
-        // (NodeType, laneIndex) のリスト
-        // -------------------------
+        // 固定マップ構成
         var layerDefs = new List<List<(NodeType type, int lane)>>
         {
-            // L0: Start
-            new() { (NodeType.Start, 0) },
-            // L1: Battle×1
-            new() { (NodeType.Battle, 0) },
-            // L2: Battle×2（分岐）
-            new() { (NodeType.Battle, 0), (NodeType.Battle, 1) },
-            // L3: Treasure×1（収束）
-            new() { (NodeType.Treasure, 0) },
-            // L4: Battle×2（分岐）
-            new() { (NodeType.Battle, 0), (NodeType.Battle, 1) },
-            // L5: Rest / Event
-            new() { (NodeType.Rest, 0), (NodeType.Event, 1) },
-            // L6: Treasure×1（収束）
-            new() { (NodeType.Treasure, 0) },
-            // L7: Battle×2（分岐）
-            new() { (NodeType.Battle, 0), (NodeType.Battle, 1) },
-            // L8: Event / Rest（交差接続）
-            new() { (NodeType.Event, 0), (NodeType.Rest, 1) },
-            // L9: Boss×1（収束）
-            new() { (NodeType.Boss, 0) },
+            // L0
+            new()
+            {
+                (NodeType.Start, 0)
+            },
+
+            // L1
+            new()
+            {
+                (NodeType.Battle, 0)
+            },
+
+            // L2
+            new()
+            {
+                (NodeType.Battle, 0),
+                (NodeType.Battle, 1)
+            },
+
+            // L3
+            new()
+            {
+                (NodeType.Treasure, 0)
+            },
+
+            // L4
+            new()
+            {
+                (NodeType.Battle, 0),
+                (NodeType.Battle, 1)
+            },
+
+            // L5
+            new()
+            {
+                (NodeType.Rest, 0),
+                (NodeType.Event, 1)
+            },
+
+            // L6
+            new()
+            {
+                (NodeType.Treasure, 0)
+            },
+
+            // L7
+            new()
+            {
+                (NodeType.Battle, 0),
+                (NodeType.Battle, 1)
+            },
+
+            // L8
+            new()
+            {
+                (NodeType.Event, 0),
+                (NodeType.Rest, 1)
+            },
+
+            // L9
+            new()
+            {
+                (NodeType.Boss, 0)
+            }
         };
 
-        // -------------------------
-        // ノード生成
-        // -------------------------
         var layers = new List<List<MapNode>>();
 
+        // =========================
+        // ノード生成
+        // =========================
         for (int layer = 0; layer < layerDefs.Count; layer++)
         {
             var layerNodes = new List<MapNode>();
-            var defs = layerDefs[layer];
-            int count = defs.Count;
+            var definitions = layerDefs[layer];
+
+            int count = definitions.Count;
             float centerOffset = (count - 1) / 2f;
 
             for (int i = 0; i < count; i++)
             {
-                var (type, lane) = defs[i];
+                var (type, lane) = definitions[i];
 
                 float along = layer * layerSpacing;
                 float cross = (i - centerOffset) * laneSpacing;
 
-                float x = direction == MapDirection.Horizontal ? along : cross;
-                float y = direction == MapDirection.Horizontal ? cross : along;
+                float x =
+                    direction == MapDirection.Horizontal
+                        ? along
+                        : cross;
+
+                float y =
+                    direction == MapDirection.Horizontal
+                        ? cross
+                        : along;
 
                 var node = new MapNode
                 {
@@ -135,57 +191,71 @@ public static class MapGenerator
                     Position = new Vector2(x, y)
                 };
 
-                if (type == NodeType.Battle && enemyDatabase != null)
-                    node.Enemy = enemyDatabase.GetRandom();
+                // Battleノードの敵を抽選
+                if (type == NodeType.Battle)
+                {
+                    EnemyDatabase selectedDatabase =
+                        GetEnemyDatabaseForLayer(
+                            layer,
+                            enemyDatabase,
+                            layerEnemyDatabases
+                        );
+
+                    if (selectedDatabase != null)
+                    {
+                        node.Enemy = selectedDatabase.GetRandom();
+                    }
+                    else
+                    {
+                        Debug.LogWarning(
+                            $"Layer {layer} に使用できるEnemyDatabaseがありません。"
+                        );
+                    }
+                }
 
                 graph.Nodes[node.Id] = node;
                 layerNodes.Add(node);
             }
+
             layers.Add(layerNodes);
         }
 
-        // -------------------------
-        // 接続定義
-        // 基本：同インデックス or 収束は全員→0番
-        // 交差：L8はL7の0番→L8の1番、L7の1番→L8の0番
-        // -------------------------
+        // =========================
+        // 接続
+        // =========================
 
-        // L0(Start) → L1(Battle)
+        // L0 → L1
         Connect(layers[0][0], layers[1][0]);
 
-        // L1(Battle) → L2(Battle×2) 分岐
+        // L1 → L2
         Connect(layers[1][0], layers[2][0]);
         Connect(layers[1][0], layers[2][1]);
 
-        // L2(Battle×2) → L3(Treasure) 収束
+        // L2 → L3
         Connect(layers[2][0], layers[3][0]);
         Connect(layers[2][1], layers[3][0]);
 
-        // L3(Treasure) → L4(Battle×2) 分岐
+        // L3 → L4
         Connect(layers[3][0], layers[4][0]);
         Connect(layers[3][0], layers[4][1]);
 
-        // L4(Battle×2) → L5(Rest/Event) 各自対応
-        // ①ルート(lane0) → Rest(0番)
-        // ②ルート(lane1) → Event(1番)
+        // L4 → L5
         Connect(layers[4][0], layers[5][0]);
         Connect(layers[4][1], layers[5][1]);
 
-        // L5(Rest/Event) → L6(Treasure) 収束
+        // L5 → L6
         Connect(layers[5][0], layers[6][0]);
         Connect(layers[5][1], layers[6][0]);
 
-        // L6(Treasure) → L7(Battle×2) 分岐
+        // L6 → L7
         Connect(layers[6][0], layers[7][0]);
         Connect(layers[6][0], layers[7][1]);
 
-        // L7(Battle×2) → L8(Event/Rest) 交差接続
-        // ①ルート(lane0) → Rest(1番)  ※交差
-        // ②ルート(lane1) → Event(0番) ※交差
+        // L7 → L8（交差）
         Connect(layers[7][0], layers[8][1]);
         Connect(layers[7][1], layers[8][0]);
 
-        // L8(Event/Rest) → L9(Boss) 収束
+        // L8 → L9
         Connect(layers[8][0], layers[9][0]);
         Connect(layers[8][1], layers[9][0]);
 
@@ -193,21 +263,56 @@ public static class MapGenerator
         graph.BossNodeId = layers[9][0].Id;
 
         CenterGraph(graph);
+
         return graph;
+    }
+
+    private static EnemyDatabase GetEnemyDatabaseForLayer(
+        int layer,
+        EnemyDatabase defaultDatabase,
+        List<LayerEnemyDatabase> layerEnemyDatabases
+    )
+    {
+        if (layerEnemyDatabases != null)
+        {
+            foreach (var setting in layerEnemyDatabases)
+            {
+                if (setting == null)
+                    continue;
+
+                if (setting.enemyDatabase == null)
+                    continue;
+
+                if (
+                    layer >= setting.minLayer &&
+                    layer <= setting.maxLayer
+                )
+                {
+                    return setting.enemyDatabase;
+                }
+            }
+        }
+
+        return defaultDatabase;
     }
 
     private static void Connect(MapNode from, MapNode to)
     {
         if (!from.NextNodeIds.Contains(to.Id))
+        {
             from.NextNodeIds.Add(to.Id);
+        }
     }
 
     private static void CenterGraph(MapGraph graph)
     {
-        if (graph.Nodes.Count == 0) return;
+        if (graph.Nodes.Count == 0)
+            return;
 
-        float minX = float.MaxValue, maxX = float.MinValue;
-        float minY = float.MaxValue, maxY = float.MinValue;
+        float minX = float.MaxValue;
+        float maxX = float.MinValue;
+        float minY = float.MaxValue;
+        float maxY = float.MinValue;
 
         foreach (var node in graph.Nodes.Values)
         {
@@ -217,14 +322,20 @@ public static class MapGenerator
             maxY = Mathf.Max(maxY, node.Position.y);
         }
 
-        Vector2 center = new Vector2((minX + maxX) * 0.5f, (minY + maxY) * 0.5f);
+        Vector2 center = new Vector2(
+            (minX + maxX) * 0.5f,
+            (minY + maxY) * 0.5f
+        );
+
         foreach (var node in graph.Nodes.Values)
+        {
             node.Position -= center;
+        }
     }
 }
 
 // =========================
-// 進行管理
+// マップ進行管理
 // =========================
 public class MapFlow : MonoBehaviour
 {
@@ -232,24 +343,72 @@ public class MapFlow : MonoBehaviour
     public Dictionary<int, MapNode> Nodes;
     public MapGraph graph;
 
-    HashSet<int> visitedNodeIds = new();
-    Dictionary<int, MapNodeButton> nodeButtons = new();
-    int selectableIndex = 0;
+    private HashSet<int> visitedNodeIds = new();
 
-    [SerializeField] GameObject nodePrefab;
-    [SerializeField] RectTransform parent;
-    [SerializeField] EnemyDatabase enemyDatabase;
+    private readonly Dictionary<int, MapNodeButton> nodeButtons = new();
+    private readonly Dictionary<int, RectTransform> nodeRects = new();
 
-    void Awake()
+    private int selectableIndex;
+    private bool isPlayerMoving;
+
+    // =========================
+    // マップUI
+    // =========================
+    [Header("マップUI")]
+
+    [SerializeField]
+    private GameObject nodePrefab;
+
+    [SerializeField]
+    private RectTransform parent;
+
+    // =========================
+    // プレイヤー画像
+    // =========================
+    [Header("プレイヤー表示")]
+
+    [Tooltip("マップ上に表示するプレイヤー画像")]
+    [SerializeField]
+    private RectTransform playerImage;
+
+    [Tooltip("プレイヤー画像が次のノードへ移動する時間")]
+    [SerializeField]
+    private float playerMoveDuration = 0.35f;
+
+    [Tooltip("ノード位置からプレイヤー画像をずらす量")]
+    [SerializeField]
+    private Vector2 playerPositionOffset = Vector2.zero;
+
+    // =========================
+    // 敵抽選
+    // =========================
+    [Header("敵抽選設定")]
+
+    [Tooltip("レイヤー別設定がない場合に使用する敵データベース")]
+    [SerializeField]
+    private EnemyDatabase enemyDatabase;
+
+    [Tooltip("レイヤーごとに使用する敵データベース")]
+    [SerializeField]
+    private List<LayerEnemyDatabase> layerEnemyDatabases = new();
+
+    // =========================
+    // 初期化
+    // =========================
+    private void Awake()
     {
         if (!MapSession.HasData)
         {
             graph = MapGenerator.Generate(
                 direction: MapDirection.Horizontal,
-                enemyDatabase: enemyDatabase
+                enemyDatabase: enemyDatabase,
+                layerEnemyDatabases: layerEnemyDatabases
             );
+
             MapSession.Graph = graph;
             MapSession.CurrentNodeId = graph.StartNodeId;
+
+            MapSession.VisitedNodeIds.Clear();
             MapSession.VisitedNodeIds.Add(graph.StartNodeId);
         }
         else
@@ -262,37 +421,81 @@ public class MapFlow : MonoBehaviour
         visitedNodeIds = MapSession.VisitedNodeIds;
     }
 
-    void Start()
+    private void Start()
     {
         DebugAllNodes();
         DebugDrawConnections();
 
-        foreach (Transform child in parent)
-            Destroy(child.gameObject);
+        ClearGeneratedMapObjects();
+
         nodeButtons.Clear();
+        nodeRects.Clear();
 
         CreateUI();
         RefreshAllNodes();
+
+        // 保存されている現在地へプレイヤー画像を配置
+        MovePlayerImmediately(CurrentNodeId);
     }
 
-    public MapNode CurrentNode => Nodes[CurrentNodeId];
+    private void ClearGeneratedMapObjects()
+    {
+        foreach (Transform child in parent)
+        {
+            // プレイヤー画像は削除しない
+            if (
+                playerImage != null &&
+                child == playerImage.transform
+            )
+            {
+                continue;
+            }
+
+            Destroy(child.gameObject);
+        }
+    }
+
+    public MapNode CurrentNode
+    {
+        get
+        {
+            return Nodes[CurrentNodeId];
+        }
+    }
 
     public IEnumerable<MapNode> GetSelectableNodes()
     {
-        foreach (var id in Nodes[CurrentNodeId].NextNodeIds)
+        foreach (int id in Nodes[CurrentNodeId].NextNodeIds)
+        {
             yield return Nodes[id];
+        }
     }
 
+    // =========================
+    // ノード選択
+    // =========================
     public void SelectNextNode(int nextId)
     {
+        if (isPlayerMoving)
+            return;
+
+        if (!Nodes.ContainsKey(nextId))
+            return;
+
         if (!Nodes[CurrentNodeId].NextNodeIds.Contains(nextId))
             return;
 
         CurrentNodeId = nextId;
         visitedNodeIds.Add(nextId);
+
         MapSession.CurrentNodeId = CurrentNodeId;
 
-        var node = Nodes[nextId];
+        MapNode node = Nodes[nextId];
+
+        // 現在地と視認範囲を先に更新
+        RefreshAllNodes();
+
+        string destinationSceneName = null;
 
         switch (node.Type)
         {
@@ -300,90 +503,228 @@ public class MapFlow : MonoBehaviour
                 {
                     string enemyName =
                         node.Enemy != null
-                        ? node.Enemy.EnemyName
-                        : "未設定";
+                            ? node.Enemy.EnemyName
+                            : "未設定";
 
                     Debug.Log(
-                        $"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動" +
-                        $" | タイプ:Battle | 敵:{enemyName}"
+                        $"Layer{node.Layer} の " +
+                        $"{node.IndexInLayer + 1}マス目に移動" +
+                        $" | タイプ:Battle" +
+                        $" | 敵:{enemyName}"
                     );
 
-                    LoadSceneSafe(battleSceneName, node.Type);
+                    destinationSceneName = battleSceneName;
                     break;
                 }
 
             case NodeType.Rest:
                 {
                     Debug.Log(
-                        $"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動" +
-                        $" | タイプ:Rest"
+                        $"Layer{node.Layer} の " +
+                        $"{node.IndexInLayer + 1}マス目に移動" +
+                        " | タイプ:Rest"
                     );
 
-                    LoadSceneSafe(restSceneName, node.Type);
+                    destinationSceneName = restSceneName;
                     break;
                 }
 
             case NodeType.Event:
                 {
                     Debug.Log(
-                        $"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動" +
-                        $" | タイプ:Event"
+                        $"Layer{node.Layer} の " +
+                        $"{node.IndexInLayer + 1}マス目に移動" +
+                        " | タイプ:Event"
                     );
 
-                    LoadSceneSafe(eventSceneName, node.Type);
+                    destinationSceneName = eventSceneName;
                     break;
                 }
 
             case NodeType.Treasure:
                 {
                     Debug.Log(
-                        $"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動" +
-                        $" | タイプ:Treasure"
+                        $"Layer{node.Layer} の " +
+                        $"{node.IndexInLayer + 1}マス目に移動" +
+                        " | タイプ:Treasure"
                     );
 
-                    LoadSceneSafe(treasureSceneName, node.Type);
+                    destinationSceneName = treasureSceneName;
                     break;
                 }
 
             case NodeType.Item:
                 {
                     Debug.Log(
-                        $"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動" +
-                        $" | タイプ:Item"
+                        $"Layer{node.Layer} の " +
+                        $"{node.IndexInLayer + 1}マス目に移動" +
+                        " | タイプ:Item"
                     );
 
-                    LoadSceneSafe(itemSceneName, node.Type);
+                    destinationSceneName = itemSceneName;
                     break;
                 }
 
             case NodeType.Boss:
                 {
                     Debug.Log(
-                        $"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動" +
-                        $" | タイプ:Boss"
+                        $"Layer{node.Layer} の " +
+                        $"{node.IndexInLayer + 1}マス目に移動" +
+                        " | タイプ:Boss"
                     );
 
-                    LoadSceneSafe(bossSceneName, node.Type);
+                    destinationSceneName = bossSceneName;
                     break;
                 }
 
             default:
                 {
                     Debug.Log(
-                        $"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動" +
+                        $"Layer{node.Layer} の " +
+                        $"{node.IndexInLayer + 1}マス目に移動" +
                         $" | タイプ:{node.Type}"
                     );
 
-                    RefreshAllNodes();
-                    return;
+                    break;
                 }
         }
 
-        RefreshAllNodes();
+        StartCoroutine(
+            MovePlayerRoutine(
+                nextId,
+                destinationSceneName,
+                node.Type
+            )
+        );
     }
-    private void LoadSceneSafe(string sceneName, NodeType nodeType)
+
+    // =========================
+    // プレイヤー画像
+    // =========================
+    private void MovePlayerImmediately(int nodeId)
     {
-        // シーン名が設定されていない場合
+        if (playerImage == null)
+        {
+            Debug.LogWarning(
+                "MapFlowのPlayer Imageが設定されていません。",
+                this
+            );
+
+            return;
+        }
+
+        if (!nodeRects.TryGetValue(nodeId, out RectTransform targetNode))
+        {
+            Debug.LogWarning(
+                $"Node {nodeId} のRectTransformが見つかりません。",
+                this
+            );
+
+            return;
+        }
+
+        playerImage.anchoredPosition =
+            targetNode.anchoredPosition +
+            playerPositionOffset;
+
+        playerImage.SetAsLastSibling();
+    }
+
+    private IEnumerator MovePlayerRoutine(
+        int destinationNodeId,
+        string sceneName,
+        NodeType nodeType
+    )
+    {
+        isPlayerMoving = true;
+
+        // プレイヤー画像が未設定でも進行不能にはしない
+        if (
+            playerImage == null ||
+            !nodeRects.TryGetValue(
+                destinationNodeId,
+                out RectTransform targetNode
+            )
+        )
+        {
+            isPlayerMoving = false;
+
+            if (!string.IsNullOrWhiteSpace(sceneName))
+            {
+                LoadSceneSafe(sceneName, nodeType);
+            }
+
+            yield break;
+        }
+
+        playerImage.SetAsLastSibling();
+
+        Vector2 startPosition =
+            playerImage.anchoredPosition;
+
+        Vector2 targetPosition =
+            targetNode.anchoredPosition +
+            playerPositionOffset;
+
+        float duration = Mathf.Max(
+            0f,
+            playerMoveDuration
+        );
+
+        if (duration <= 0f)
+        {
+            playerImage.anchoredPosition =
+                targetPosition;
+        }
+        else
+        {
+            float elapsedTime = 0f;
+
+            while (elapsedTime < duration)
+            {
+                elapsedTime += Time.unscaledDeltaTime;
+
+                float t = Mathf.Clamp01(
+                    elapsedTime / duration
+                );
+
+                // なめらかな加速と減速
+                float smoothT =
+                    t * t * (3f - 2f * t);
+
+                playerImage.anchoredPosition =
+                    Vector2.Lerp(
+                        startPosition,
+                        targetPosition,
+                        smoothT
+                    );
+
+                yield return null;
+            }
+
+            playerImage.anchoredPosition =
+                targetPosition;
+        }
+
+        isPlayerMoving = false;
+
+        if (!string.IsNullOrWhiteSpace(sceneName))
+        {
+            LoadSceneSafe(
+                sceneName,
+                nodeType
+            );
+        }
+    }
+
+    // =========================
+    // シーン遷移
+    // =========================
+    private void LoadSceneSafe(
+        string sceneName,
+        NodeType nodeType
+    )
+    {
         if (string.IsNullOrWhiteSpace(sceneName))
         {
             Debug.LogError(
@@ -395,13 +736,11 @@ public class MapFlow : MonoBehaviour
             return;
         }
 
-        // Build Settings / Build Profiles に
-        // シーンが登録されているか確認
         if (!Application.CanStreamedLevelBeLoaded(sceneName))
         {
             Debug.LogError(
                 $"シーン「{sceneName}」を読み込めません。\n" +
-                "Build Settings または Build Profiles のScene Listに" +
+                "Build SettingsまたはBuild ProfilesのScene Listに、" +
                 "シーンが登録されているか確認してください。",
                 this
             );
@@ -412,150 +751,376 @@ public class MapFlow : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
-    void RefreshAllNodes()
-    {
-        var selectables = GetSelectableNodes().ToList();
-        var selectableIds = selectables.Select(n => n.Id).ToHashSet();
-
-        if (selectableIndex >= selectables.Count)
-            selectableIndex = 0;
-
-        int focusedId = selectables.Count > 0 ? selectables[selectableIndex].Id : -1;
-
-        foreach (var (id, btn) in nodeButtons)
-        {
-            NodeState state;
-
-            if (id == CurrentNodeId)
-                state = NodeState.Current;
-            else if (selectableIds.Contains(id))
-                state = NodeState.Selectable;
-            else if (visitedNodeIds.Contains(id))
-                state = NodeState.Visited;
-            else
-                state = NodeState.Locked;
-
-            bool focused = (id == focusedId);
-            btn.Refresh(state, Nodes[id].Type, focused);
-        }
-    }
-
     // =========================
-    // デバッグ
+    // ノード表示更新
     // =========================
-    void DebugAllNodes()
+    private void RefreshAllNodes()
     {
-        foreach (var node in Nodes.Values.OrderBy(n => n.Layer))
-        {
-            Debug.Log(
-                $"Node {node.Id} | Layer {node.Layer} | {node.Type} " +
-                $"Pos:{node.Position} -> [{string.Join(",", node.NextNodeIds)}]"
-            );
-        }
-    }
+        var selectables =
+            GetSelectableNodes().ToList();
 
-    void DebugDrawConnections()
-    {
-        foreach (var node in Nodes.Values)
+        var selectableIds =
+            selectables
+                .Select(node => node.Id)
+                .ToHashSet();
+
+        // 現在地から2マス先にあるノード
+        var twoStepAheadIds =
+            new HashSet<int>();
+
+        foreach (MapNode selectable in selectables)
         {
-            foreach (var nextId in node.NextNodeIds)
+            foreach (int nextId in selectable.NextNodeIds)
             {
-                var target = Nodes[nextId];
-                Debug.DrawLine(node.Position, target.Position, Color.white, 100f);
+                twoStepAheadIds.Add(nextId);
             }
         }
-    }
 
-    void OnDrawGizmos()
-    {
-        if (Nodes == null) return;
-
-        foreach (var node in Nodes.Values)
+        if (selectableIndex >= selectables.Count)
         {
-            Gizmos.color = (node.Id == CurrentNodeId) ? Color.yellow : Color.white;
-            Gizmos.DrawSphere(node.Position, 20f);
+            selectableIndex = 0;
+        }
 
-            foreach (var nextId in node.NextNodeIds)
-                Gizmos.DrawLine(node.Position, Nodes[nextId].Position);
+        int focusedId =
+            selectables.Count > 0
+                ? selectables[selectableIndex].Id
+                : -1;
+
+        foreach (var pair in nodeButtons)
+        {
+            int id = pair.Key;
+            MapNodeButton mapNodeButton = pair.Value;
+
+            NodeState state;
+            bool isClickable;
+
+            if (id == CurrentNodeId)
+            {
+                state = NodeState.Current;
+                isClickable = false;
+            }
+            else if (selectableIds.Contains(id))
+            {
+                // 1マス先
+                state = NodeState.Selectable;
+                isClickable = true;
+            }
+            else if (visitedNodeIds.Contains(id))
+            {
+                state = NodeState.Visited;
+                isClickable = false;
+            }
+            else if (twoStepAheadIds.Contains(id))
+            {
+                // 2マス先は見えるが選択不可
+                state = NodeState.Selectable;
+                isClickable = false;
+            }
+            else
+            {
+                state = NodeState.Locked;
+                isClickable = false;
+            }
+
+            bool focused =
+                id == focusedId;
+
+            mapNodeButton.Refresh(
+                state,
+                Nodes[id].Type,
+                focused,
+                isClickable
+            );
         }
     }
 
     // =========================
     // UI生成
     // =========================
-    void CreateUI()
+    private void CreateUI()
     {
-        Dictionary<int, GameObject> nodeObjects = new();
+        var nodeObjects =
+            new Dictionary<int, GameObject>();
 
-        foreach (var node in Nodes.Values)
+        foreach (MapNode node in Nodes.Values)
         {
-            var obj = Instantiate(nodePrefab, parent);
-            var rect = obj.GetComponent<RectTransform>();
-            rect.localPosition = node.Position;
+            GameObject nodeObject =
+                Instantiate(
+                    nodePrefab,
+                    parent
+                );
 
-            var btn = obj.GetComponent<MapNodeButton>();
-            btn.NodeId = node.Id;
-            btn.mapFlow = this;
+            RectTransform rect =
+                nodeObject.GetComponent<RectTransform>();
 
-            nodeObjects[node.Id] = obj;
-            nodeButtons[node.Id] = btn;
+            rect.anchoredPosition =
+                node.Position;
 
-            Debug.Log($"Generating UI Node: {node.Id}");
+            MapNodeButton mapNodeButton =
+                nodeObject.GetComponent<MapNodeButton>();
+
+            mapNodeButton.NodeId =
+                node.Id;
+
+            mapNodeButton.mapFlow =
+                this;
+
+            nodeObjects[node.Id] =
+                nodeObject;
+
+            nodeButtons[node.Id] =
+                mapNodeButton;
+
+            nodeRects[node.Id] =
+                rect;
         }
 
         CreateLines(nodeObjects);
+
+        if (playerImage != null)
+        {
+            playerImage.SetAsLastSibling();
+        }
     }
 
-    void CreateLines(Dictionary<int, GameObject> nodeObjects)
+    private void CreateLines(
+        Dictionary<int, GameObject> nodeObjects
+    )
     {
-        foreach (var node in Nodes.Values)
+        foreach (MapNode node in Nodes.Values)
         {
-            foreach (var nextId in node.NextNodeIds)
+            foreach (int nextId in node.NextNodeIds)
             {
-                if (!Nodes.ContainsKey(nextId)) continue;
-                if (Nodes[nextId].Layer != node.Layer + 1) continue;
+                if (!Nodes.ContainsKey(nextId))
+                    continue;
 
-                var from = (Vector2)nodeObjects[node.Id].GetComponent<RectTransform>().localPosition;
-                var to = (Vector2)nodeObjects[nextId].GetComponent<RectTransform>().localPosition;
-                Vector2 diff = to - from;
-                float length = diff.magnitude;
-                float angle = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
-                Vector2 mid = (from + to) * 0.5f;
+                if (Nodes[nextId].Layer != node.Layer + 1)
+                    continue;
 
-                var lineObj = new GameObject("Line", typeof(RectTransform), typeof(CanvasRenderer), typeof(UnityEngine.UI.Image));
-                lineObj.transform.SetParent(parent, false);
-                lineObj.transform.SetAsFirstSibling();
+                Vector2 from =
+                    nodeObjects[node.Id]
+                        .GetComponent<RectTransform>()
+                        .anchoredPosition;
 
-                var rect = lineObj.GetComponent<RectTransform>();
-                rect.localPosition = new Vector3(mid.x, mid.y, 0);
-                rect.sizeDelta = new Vector2(length, 6f);
-                rect.localRotation = Quaternion.Euler(0, 0, angle);
+                Vector2 to =
+                    nodeObjects[nextId]
+                        .GetComponent<RectTransform>()
+                        .anchoredPosition;
 
-                var img = lineObj.GetComponent<UnityEngine.UI.Image>();
-                img.color = new Color(0.8f, 0.8f, 0.8f, 1f);
+                Vector2 difference =
+                    to - from;
+
+                float length =
+                    difference.magnitude;
+
+                float angle =
+                    Mathf.Atan2(
+                        difference.y,
+                        difference.x
+                    ) * Mathf.Rad2Deg;
+
+                Vector2 middle =
+                    (from + to) * 0.5f;
+
+                GameObject lineObject =
+                    new GameObject(
+                        "Line",
+                        typeof(RectTransform),
+                        typeof(CanvasRenderer),
+                        typeof(UnityEngine.UI.Image)
+                    );
+
+                lineObject.transform.SetParent(
+                    parent,
+                    false
+                );
+
+                // ノードより背面に置く
+                lineObject.transform.SetAsFirstSibling();
+
+                RectTransform rect =
+                    lineObject.GetComponent<RectTransform>();
+
+                rect.anchorMin =
+                    new Vector2(0.5f, 0.5f);
+
+                rect.anchorMax =
+                    new Vector2(0.5f, 0.5f);
+
+                rect.pivot =
+                    new Vector2(0.5f, 0.5f);
+
+                rect.anchoredPosition =
+                    middle;
+
+                rect.sizeDelta =
+                    new Vector2(
+                        length,
+                        6f
+                    );
+
+                rect.localRotation =
+                    Quaternion.Euler(
+                        0f,
+                        0f,
+                        angle
+                    );
+
+                UnityEngine.UI.Image image =
+                    lineObject.GetComponent<UnityEngine.UI.Image>();
+
+                image.color =
+                    new Color(
+                        0.8f,
+                        0.8f,
+                        0.8f,
+                        1f
+                    );
+
+                image.raycastTarget = false;
+            }
+        }
+
+        if (playerImage != null)
+        {
+            playerImage.SetAsLastSibling();
+        }
+    }
+
+    // =========================
+    // 入力
+    // =========================
+    private void Update()
+    {
+        if (isPlayerMoving)
+            return;
+
+        if (Keyboard.current == null)
+            return;
+
+        var selectables =
+            GetSelectableNodes().ToList();
+
+        if (selectables.Count == 0)
+            return;
+
+        if (
+            Keyboard.current
+                .upArrowKey
+                .wasPressedThisFrame
+        )
+        {
+            selectableIndex =
+                (
+                    selectableIndex -
+                    1 +
+                    selectables.Count
+                ) %
+                selectables.Count;
+
+            RefreshAllNodes();
+        }
+        else if (
+            Keyboard.current
+                .downArrowKey
+                .wasPressedThisFrame
+        )
+        {
+            selectableIndex =
+                (
+                    selectableIndex +
+                    1
+                ) %
+                selectables.Count;
+
+            RefreshAllNodes();
+        }
+        else if (
+            Keyboard.current
+                .rightArrowKey
+                .wasPressedThisFrame ||
+            Keyboard.current
+                .enterKey
+                .wasPressedThisFrame
+        )
+        {
+            SelectNextNode(
+                selectables[selectableIndex].Id
+            );
+
+            selectableIndex = 0;
+        }
+    }
+
+    // =========================
+    // デバッグ
+    // =========================
+    private void DebugAllNodes()
+    {
+        foreach (
+            MapNode node in
+            Nodes.Values.OrderBy(node => node.Layer)
+        )
+        {
+            string enemyName =
+                node.Enemy != null
+                    ? node.Enemy.EnemyName
+                    : "なし";
+
+            Debug.Log(
+                $"Node {node.Id}" +
+                $" | Layer {node.Layer}" +
+                $" | {node.Type}" +
+                $" | Enemy:{enemyName}" +
+                $" | Pos:{node.Position}" +
+                $" -> [{string.Join(",", node.NextNodeIds)}]"
+            );
+        }
+    }
+
+    private void DebugDrawConnections()
+    {
+        foreach (MapNode node in Nodes.Values)
+        {
+            foreach (int nextId in node.NextNodeIds)
+            {
+                MapNode target =
+                    Nodes[nextId];
+
+                Debug.DrawLine(
+                    node.Position,
+                    target.Position,
+                    Color.white,
+                    100f
+                );
             }
         }
     }
 
-    void Update()
+    private void OnDrawGizmos()
     {
-        var selectables = GetSelectableNodes().ToList();
-        if (selectables.Count == 0) return;
+        if (Nodes == null)
+            return;
 
-        if (Keyboard.current.upArrowKey.wasPressedThisFrame)
+        foreach (MapNode node in Nodes.Values)
         {
-            selectableIndex = (selectableIndex - 1 + selectables.Count) % selectables.Count;
-            RefreshAllNodes();
-        }
-        else if (Keyboard.current.downArrowKey.wasPressedThisFrame)
-        {
-            selectableIndex = (selectableIndex + 1) % selectables.Count;
-            RefreshAllNodes();
-        }
-        else if (Keyboard.current.rightArrowKey.wasPressedThisFrame || Keyboard.current.enterKey.wasPressedThisFrame)
-        {
-            SelectNextNode(selectables[selectableIndex].Id);
-            selectableIndex = 0;
+            Gizmos.color =
+                node.Id == CurrentNodeId
+                    ? Color.yellow
+                    : Color.white;
+
+            Gizmos.DrawSphere(
+                node.Position,
+                20f
+            );
+
+            foreach (int nextId in node.NextNodeIds)
+            {
+                Gizmos.DrawLine(
+                    node.Position,
+                    Nodes[nextId].Position
+                );
+            }
         }
     }
 
@@ -564,32 +1129,87 @@ public class MapFlow : MonoBehaviour
         MapSession.Clear();
     }
 
+    // =========================
+    // シーン設定
+    // =========================
     [Header("シーン遷移設定")]
+
 #if UNITY_EDITOR
-    [SerializeField] UnityEditor.SceneAsset battleScene;
-    [SerializeField] UnityEditor.SceneAsset restScene;
-    [SerializeField] UnityEditor.SceneAsset eventScene;
-    [SerializeField] UnityEditor.SceneAsset treasureScene;
-    [SerializeField] UnityEditor.SceneAsset itemScene;
-    [SerializeField] UnityEditor.SceneAsset bossScene;
+    [SerializeField]
+    private UnityEditor.SceneAsset battleScene;
+
+    [SerializeField]
+    private UnityEditor.SceneAsset restScene;
+
+    [SerializeField]
+    private UnityEditor.SceneAsset eventScene;
+
+    [SerializeField]
+    private UnityEditor.SceneAsset treasureScene;
+
+    [SerializeField]
+    private UnityEditor.SceneAsset itemScene;
+
+    [SerializeField]
+    private UnityEditor.SceneAsset bossScene;
 #endif
 
-    [SerializeField, HideInInspector] string battleSceneName;
-    [SerializeField, HideInInspector] string restSceneName;
-    [SerializeField, HideInInspector] string eventSceneName;
-    [SerializeField, HideInInspector] string treasureSceneName;
-    [SerializeField, HideInInspector] string itemSceneName;
-    [SerializeField, HideInInspector] string bossSceneName;
+    [SerializeField, HideInInspector]
+    private string battleSceneName;
+
+    [SerializeField, HideInInspector]
+    private string restSceneName;
+
+    [SerializeField, HideInInspector]
+    private string eventSceneName;
+
+    [SerializeField, HideInInspector]
+    private string treasureSceneName;
+
+    [SerializeField, HideInInspector]
+    private string itemSceneName;
+
+    [SerializeField, HideInInspector]
+    private string bossSceneName;
 
 #if UNITY_EDITOR
-    void OnValidate()
+    private void OnValidate()
     {
-        if (battleScene != null) battleSceneName = battleScene.name;
-        if (restScene != null) restSceneName = restScene.name;
-        if (eventScene != null) eventSceneName = eventScene.name;
-        if (treasureScene != null) treasureSceneName = treasureScene.name;
-        if (itemScene != null) itemSceneName = itemScene.name;
-        if (bossScene != null) bossSceneName = bossScene.name;
+        if (battleScene != null)
+        {
+            battleSceneName =
+                battleScene.name;
+        }
+
+        if (restScene != null)
+        {
+            restSceneName =
+                restScene.name;
+        }
+
+        if (eventScene != null)
+        {
+            eventSceneName =
+                eventScene.name;
+        }
+
+        if (treasureScene != null)
+        {
+            treasureSceneName =
+                treasureScene.name;
+        }
+
+        if (itemScene != null)
+        {
+            itemSceneName =
+                itemScene.name;
+        }
+
+        if (bossScene != null)
+        {
+            bossSceneName =
+                bossScene.name;
+        }
     }
 #endif
 }

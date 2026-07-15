@@ -38,7 +38,7 @@ public class MapNodeButton : MonoBehaviour
 
     static readonly float MultVisited = 0.4f;
     static readonly float MultLocked = 0.25f;
-
+    static readonly float MultTwoStepAhead = 0.6f; // 2マス先の明るさ
     [SerializeField] float blinkSpeed = 3f;
     [SerializeField] float blinkMinAlpha = 0.3f;
     [SerializeField] float focusedScale = 1.3f;
@@ -72,37 +72,64 @@ public class MapNodeButton : MonoBehaviour
     }
 
     // enemyDataを受け取るようにRefreshを変更
-    public void Refresh(NodeState state, NodeType nodeType, bool focused = false)
+    public void Refresh(
+     NodeState state,
+     NodeType nodeType,
+     bool focused = false,
+     bool isClickable = false
+ )
     {
         currentState = state;
         isFocused = focused;
 
-        cursorImage.gameObject.SetActive(state == NodeState.Current);
-        button.interactable = (state == NodeState.Selectable);
+        if (cursorImage != null)
+        {
+            cursorImage.gameObject.SetActive(
+                state == NodeState.Current
+            );
+        }
+
+        if (button != null)
+        {
+            button.interactable = isClickable;
+        }
 
         int typeIndex = (int)nodeType;
-        if (nodeTypeSprites != null && typeIndex < nodeTypeSprites.Length && nodeTypeSprites[typeIndex] != null)
-            nodeImage.sprite = nodeTypeSprites[typeIndex];
 
-        Color baseColor = TypeColors[typeIndex];
+        if (
+            nodeTypeSprites != null &&
+            typeIndex >= 0 &&
+            typeIndex < nodeTypeSprites.Length &&
+            nodeTypeSprites[typeIndex] != null
+        )
+        {
+            nodeImage.sprite = nodeTypeSprites[typeIndex];
+        }
+
+        Color baseColor =
+            typeIndex >= 0 &&
+            typeIndex < TypeColors.Length
+            ? TypeColors[typeIndex]
+            : Color.white;
+
         nodeImage.color = state switch
         {
             NodeState.Current => baseColor,
-            NodeState.Selectable => baseColor,
+            NodeState.Selectable => isClickable ? baseColor : baseColor * MultTwoStepAhead,
             NodeState.Visited => baseColor * MultVisited,
             _ => baseColor * MultLocked
         };
 
-        // 変更後
         if (nodeType == NodeType.Boss)
         {
-            // BOSSは常に大きく表示
             transform.localScale = Vector3.one * 3f;
         }
         else
         {
-            transform.localScale = isFocused ? Vector3.one * focusedScale : Vector3.one;
+            transform.localScale =
+                isFocused
+                ? Vector3.one * focusedScale
+                : Vector3.one;
         }
-
     }
 }

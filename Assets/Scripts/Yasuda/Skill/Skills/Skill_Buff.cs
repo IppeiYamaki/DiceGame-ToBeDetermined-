@@ -15,7 +15,18 @@ public class Skill_Buff : MonoBehaviour, IPointerClickHandler
 
     //このターン使ったか。使ったらtrueにする
     private bool m_use = false;
+    [SerializeField]
+    private AudioClip se;
+    private AudioSource audioSource;
 
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+    private void PlaySE()
+    {
+        audioSource.PlayOneShot(se);
+    }
 
     public bool CheckUseSkill()
     {
@@ -43,6 +54,7 @@ public class Skill_Buff : MonoBehaviour, IPointerClickHandler
     {
         //残りポイントを追加する
         m_point.AddSkillPoint(m_buffPoint);
+        PlaySE();
     }
 
 
@@ -61,9 +73,10 @@ public class Skill_Buff : MonoBehaviour, IPointerClickHandler
     {
         if (CheckUseSkill() == true)
         {
+            m_use = true;
             m_point.UseSkillPoint(m_usePoint);
             UseSkill();//ここでスキル発動
-            m_use = true;
+            
         }
     }
 }

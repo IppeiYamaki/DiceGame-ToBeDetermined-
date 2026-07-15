@@ -14,6 +14,18 @@ public class Skill_Hissatuwaza : MonoBehaviour, IPointerClickHandler
     //このターン使ったか。使ったらtrueにする
     private bool m_use = false;
 
+    [SerializeField]
+    private AudioClip se;
+    private AudioSource audioSource;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+    private void PlaySE()
+    {
+        audioSource.PlayOneShot(se);
+    }
 
     public bool CheckUseSkill()
     {
@@ -40,6 +52,7 @@ public class Skill_Hissatuwaza : MonoBehaviour, IPointerClickHandler
     public void UseSkill()
     {
         //出た目の2倍のダメージを敵に与える
+        PlaySE();
     }
 
 
@@ -58,9 +71,10 @@ public class Skill_Hissatuwaza : MonoBehaviour, IPointerClickHandler
     {
         if (CheckUseSkill() == true)
         {
+            m_use = true;
             m_point.UseSkillPoint(m_usePoint);
             UseSkill();//ここでスキル発動
-            m_use = true;
+           
         }
     }
 }

@@ -78,7 +78,7 @@ public class DiceRecorder : MonoBehaviour
     {
         // ì∆ì¡Ç»ÉtÉ@ÉCÉãñºÇê∂ê¨
         string fileName = recordingId + ".json";
-        string dir = Path.Combine(Application.persistentDataPath, "DiceRecordings");
+        string dir = Path.Combine(Application.streamingAssetsPath, "DiceRecordings");
         string fullPath = Path.Combine(dir, fileName);
 
         if (!Directory.Exists(dir))

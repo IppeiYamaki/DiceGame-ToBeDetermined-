@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
@@ -13,46 +14,48 @@ public class RandomDice : MonoBehaviour
 {
     //private
 
-    private Rigidbody rb; // Rigidbodyã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã¸ã®å‚ç…§
-    private bool notLooped = false; // ãƒ‰ãƒ­ãƒƒãƒ—é–‹å§‹å¾Œã®ä¸€åº¦ã ã‘ã®å‡¦ç†ã‚’åˆ¶å¾¡ã™ã‚‹ãƒ•ãƒ©ã‚°
-    private bool notLooped2 = false; // ã‚µã‚¤ã‚³ãƒ­ãŒåœæ­¢ã—ã¦ã„ãªã„ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
-    private int recordingIdIndex = 0;
+    private Rigidbody rb; // RigidbodyƒRƒ“ƒ|[ƒlƒ“ƒg‚Ö‚ÌQÆ
+    private bool notLooped = false; // ƒhƒƒbƒvŠJnŒã‚Ìˆê“x‚¾‚¯‚Ìˆ—‚ğ§Œä‚·‚éƒtƒ‰ƒO
+    private bool notLooped2 = false; // ƒTƒCƒRƒ‚ª’â~‚µ‚Ä‚¢‚È‚¢‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
+    private float stepIntervalTime = 0.1f; // ƒTƒCƒRƒ‚ª’â~‚µ‚Ä‚¢‚é‚Æ”»’è‚·‚é‚Ü‚Å‚ÌŠÔ‚ÌŠÔŠu
+    private int changeDiceValue = 0; // o‚µ‚½‚¢–Ú
 
     //public
-    public int changeDiceValue = 0; // å‡ºã—ãŸã„ç›®
-    public Vector3 spawn = new Vector3(-4, 5, 0);   // å‡ºç¾ä½ç½®
-    public float rotateSpeed = 1f;// å›è»¢ã®é€Ÿã•
-    public int useIdIndex = 0;//ãƒ€ã‚¤ã‚¹ã®éŒ²ç”»IDã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’æŒ‡å®šã™ã‚‹ãŸã‚ã®å¤‰æ•°
-    public List<int> DiceFace = new List<int>(); // ã‚µã‚¤ã‚³ãƒ­ã®ç›®ã®å€¤ã‚’æ ¼ç´ã™ã‚‹ãƒªã‚¹ãƒˆ
+    public List<int> DiceFace = new List<int>(); // ƒTƒCƒRƒ‚Ì–Ú‚Ì’l‚ğŠi”[‚·‚éƒŠƒXƒg
+    public Vector3 spawn = new Vector3(-4, 5, 0);   // oŒ»ˆÊ’u
+    public float rotateSpeed = 1f;// ‰ñ“]‚Ì‘¬‚³
+    public float stepInterval = 0.5f; // ƒTƒCƒRƒ‚ª’â~‚µ‚Ä‚¢‚é‚Æ”»’è‚·‚é‚Ü‚Å‚ÌƒtƒŒ[ƒ€”‚ÌŠÔŠu
+    public int useIdIndex = 0;//ƒ_ƒCƒX‚Ì˜^‰æID‚ÌƒCƒ“ƒfƒbƒNƒX‚ğw’è‚·‚é‚½‚ß‚Ì•Ï”
+    public int recordingIdIndex = 0;
+    public bool isNextStep = false; // Ÿ‚ÌƒXƒeƒbƒv‚Éi‚Ş‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
 
 
-
-    [Header("ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå‚ç…§ç”¨")]
+    [Header("ƒIƒuƒWƒFƒNƒgQÆ—p")]
  
-    public GameObject rotateDice; // å›è»¢ã™ã‚‹ã‚µã‚¤ã‚³ãƒ­ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®å‚ç…§
-    public DiceDefinition diceDefinition; // DiceDefinitionã¸ã®å‚ç…§
-    public TMP_Text randomText;// ã‚µã‚¤ã‚³ãƒ­ã®ç›®ã®å€¤ã‚’è¡¨ç¤ºã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆ
-    public DiceRole role; // DiceRoleã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã¸ã®å‚ç…§
-    public DiceRecorder diceRecorder;  // éŒ²ç”»ç”¨ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
-
-    [Header("ãƒ‡ãƒãƒƒã‚°ç”¨")]
-    [SerializeField]
-    private int notStoppedDice = 0; // ã‚µã‚¤ã‚³ãƒ­ãŒåœæ­¢ã—ã¦ã„ãªã„ãƒ•ãƒ¬ãƒ¼ãƒ æ•°ã®ã‚«ã‚¦ãƒ³ã‚¿
-    [SerializeField]
-    private bool isRecording = false; // éŒ²ç”»ä¸­ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°(ãƒ‡ãƒãƒƒã‚°ç”¨)
-    [SerializeField]
-    private int stopCount = 0;// ã‚µã‚¤ã‚³ãƒ­ãŒåœæ­¢ã—ã¦ã„ã‚‹ãƒ•ãƒ¬ãƒ¼ãƒ æ•°ã®ã‚«ã‚¦ãƒ³ã‚¿
-    [SerializeField]
-    private int debugtako = 0;
-    [SerializeField]
-    private Vector3 torque = new Vector3(1, 1, 1);  // å›è»¢è»¸
+    public GameObject rotateDice; // ‰ñ“]‚·‚éƒTƒCƒRƒ‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ö‚ÌQÆ
+    public DiceDefinition diceDefinition; // DiceDefinition‚Ö‚ÌQÆ
+    public TMP_Text randomText;// ƒTƒCƒRƒ‚Ì–Ú‚Ì’l‚ğ•\¦‚·‚éƒeƒLƒXƒg
+    public DiceRole role; // DiceRoleƒRƒ“ƒ|[ƒlƒ“ƒg‚Ö‚ÌQÆ
+    public DiceRecorder diceRecorder;  // ˜^‰æ—pƒRƒ“ƒ|[ƒlƒ“ƒg
+    public DiceFaceTexture diceFaceTexture; // ƒTƒCƒRƒ‚Ì–Ú‚ÌƒeƒNƒXƒ`ƒƒ‚ğŠÇ—‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒg‚Ö‚ÌQÆ
 
 
+    [Header("ƒfƒoƒbƒO—p")]
+    [SerializeField]
+    private int notStoppedDice = 0; // ƒTƒCƒRƒ‚ª’â~‚µ‚Ä‚¢‚È‚¢ƒtƒŒ[ƒ€”‚ÌƒJƒEƒ“ƒ^
+    [SerializeField]
+    private bool isRecording = false; // ˜^‰æ’†‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO(ƒfƒoƒbƒO—p)
+    [SerializeField]
+    private int stopCount = 0;// ƒTƒCƒRƒ‚ª’â~‚µ‚Ä‚¢‚éƒtƒŒ[ƒ€”‚ÌƒJƒEƒ“ƒ^
+    [SerializeField]
+    private Vector3 torque = new Vector3(1, 1, 1);  // ‰ñ“]²
 
-    public bool isStopped = false; // ã‚µã‚¤ã‚³ãƒ­ãŒåœæ­¢ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°(åˆ¥ã‚¹ã‚¯ãƒªãƒ—ãƒˆåˆ¤å®šç”¨)
-    public int diceValue;// ã‚µã‚¤ã‚³ãƒ­ã®ç›®ã®çµæœã‚’æ ¼ç´ã™ã‚‹å¤‰æ•°
+    
 
-    // ã‚µã‚¤ã‚³ãƒ­ã®çŠ¶æ…‹ã‚’è¡¨ã™åˆ—æŒ™å‹
+    public bool isStopped = false; // ƒTƒCƒRƒ‚ª’â~‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO(•ÊƒXƒNƒŠƒvƒg”»’è—p)
+    public int diceValue;// ƒTƒCƒRƒ‚Ì–Ú‚ÌŒ‹‰Ê‚ğŠi”[‚·‚é•Ï”
+
+    // ƒTƒCƒRƒ‚Ìó‘Ô‚ğ•\‚·—ñ‹“Œ^
     public enum DiceState
     {
         Idle,
@@ -69,11 +72,12 @@ public class RandomDice : MonoBehaviour
         this.transform.position = spawn;
         rb = GetComponent<Rigidbody>();
         //role = GetComponent<DiceRole>();
-        for (int i = 0; i < DiceFace.Count; i++)
-        {
-            DiceFace[i] = diceDefinition.Faces[i].Number;
-        }
 
+        DiceDefault();
+
+        diceFaceTexture.SetDiceFaceTexture();
+
+        recordingIdIndex = 0;
     }
 
 
@@ -98,6 +102,7 @@ public class RandomDice : MonoBehaviour
         {
             case DiceState.Idle:
                 IdolDice();
+                DiceDefault();
                 if (!notLooped2)
                 {
                     rotateDice.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -110,15 +115,14 @@ public class RandomDice : MonoBehaviour
                 break;
             case DiceState.RecordPlaying:
                 RecordPlaying();
-                if (notLooped2)
+                if (notLooped2 && role.isPlaying)
                 {
                     PlayDiceRotate((int)GetRecordingId(role));
-                    
                     notLooped2 = false;
                 }
                 break;
             case DiceState.Stopped:
-                Debug.Log("ãƒ€ã‚¤ã‚¹ãƒŠãƒ³ãƒãƒ¼" + debugtako +"ã‚‚ã¨ã®ç•ªå·"+ (int)GetRecordingId(role) + "å¤‰ãˆãŸã„ãƒ€ã‚¤ã‚¹ãƒŠãƒ³ãƒãƒ¼" + changeDiceValue + "å¤‰ã‚ã£ãŸç•ªå·" + diceValue);
+                //Debug.Log("ƒ_ƒCƒXƒiƒ“ƒo[" + debugtako +"‚à‚Æ‚Ì”Ô†"+ (int)GetRecordingId(role) + "•Ï‚¦‚½‚¢ƒ_ƒCƒXƒiƒ“ƒo[" + changeDiceValue + "•Ï‚í‚Á‚½”Ô†" + diceValue);
                 StopDice();
                 break;
             case DiceState.NextEvent:
@@ -126,12 +130,12 @@ public class RandomDice : MonoBehaviour
                 break;
         }
 
+
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             switch (state)
             {
                 case DiceState.Idle:
-                    state = DiceState.Dropping;
                     break;
                 case DiceState.NextEvent:
                     state = DiceState.Idle;
@@ -142,10 +146,10 @@ public class RandomDice : MonoBehaviour
                 diceRecorder.StartRecording();
         }
 
-        if (Keyboard.current.rKey.wasPressedThisFrame)
-        {
-            isRecording = !isRecording;
-        }
+        //if (Keyboard.current.rKey.wasPressedThisFrame)
+        //{
+        //    isRecording = !isRecording;
+        //}
 
 
 
@@ -162,11 +166,35 @@ public class RandomDice : MonoBehaviour
         };
     }
 
-    // åœæ­¢ä¸­ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å‡¦ç†
+    private int GetRoleIdIndex(DiceRole r)
+    {
+        return useIdIndex switch
+        {
+            0 => (int)r.rolevalue.x,
+            1 => (int)r.rolevalue.y,
+            2 => (int)r.rolevalue.z,
+            _ => (int)r.rolevalue.x
+        };
+    }
+
+    // ’â~’†‚ÌƒXƒe[ƒ^ƒXˆ—
     void IdolDice()
     {
+        diceFaceTexture.SetDiceFaceTexture();
+        stepIntervalTime += Time.deltaTime;
+        if(stepIntervalTime >= stepInterval)
+        {
+            isNextStep = true;
+        }
+
         if (notLooped)
         {
+
+
+            recordingIdIndex += 1;
+            if (recordingIdIndex > 5)
+                recordingIdIndex = 0;
+
             rb.isKinematic = false;
             this.transform.position = spawn;
             this.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -178,15 +206,17 @@ public class RandomDice : MonoBehaviour
             float rotatez = Random.Range(-3f, 3f);
 
             torque = new Vector3(rotatex, rotatey, rotatez);
-            rb.AddTorque(torque * rotateSpeed, ForceMode.Force);
+            //rb.AddTorque(torque * rotateSpeed, ForceMode.Force);
             notLooped = false;
             stopCount = 0;
             randomText.text = 0.ToString();
             isStopped = false;
+            changeDiceValue = GetRoleIdIndex(role);
+            Debug.Log(GetRoleIdIndex(role));
         }
     }
 
-    // ã‚µã‚¤ã‚³ãƒ­ã‚’è½ã¨ã—ãŸæ™‚ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å‡¦ç†
+    // ƒTƒCƒRƒ‚ğ—‚Æ‚µ‚½‚ÌƒXƒe[ƒ^ƒXˆ—
     void DropDice()
     {
         rb.constraints = RigidbodyConstraints.None;
@@ -201,35 +231,36 @@ public class RandomDice : MonoBehaviour
         }
     }
 
-    // éŒ²ç”»ã‚’å†ç”Ÿã—ãŸã¨ãã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å‡¦ç†
+    // ˜^‰æ‚ğÄ¶‚µ‚½‚Æ‚«‚ÌƒXƒe[ƒ^ƒXˆ—
     void RecordPlaying()
     {
         notLooped = true;
     }
-    // ã‚µã‚¤ã‚³ãƒ­ãŒåœæ­¢ã—ã¦ã„ã‚‹ã¨ãã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å‡¦ç†
+    // ƒTƒCƒRƒ‚ª’â~‚µ‚Ä‚¢‚é‚Æ‚«‚ÌƒXƒe[ƒ^ƒXˆ—
     void StopDice()
     {
         stopCount = 0;
         notStoppedDice = 0;
     }
 
-    // æ¬¡ã®ã‚¤ãƒ™ãƒ³ãƒˆã«ç§»è¡Œã™ã‚‹ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å‡¦ç†
+    // Ÿ‚ÌƒCƒxƒ“ƒg‚ÉˆÚs‚·‚éƒXƒe[ƒ^ƒXˆ—
     void NextEvent()
     {
         isStopped = false;
         stopCount = 0;
         notStoppedDice = 0;
+        stepIntervalTime = 0;
+        isNextStep = false;
     }
 
 
 
-    //ã‚µã‚¤ã‚³ãƒ­ã®ç›®ãŒæ±ºã¾ã£ãŸã¨ãã®ã‚¤ãƒ™ãƒ³ãƒˆå‡¦ç†
+    //ƒTƒCƒRƒ‚Ì–Ú‚ªŒˆ‚Ü‚Á‚½‚Æ‚«‚ÌƒCƒxƒ“ƒgˆ—
     public void Dice1Event()
     {
         stopCount++;
         if (stopCount > 30)
         {
-            Debug.Log("1");
             randomText.text = DiceFace[0].ToString();
             diceValue = DiceFace[0];
             isStopped = true;
@@ -244,7 +275,6 @@ public class RandomDice : MonoBehaviour
         stopCount++;
         if (stopCount > 30)
         {
-            Debug.Log("2");
             randomText.text = DiceFace[1].ToString();
             diceValue = DiceFace[1];
             isStopped = true;
@@ -259,7 +289,6 @@ public class RandomDice : MonoBehaviour
         stopCount++;
         if (stopCount > 30)
         {
-            Debug.Log("3");
             randomText.text = DiceFace[2].ToString();
             diceValue = DiceFace[2];
             isStopped = true;
@@ -274,7 +303,6 @@ public class RandomDice : MonoBehaviour
         stopCount++;
         if (stopCount > 30)
         {
-            Debug.Log("4");
             randomText.text = DiceFace[3].ToString();
             diceValue = DiceFace[3];
             isStopped = true;
@@ -289,7 +317,6 @@ public class RandomDice : MonoBehaviour
         stopCount++;
         if (stopCount > 30)
         {
-            Debug.Log("5");
             randomText.text = DiceFace[4].ToString();
             diceValue = DiceFace[4];
             isStopped = true;
@@ -304,7 +331,6 @@ public class RandomDice : MonoBehaviour
         stopCount++;
         if (stopCount > 30)
         {
-            Debug.Log("6");
             randomText.text = DiceFace[5].ToString();
             diceValue = DiceFace[5];
             isStopped = true;
@@ -314,7 +340,7 @@ public class RandomDice : MonoBehaviour
         }
     }
 
-    //æŒ¯ã‚‹å‰ã«ã‚µã‚¤ã‚³ãƒ­ã®ç›®ã‚’å¤‰ãˆã‚‹ãŸã‚ã®é–¢æ•°
+    //U‚é‘O‚ÉƒTƒCƒRƒ‚Ì–Ú‚ğ•Ï‚¦‚é‚½‚ß‚ÌŠÖ”
     public void PlayDiceRotate(int diceValue)
     {
         if (diceValue == 1)
@@ -478,6 +504,47 @@ public class RandomDice : MonoBehaviour
             else if (changeDiceValue == 6)
             {
                 rotateDice.transform.rotation *= Quaternion.Euler(0, 0, 0);
+            }
+        }
+    }
+
+    void DiceDefault()
+    {
+        DiceFace.Clear();
+        for (int i = 0; i < 6; i++)
+        {
+            DiceFace.Add(0);
+        }
+
+
+        List<int> remainNumbers = new List<int>();
+
+        // ‘Î‰ˆÊ’u‚É“ü‚ê‚é
+        for (int i = 0; i < diceDefinition.Faces.Count; i++)
+        {
+            int number = diceDefinition.Faces[i].Number;
+            int targetIndex = number - 1;
+
+            // ‘Î‰ˆÊ’u‚ª‹ó‚¢‚Ä‚¢‚é
+            if (DiceFace[targetIndex] == 0)
+            {
+                DiceFace[targetIndex] = number;
+            }
+            else
+            {
+                remainNumbers.Add(number);
+            }
+        }
+
+        // c‚è‚ğ‹ó‚¢‚Ä‚¢‚éêŠ‚Ö“ü‚ê‚é
+        int remainIndex = 0;
+
+        for (int i = 0; i < DiceFace.Count; i++)
+        {
+            if (DiceFace[i] == 0)
+            {
+                DiceFace[i] = remainNumbers[remainIndex];
+                remainIndex++;
             }
         }
     }

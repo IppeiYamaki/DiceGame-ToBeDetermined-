@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5141af8e7e02ee54d9b1d83e9c0c2ea5, type: 3}
-  m_Name: Dice_Default
+  m_Name: Dice_Twin Gemini
   m_EditorClassIdentifier: Assembly-CSharp::DiceDefinition
-  m_persistentId: 403a232b39f549e791c7d82fb598aa18
-  m_diceName: "6\u9762\u30C0\u30A4\u30B9"
+  m_persistentId: 75956cbc6bc54d088c65e450e472f97a
+  m_diceName: 
   m_faces:
-  - m_number: 1
-  - m_number: 2
-  - m_number: 3
-  - m_number: 4
+  - m_number: 5
+  - m_number: 5
+  - m_number: 5
   - m_number: 5
   - m_number: 6
-  m_useStandardFaceNumbers: 1
+  - m_number: 6
+  m_useStandardFaceNumbers: 0

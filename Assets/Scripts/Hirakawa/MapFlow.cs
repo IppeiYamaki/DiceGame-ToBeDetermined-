@@ -43,9 +43,6 @@ public class MapNode
     public List<int> NextNodeIds = new();
 
     public EnemyDefinition Enemy;
-
-    // Battleノードに割り当てられた敵エンカウントプールのインデックス（-1 = 未割当）
-    public int EnemyPoolIndex = -1;
 }
 
 public class MapGraph
@@ -80,9 +77,7 @@ public static class MapGenerator
         int minNodesPerLayer = 2,
         int maxNodesPerLayer = 4,
         MapDirection direction = MapDirection.Horizontal,
-        EnemyDatabase enemyDatabase = null,
-        int enemyPoolCount = 0,
-        int[] poolIndexByLayer = null
+        EnemyDatabase enemyDatabase = null
     )
 
 
@@ -128,21 +123,6 @@ public static class MapGenerator
 
                 if (node.Type == NodeType.Battle && enemyDatabase != null)
                     node.Enemy = enemyDatabase.GetRandom();
-
-                if (node.Type == NodeType.Battle && enemyPoolCount > 0)
-                {
-                    if (poolIndexByLayer != null && poolIndexByLayer.Length > 0)
-                    {
-                        // 層→Pool対応表で決定(表の範囲外の層は最後の値を使用、Pool数を超える値はClamp)
-                        int poolIndex = poolIndexByLayer[Mathf.Min(layer, poolIndexByLayer.Length - 1)];
-                        node.EnemyPoolIndex = Mathf.Clamp(poolIndex, 0, enemyPoolCount - 1);
-                    }
-                    else
-                    {
-                        // 対応表が未設定の場合は従来どおりランダム割当て
-                        node.EnemyPoolIndex = Random.Range(0, enemyPoolCount);
-                    }
-                }
 
                 graph.Nodes[node.Id] = node;
                 layerNodes.Add(node);
@@ -303,14 +283,6 @@ public class MapFlow : MonoBehaviour
     [SerializeField] RectTransform parent;
     [SerializeField] EnemyDatabase enemyDatabase;
 
-    [SerializeField]
-    [Header("層ごとの敵プール番号")]
-    [Tooltip("要素0 = Layer0のプール番号(RunSystemManagerのプール一覧のElement番号)\n" +
-             "例: {0, 0, 0, 1, 1, 1} なら Layer0?2 は Pool1、Layer3?5 は Pool2\n" +
-             "要素数が層数より少ない場合、超えた層は最後の値を使用\n" +
-             "空の場合は従来どおりランダム割当て")]
-    int[] poolIndexByLayer = new int[0];
-
     void Awake()
     {
         if (!MapSession.HasData)
@@ -322,9 +294,7 @@ public class MapFlow : MonoBehaviour
             graph = MapGenerator.Generate(
                 layerCount: 6,
                 direction: MapDirection.Horizontal,
-                enemyDatabase: enemyDatabase,
-                enemyPoolCount: RunSystemManager.Instance != null ? RunSystemManager.Instance.EnemyEncounterPoolCount : 0,
-                poolIndexByLayer: poolIndexByLayer
+                enemyDatabase: enemyDatabase
             );
             MapSession.Graph = graph;
             MapSession.CurrentNodeId = graph.StartNodeId;
@@ -380,10 +350,6 @@ public class MapFlow : MonoBehaviour
                 Debug.Log($"Layer{node.Layer} の {node.IndexInLayer + 1}マス目に移動 | タイプ:Battle | 敵:{enemyName}");
 
                 
-                // 遷移前にノードの敵プールから次戦闘の敵編成を抽選（失敗時はBattle側のフォールバックが使われる）
-                if (RunSystemManager.Instance != null)
-                    RunSystemManager.Instance.SelectNextBattleEnemiesFromPool(node.EnemyPoolIndex);
-
                 UnityEngine.SceneManagement.SceneManager.LoadScene(battleSceneName);
                 break;
 

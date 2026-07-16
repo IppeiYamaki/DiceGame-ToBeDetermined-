@@ -178,7 +178,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7942088493134114218}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 90}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.10691672, y: 0.10691672, z: 0.10691672}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -188,8 +188,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 9.353074}
-  m_SizeDelta: {x: 80, y: 80}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 180, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8049344860808884321
 CanvasRenderer:
@@ -289,9 +289,15 @@ MonoBehaviour:
   mapFlow: {fileID: 0}
   nodeImage: {fileID: 2111691406528329745}
   cursorImage: {fileID: 6022899337432496920}
-  enemyIconImage: {fileID: 7251727978221161128}
   button: {fileID: 2777350698366385974}
-  nodeTypeSprites: []
+  nodeTypeSprites:
+  - {fileID: 21300000, guid: 487037f3a9e46164397b25d56c9e2a1b, type: 3}
+  - {fileID: 21300000, guid: d9adc5c46001be74bbcdb1df11942886, type: 3}
+  - {fileID: 21300000, guid: a12c0d1d26eac62428fda26cd03c5bda, type: 3}
+  - {fileID: 21300000, guid: 94388f60a5bf2834c9e7897b2b097d31, type: 3}
+  - {fileID: 21300000, guid: 4cb1e5fcca35e0b4389d24543db9b50c, type: 3}
+  - {fileID: 21300000, guid: e603d7ec4b3f2914bafc73a309689392, type: 3}
+  - {fileID: 21300000, guid: 29717b4dba3d76541a2b429afae1a090, type: 3}
   blinkSpeed: 3
   blinkMinAlpha: 0.3
   focusedScale: 1.3

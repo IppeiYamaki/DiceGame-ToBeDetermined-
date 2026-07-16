@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f76755bb9ae1cb34abaf79eb82b22cfb, type: 3}
+  m_Name: Enemy4
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDefinition
+  m_enemyName: "\u30C0\u30A4\u30B9\u30D0\u30C3\u30C9"
+  m_maxHp: 120
+  m_attackPower: 15
+  m_visualSprite: {fileID: 21300000, guid: 33c06529516afce48863353cc729dccb, type: 3}
+  m_visualTexture: {fileID: 2800000, guid: 33c06529516afce48863353cc729dccb, type: 3}
+  m_idleTextures:
+  - {fileID: 2800000, guid: 33c06529516afce48863353cc729dccb, type: 3}
+  - {fileID: 2800000, guid: 848887a7949f84e48b005771032870c0, type: 3}
+  - {fileID: 2800000, guid: 59aaa09945fbcd94d9493baae06715c1, type: 3}
+  - {fileID: 2800000, guid: e882ff0643b453f408f9d6d64fd398b9, type: 3}
+  - {fileID: 2800000, guid: 23b411e186d134548955342fa309c82f, type: 3}
+  m_actionTexture: {fileID: 2800000, guid: 1f674f03b06b7f641baa438a86f57384, type: 3}
+  m_idleFrameInterval: 0.4
+  m_hpRangeActionSets:
+  - m_upperPercent: 100
+    m_lowerPercent: 51
+    m_actionGroups:
+    - m_weight: 1
+      m_actions:
+      - m_actionType: 0
+        m_power: 0
+        m_statusEffect: {fileID: 0}
+        m_useEffect: 0
+        m_effectPrefab: {fileID: 0}
+        m_effectAnchor: 0
+        m_effectDuration: 0
+        m_useSound: 1
+        m_audioClip: {fileID: 8300000, guid: 3452ac60513efcf42a813c7c6a12c04c, type: 3}
+        m_soundTiming: 0
+        m_volume: 0
+  - m_upperPercent: 50
+    m_lowerPercent: 0
+    m_actionGroups:
+    - m_weight: 1
+      m_actions:
+      - m_actionType: 0
+        m_power: 20
+        m_statusEffect: {fileID: 0}
+        m_useEffect: 0
+        m_effectPrefab: {fileID: 0}
+        m_effectAnchor: 0
+        m_effectDuration: 0
+        m_useSound: 1
+        m_audioClip: {fileID: 8300000, guid: ff07e5c0b3fa50148bbeaa8f65c3a3aa, type: 3}
+        m_soundTiming: 0
+        m_volume: 0

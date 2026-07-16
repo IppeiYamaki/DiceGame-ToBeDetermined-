@@ -19,9 +19,6 @@ public class Skill_Buff : MonoBehaviour, IPointerClickHandler
     private AudioClip se;
     private AudioSource audioSource;
 
-    [SerializeField]
-    private Effect_Kari kari;
-
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -79,7 +76,7 @@ public class Skill_Buff : MonoBehaviour, IPointerClickHandler
             m_use = true;
             m_point.UseSkillPoint(m_usePoint);
             UseSkill();//‚±‚±‚ÅƒXƒLƒ‹”­“®
-            kari.SetEffect(4);
+            
         }
     }
 }

@@ -3,9 +3,20 @@ using UnityEngine.SceneManagement;
 
 public class TitleScreenController : MonoBehaviour
 {
+    [SerializeField] UnityEditor.SceneAsset battleScene;
+
     public void OnClickNewGame()
     {
-        SceneManager.LoadScene("NewScene");
+        if (battleScene != null)
+        {
+            string scenePath = UnityEditor.AssetDatabase.GetAssetPath(battleScene);
+            string sceneName = System.IO.Path.GetFileNameWithoutExtension(scenePath);
+            SceneManager.LoadScene(sceneName);
+        }
+        else
+        {
+            Debug.LogError("Battle scene is not assigned.");
+        }
     }
 
     public void OnClickHowTo()

@@ -25,6 +25,11 @@ public class ActionReservationLaneView : MonoBehaviour
     [Tooltip("指定すると予約追加時に自動で最下部までスクロールします")]
     private ScrollRect m_scrollRect;
 
+    [SerializeField]
+    [Header("アイコン設定（BattleIconSettings）")]
+    [Tooltip("行動/対象の汎用アイコン設定を割り当てます（Inspectorで設定してください）")]
+    private BattleIconSettings m_iconSettings;
+
     private readonly List<GameObject> m_spawned = new List<GameObject>();
 
     /// <summary>
@@ -50,7 +55,7 @@ public class ActionReservationLaneView : MonoBehaviour
             if (view != null)
             {
                 int idx = i;
-                view.Setup(idx, actions[i], onCancelRequested);
+                view.Setup(idx, actions[i], onCancelRequested, m_iconSettings);
             }
             m_spawned.Add(go);
         }

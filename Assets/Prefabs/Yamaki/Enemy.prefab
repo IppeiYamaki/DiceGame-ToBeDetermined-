@@ -729,6 +729,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySelectable
   m_targetMarker: {fileID: 2425878875775464253}
+  m_targetMarkerSprite: {fileID: 21300000, guid: e3410284fea43a74c9eda2c1cd974780, type: 3}
+  m_targetMarkerColor: {r: 1, g: 1, b: 1, a: 0.45}
 --- !u!114 &4549003760618209412
 MonoBehaviour:
   m_ObjectHideFlags: 0

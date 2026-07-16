@@ -9,9 +9,8 @@ public class Item_DataMaster : MonoBehaviour
 {
     public static Item_DataMaster Instance;
 
-    [SerializeField]
-    private Effect_Kari effect;
-    
+  
+  
  
    
 
@@ -75,11 +74,9 @@ public class Item_DataMaster : MonoBehaviour
         {
             case 0:
                 //ここでアイテムの効果処理を行う
-                effect.SetEffect(1);
                 break;
             case 1:
                 //ここでアイテムの効果処理を行う
-                effect.SetEffect(2);
                 break;
             case 2:
                 //ここでアイテムの効果処理を行う

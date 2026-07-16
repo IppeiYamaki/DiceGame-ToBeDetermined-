@@ -342,7 +342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0784ac801c8b7246b78a4fb128add67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TitleScreenController
-  mapScene: {fileID: 102900000, guid: 7274a27dd57e8af47bf9378bc8f71284, type: 3}
+  battleScene: {fileID: 102900000, guid: 7274a27dd57e8af47bf9378bc8f71284, type: 3}
 --- !u!4 &481814745
 Transform:
   m_ObjectHideFlags: 0

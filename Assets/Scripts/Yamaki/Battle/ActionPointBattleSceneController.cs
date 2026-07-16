@@ -425,6 +425,33 @@ public class ActionPointBattleSceneController : MonoBehaviour
         ApplyRollResult(rollResult);
     }
 
+    /// <summary>
+    /// Miyahara側の物理ダイスから計算済みのポイントを直接受け取るためのメソッド。
+    /// </summary>
+    public void SubmitExternalRollPoint(int[] numbers, int totalPoint, string roleName)
+    {
+        if (m_currentPhase != BattlePhase.RollDice)
+        {
+            Debug.LogWarning("[ActionPointBattleSceneController] 現在は外部ロール結果を受け取れないフェーズです。");
+            return;
+        }
+
+        string numbersText = numbers != null ? string.Join(", ", numbers.Select(n => n.ToString())) : "-";
+
+        // ログ・表示更新
+        AppendLog($"出目: {numbersText} / 役: {roleName} / AP +{totalPoint}");
+        if (m_rollResultText != null)
+        {
+            m_rollResultText.text = $"{numbersText} / {roleName} / AP +{totalPoint}";
+        }
+
+        // AP を設定してプレイヤーアクションへ遷移
+        m_gainedActionPoint = totalPoint;
+        m_currentActionPoint = m_gainedActionPoint;
+        SetPhase(BattlePhase.PlayerAction);
+        UpdateAllViews();
+    }
+
     private void BeginPlayerTurn()
     {
         if (IsBattleFinished()) return;

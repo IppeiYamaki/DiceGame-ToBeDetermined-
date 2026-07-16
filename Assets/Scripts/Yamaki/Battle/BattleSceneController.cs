@@ -73,10 +73,6 @@ public class BattleSceneController : MonoBehaviour
     [Tooltip("戦闘中のエフェクト再生を担当するコンポーネント（任意）")]
     private BattleEffectPlayer m_effectPlayer;
 
-    [SerializeField]
-    [Header("ダイスロール演出")]
-    [Tooltip("ダイスロール演出を担当するコンポーネント（任意）")]
-    private BattleDiceRollAnimator m_diceRollAnimator;
 
     [SerializeField]
     [Header("ターン数表示")]
@@ -341,16 +337,7 @@ public class BattleSceneController : MonoBehaviour
         List<DiceRoleDefinition> roles = DiceMasterRegistry.Active.AllRoleDefinitions.ToList();
         DiceRollResult rollResult = DiceRollCalculator.Roll(diceIds, roles);
 
-        // ダイスロール演出を再生（設定されている場合）
-        if (m_diceRollAnimator != null)
-        {
-            m_diceRollAnimator.Play(rollResult, () => OnRollAnimationComplete(rollResult));
-        }
-        else
-        {
-            // 演出なしの場合は即座に結果適用
-            OnRollAnimationComplete(rollResult);
-        }
+
     }
 
     private void OnRollAnimationComplete(DiceRollResult rollResult)

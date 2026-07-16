@@ -190,7 +190,7 @@ MonoBehaviour:
   nodePrefab: {fileID: 7942088493134114218, guid: e86d9a8730d4cfa479efa37a9e27a7cb, type: 3}
   parent: {fileID: 357103598}
   enemyDatabase: {fileID: 11400000, guid: f4361782bc373a74f963df3cc9a2d813, type: 2}
-  poolIndexByLayer: 00000000000000000100000001000000
+  poolIndexByLayer: 000000000000000000000000000000000000000001000000
   battleScene: {fileID: 102900000, guid: dea9c035ed8272847ba6b4356c62fb00, type: 3}
   restScene: {fileID: 0}
   eventScene: {fileID: 0}

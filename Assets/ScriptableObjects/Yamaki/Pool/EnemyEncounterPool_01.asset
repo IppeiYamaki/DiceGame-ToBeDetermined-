@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyEncounterPool
   m_encounterGroups:
   - m_enemies:
-    - {fileID: 11400000, guid: f164a1dad3294ae49b211f93be761e9c, type: 2}
-    - {fileID: 11400000, guid: f164a1dad3294ae49b211f93be761e9c, type: 2}
+    - {fileID: 11400000, guid: f5e977011ab71ca45ba23f2ed8697bd9, type: 2}
   - m_enemies:
-    - {fileID: 11400000, guid: e39943009284a1048a3e603d3787a95f, type: 2}
+    - {fileID: 11400000, guid: 635dde5eb171d4b4f89330592661a79f, type: 2}

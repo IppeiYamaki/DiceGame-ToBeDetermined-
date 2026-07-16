@@ -124,9 +124,24 @@ EnemyDefinition_Slime
 
 ---
 
-## 6. ダイスロール演出（BattleDiceRollAnimator）
+## 6. ダイスロール演出（Miyahara 物理ダイスを使用する場合）
 
-Miyahara のダイス（`DiceItem`）を演出専用カメラで撮影し、最前面 Canvas に表示する構成です。
+現在は Miyahara 側の物理ダイス(RandomDice ×3) を直接使用する演出に移行しています。
+旧来の `BattleDiceRollAnimator` は不要になったため削除しました。
+
+Miyahara の物理ダイスを表示する手順（簡易）:
+
+1. ダイス用レイヤーを作成（例: `DiceRollFX`）。
+2. DiceRig（RandomDice ×3）を作成し、子オブジェクトをすべて `DiceRollFX` に設定。
+3. 演出用カメラ (`DiceRollCamera`) を作成し、`Culling Mask` を `DiceRollFX` のみ有効にする。
+4. RenderTexture を作成し、`DiceRollCamera.Target Texture` に割り当てる。
+5. 最前面 Canvas に RawImage を作成し、`Texture` に RenderTexture を割り当てる。
+6. 新規コンポーネント `MiyaharaDiceRollBridge` を作成して Controller に割り当てる。
+   - `MiyaharaDiceRollBridge` の `RandomDice` に場面内の RandomDice（×3）を割り当てる
+   - `m_waitExternalRollResult` を `true` にしておくと、Battle システムがフェーズ開始時に ExternalRollRequested を発火し、Bridge が自動でダイスを転がします
+   - RawImage は自動的に raycastTarget=false にされ、UI の操作を阻害しません
+
+備考: シーンに残る `BattleDiceRollAnimator` の参照は Unity Editor 上で削除してください。
 
 ### 6-1. 演出用レイヤーの作成
 
